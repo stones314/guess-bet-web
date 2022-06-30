@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(cors());
+
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}))
 
@@ -33,7 +35,8 @@ var games = {};
  *  quizlist     array of name and length
  * 
  */
-app.get("/load-quiz-list", cors(corsOptions), (req, res) => {
+app.get("/load-quiz-list", (req, res) => {
+  console.log("Load quiz-list ");
   var infoList = [];
   for(var i = 0; i < quizlist.length; i++){
     infoList.push({
@@ -55,7 +58,7 @@ app.get("/load-quiz-list", cors(corsOptions), (req, res) => {
  *  quiz         object with name and questions
  * 
  */
-app.post("/load-quiz", cors(corsOptions), (req, res) => {
+app.post("/load-quiz", (req, res) => {
   var data = req.body;
   console.log("Load quiz : " + quizlist[data.index].name);
   res.json({ quiz : quizlist[data.index] });
@@ -71,7 +74,7 @@ app.post("/load-quiz", cors(corsOptions), (req, res) => {
  *  message     a message
  * 
  */
-app.post("/save-quiz", cors(corsOptions), (req, res) => {
+app.post("/save-quiz", (req, res) => {
   var data = req.body;
   var id = -1;
   for(var i = 0; i < quizlist.length; i++){
@@ -100,7 +103,7 @@ app.post("/save-quiz", cors(corsOptions), (req, res) => {
  *  message     a message...
  * 
  */
-app.post("/delete-quiz", cors(corsOptions), (req, res) => {
+app.post("/delete-quiz", (req, res) => {
   var data = req.body;
   quizlist.splice(data.index,1);
   console.log("deleted at " + data.index);
@@ -118,7 +121,7 @@ app.post("/delete-quiz", cors(corsOptions), (req, res) => {
  *  ok     1 = ok, 2 = invalid gid, 3 = name in use
  * 
  */
-app.post("/can-join-quiz", cors(corsOptions), (req, res) => {
+app.post("/can-join-quiz", (req, res) => {
   const data = req.body;
   var ok = 1;
   if(!(data.gid in games)){
@@ -219,7 +222,7 @@ wsServer.on('request', function(request) {
         gid = data.gid;
         role = 2;
         name = data.name;
-        const ok = games[gid].AddPlayer(name, connection);
+        const ok = games[gid].addPlayer(name, connection);
         games[gid].hostConn.sendUTF(
             JSON.stringify({type : "join-game", name : name})
         );
