@@ -1,6 +1,6 @@
 import React from "react";
 import Question from "./Question";
-import {images} from "./../helper/Consts";
+import {images, SERVER, GameState} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 import StringInput from "../helper/StringInput";
 
@@ -20,7 +20,7 @@ class CreateQuiz extends React.Component {
     componentDidMount() {
         console.log("CreateQuiz loaded " + this.props.editQuizIndex);
         if(this.props.editQuizIndex >= 0){
-            fetch("/load-quiz", {
+            fetch(SERVER + "/load-quiz", {
                 method: 'POST',
                 body: JSON.stringify({ index : this.props.editQuizIndex }),
                 headers: { 'Content-Type': 'application/json' }
@@ -80,7 +80,7 @@ class CreateQuiz extends React.Component {
     }
 
     onClickSave() {
-        fetch("/save-quiz", {
+        fetch(SERVER + "/save-quiz", {
             method: 'POST',
             body: JSON.stringify({
                 name : this.state.name,

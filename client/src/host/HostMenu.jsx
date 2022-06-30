@@ -1,7 +1,7 @@
 import React from "react";
 import CreateQuiz from "./CreateQuiz";
 import QuizListElement from "./QuizListElement";
-import {images} from "./../helper/Consts";
+import {images, SERVER} from "./../helper/Consts";
 import HostPlay from "./HostPlay";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -37,7 +37,7 @@ function HostMenu(props) {
     }
 
     function onQuizDelete(index){
-        fetch("/delete-quiz", {
+        fetch(SERVER + "/delete-quiz", {
             method: 'POST',
             body: JSON.stringify({
                 index : index 
@@ -57,7 +57,7 @@ function HostMenu(props) {
     function loadQuizList(){
         var qs = [];
 
-        fetch("/load-quiz-list")
+        fetch(SERVER + "/load-quiz-list")
             .then((res) => res.json())
             .then((data) => {
                 for(const [i,q] of data.quizlist.entries()){

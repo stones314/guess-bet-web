@@ -13,6 +13,8 @@ export const images = {
     "hp-continue" : "https://rygg-gaard.no/gaia/img/BrownPlanet.png",
 };
 
+export const SERVER = "http://16.170.74.73:3001";
+
 export const GameState = {
     LOADING : -2,
     WAIT_FOR_PLAYERS : -1,

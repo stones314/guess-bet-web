@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {images} from "./../helper/Consts";
+import {images, SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 
 const ENTER_CREDENTIALS = 0;
@@ -47,7 +47,7 @@ function JoinMenu(props) {
 
     function onClickPlay(index) {
         console.log("Click Play");
-        fetch("/can-join-quiz", {
+        fetch(SERVER + "/can-join-quiz", {
             method: 'POST',
             body: JSON.stringify({
                 gid : gid,
