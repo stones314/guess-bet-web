@@ -3,6 +3,8 @@ import HostMenu from "./host/HostMenu";
 import {images} from "./helper/Consts";
 import { useState } from "react";
 import JoinMenu from "./player/JoinMenu";
+import './styles/EditQuiz.css';
+import './App.css';
 
 const LOADING = 0;
 const HOST_VS_JOIN = 1;
@@ -38,6 +40,8 @@ function App() {
     {
         return (
             <div className={"app"}>
+                <h1>QUIZ !</h1>
+                
                 <div className={"app-btn"}>
                     <img
                         className="app-btn-img"
@@ -63,6 +67,7 @@ function App() {
     {
         return (
             <div className={"app"}>
+                <h1>QUIZ !</h1>
                 <HostMenu
                     onClickExit={() => onClickExitHost()}
                 />
@@ -73,6 +78,7 @@ function App() {
     {
         return (
             <div className={"app"}>
+                <h1>QUIZ !</h1>
                 <JoinMenu/>
             </div>
         )

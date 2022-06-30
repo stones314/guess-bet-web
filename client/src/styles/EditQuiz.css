@@ -1,6 +1,6 @@
 .hm-box {
     position: relative;
-    width: min(100%, 600px);
+    width: min(100%, 400px);
     left: 50%;
     transform: translate(-50%, 0%);
 }
@@ -29,9 +29,12 @@
 }
 
 form {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: min(100%,400px);
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 
 .q-info-holder {
@@ -48,8 +51,11 @@ textarea {
 }
 
 input[type=text],input[type=number] {
-    width : min(100%, 100px);
+    position: relative;
+    width : min(100%, 200px);
     margin : 1px;
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 
 .list-btn-holder {

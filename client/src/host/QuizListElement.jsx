@@ -18,9 +18,9 @@ class QuizListElement extends React.Component {
                 <div className="list-btn-holder">
                     <img
                         className="q-btn-img"
-                        src={images["q-play"]}
-                        alt={"play"}
-                        onClick={this.props.onClickPlay}
+                        src={images["q-edit"]}
+                        alt={"edit"}
+                        onClick={this.props.onClickEdit}
                     />
                     <img
                         className="q-btn-img"
@@ -30,9 +30,9 @@ class QuizListElement extends React.Component {
                     />
                     <img
                         className="q-btn-img"
-                        src={images["q-edit"]}
-                        alt={"edit"}
-                        onClick={this.props.onClickEdit}
+                        src={images["q-play"]}
+                        alt={"play"}
+                        onClick={this.props.onClickPlay}
                     />
                 </div>
             </div>

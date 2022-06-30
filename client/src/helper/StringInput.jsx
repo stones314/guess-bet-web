@@ -1,4 +1,5 @@
 import React from "react";
+import './../styles/EditQuiz.css';
 
 class StringInput extends React.Component {
     constructor(props) {
@@ -26,8 +27,8 @@ class StringInput extends React.Component {
                 <div style={{ color: "purple" }}>
                     {this.props.errorMsg}
                 </div>
-                <form onSubmit={this.handleSubmit} className="s-inn">
-                    <input type="text" value={this.props.editVal} onChange={this.handleChange}  className="s-inn"/>
+                <form onSubmit={this.handleSubmit} className="q-inn-f">
+                    <input type={this.props.type} value={this.props.editVal} onChange={this.handleChange}  className="s-inn"/>
                     {this.renderOk()}
                 </form>
             </div>

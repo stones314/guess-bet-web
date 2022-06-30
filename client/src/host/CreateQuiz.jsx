@@ -114,6 +114,7 @@ class CreateQuiz extends React.Component {
             <div className={"hm-box"}>
                 <div className={"cq-name"}>
                     <StringInput
+                        type="text"
                         description={"Quiz Name: "}
                         editVal={this.state.name}
                         errorMsg={""}
@@ -133,7 +134,6 @@ class CreateQuiz extends React.Component {
                         alt={"add"}
                         onClick={() => this.onClickAdd()}
                     />
-                    ADD
                 </div>
                 <div className={"q-save"}>
                     <img

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {images, SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 import PlayGame from "./PlayGame";
+import './../styles/EditQuiz.css';
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
@@ -20,11 +21,7 @@ function JoinMenu(props) {
     }
 
     function onGidChange(newValue) {
-        if(newValue === "")
-            setGid(newValue)
-        var newGid = Number.parseInt(newValue);
-        if(newGid)
-            setGid(newValue);
+        setGid(newValue);
     }
 
     function onResponse(canJoin){
@@ -48,7 +45,17 @@ function JoinMenu(props) {
         }
     }
 
-    function onClickPlay(index) {
+    function onClickPlay() {
+        if (name === ""){
+            setNerr("Enter a name");
+            setGerr("");
+            return;
+        }
+        if(!gid){
+            setNerr("");
+            setGerr("Enter game id");
+            return;
+        }
         console.log("Click Play");
         fetch(SERVER + "/can-join-quiz", {
             method: 'POST',
@@ -68,11 +75,13 @@ function JoinMenu(props) {
                 <div className={"hm-play"}>
                     <StringInput
                         description={"User Name:"}
+                        type="text"
                         editVal={name}
                         errorMsg={nErr}
                         onChange={(newValue) => onNameChange(newValue)}
                     />
                     <StringInput
+                        type="number"
                         description={"Game Id:"}
                         editVal={gid.toString()}
                         errorMsg={gErr}
