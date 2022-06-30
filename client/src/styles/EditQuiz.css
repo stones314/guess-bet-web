@@ -1,0 +1,45 @@
+.hm-box {
+    position: relative;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.q-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.q-holder {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+.q-question {
+    display: flex;
+    flex-direction: row;
+}
+.q-ans {
+    display: flex;
+    flex-direction: row;
+}
+.q-edit {
+    display: flex;
+    flex-direction: row;
+}
+
+.q-inn-f {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.q-info-holder {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+
+.q-btn-img {
+    width: 40px;
+    margin: 2px;
+}
