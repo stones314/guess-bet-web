@@ -1,6 +1,6 @@
 .hm-box {
     position: relative;
-    width: 90%;
+    width: min(100%, 600px);
     left: 50%;
     transform: translate(-50%, 0%);
 }
@@ -28,18 +28,38 @@
     flex-direction: row;
 }
 
-.q-inn-f {
+form {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: min(100%,400px);
 }
+
 .q-info-holder {
     display: flex;
     flex-direction: row;
     border: 1px solid black;
 }
 
+textarea {
+    width : min(100%, 400px);
+    height : 100px;
+    margin : 1px;
+    resize: none
+}
+
+input[type=text],input[type=number] {
+    width : min(100%, 100px);
+    margin : 1px;
+}
+
+.list-btn-holder {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: 0;
+}
+
 .q-btn-img {
     width: 40px;
-    margin: 2px;
+    margin: 1px;
 }

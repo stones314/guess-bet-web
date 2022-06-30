@@ -23,6 +23,7 @@ function HostMenu(props) {
     }, []);
 
     function onClickNewQuiz() {
+        setQuizIndex(-1);
         setPageState(CREATE_QUIZ);
     }
 
@@ -58,27 +59,33 @@ function HostMenu(props) {
         console.log("load quiz list");
         var qs = [];
 
-        fetch(SERVER + "/load-quiz-list")
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("loaded!");
-                for(const [i,q] of data.quizlist.entries()){
-                    qs.push(
-                    <QuizListElement
-                        key={i}
-                        name={q.name}
-                        length={q.length}
-                        onClickEdit={() => onQuizEdit(i)}
-                        onClickDelete={() => onQuizDelete(i)}
-                        onClickPlay={() => onQuizPlay(i)}
-                    />
-                    );
-                }
-                setQuizList(qs);
-                if(pageState === LOADING){
-                    setPageState(SHOW_MENU);
-                }
-            });
+        fetch(SERVER + "/load-quiz-list", {
+            method: 'POST',
+            body: JSON.stringify({
+                load : true 
+                }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("loaded!");
+            for(const [i,q] of data.quizlist.entries()){
+                qs.push(
+                <QuizListElement
+                    key={i}
+                    name={q.name}
+                    length={q.length}
+                    onClickEdit={() => onQuizEdit(i)}
+                    onClickDelete={() => onQuizDelete(i)}
+                    onClickPlay={() => onQuizPlay(i)}
+                />
+                );
+            }
+            setQuizList(qs);
+            if(pageState === LOADING){
+                setPageState(SHOW_MENU);
+            }
+        });
     }
 
     function renderMenu() {

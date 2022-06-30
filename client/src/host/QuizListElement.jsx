@@ -15,28 +15,24 @@ class QuizListElement extends React.Component {
                         Length: {this.props.length}
                     </div>
                 </div>
-                <div>
+                <div className="list-btn-holder">
                     <img
                         className="q-btn-img"
-                        src={images["q-edit"]}
-                        alt={"edit"}
-                        onClick={this.props.onClickEdit}
+                        src={images["q-play"]}
+                        alt={"play"}
+                        onClick={this.props.onClickPlay}
                     />
-                </div>
-                <div>
                     <img
                         className="q-btn-img"
                         src={images["q-del"]}
                         alt={"delete"}
                         onClick={this.props.onClickDelete}
                     />
-                </div>
-                <div>
                     <img
                         className="q-btn-img"
-                        src={images["q-play"]}
-                        alt={"play"}
-                        onClick={this.props.onClickPlay}
+                        src={images["q-edit"]}
+                        alt={"edit"}
+                        onClick={this.props.onClickEdit}
                     />
                 </div>
             </div>

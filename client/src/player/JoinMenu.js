@@ -11,7 +11,7 @@ function JoinMenu(props) {
 
     const [pageState, setPageState] = useState(ENTER_CREDENTIALS);
     const [name, setName] = useState("");
-    const [gid, setGid] = useState(0);
+    const [gid, setGid] = useState("");
     const [nErr, setNerr] = useState("");
     const [gErr, setGerr] = useState("");
 
@@ -20,6 +20,8 @@ function JoinMenu(props) {
     }
 
     function onGidChange(newValue) {
+        if(newValue === "")
+            setGid(newValue)
         var newGid = Number.parseInt(newValue);
         if(newGid)
             setGid(newValue);
@@ -77,8 +79,13 @@ function JoinMenu(props) {
                         onChange={(newValue) => onGidChange(newValue)}
                     />
                 </div>
-                <div className={"hm-play"} onClick={() => onClickPlay()}>
-                    PLAY
+                <div className={"hm-play"}>
+                    <img
+                        className="q-btn-img"
+                        src={images["q-play"]}
+                        alt={"play"}
+                        onClick={onClickPlay}
+                    />
                 </div>
             </div>
         )

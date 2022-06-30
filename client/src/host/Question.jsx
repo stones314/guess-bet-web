@@ -37,12 +37,17 @@ class QuestionInput extends React.Component {
                     {this.props.errorMsg}
                 </div>
                 <form onSubmit={this.handleSubmit} className="q-inn-f">
+                    Question:
                     <div className={"q-question"}>
-                        Q:<textarea value={this.props.Q.text} onChange={this.handleChangeQ} className="q-inn-q"/>
+                        <textarea value={this.props.Q.text} onChange={this.handleChangeQ} className="q-inn-q"/>
                     </div>
+                    Answer:
                     <div className={"q-ans"}>
-                        A:<input type="text" value={this.props.Q.answer} onChange={this.handleChangeA}  className="q-inn-a"/>
-                        Unit:<input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className="q-inn-u"/>
+                        <input type="number" value={this.props.Q.answer} onChange={this.handleChangeA}  className="q-inn-a"/>
+                    </div>
+                    Unit:
+                    <div className={"q-ans"}>
+                        <input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className="q-inn-u"/>
                     </div>
                     {this.renderOk(true)}
                 </form>
@@ -83,7 +88,7 @@ class Question extends React.Component {
                     </div>
                 </div>
                 </div>
-                <div className={"q-edit"}>
+                <div className={"list-btn-holder"}>
                     <div>
                         <img
                             className="q-btn-img"

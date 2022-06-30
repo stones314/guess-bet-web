@@ -35,8 +35,7 @@ var games = {};
  *  quizlist     array of name and length
  * 
  */
-app.get("/load-quiz-list", (req, res) => {
-  console.log("Load quiz-list ");
+app.post("/load-quiz-list", (req, res) => {
   var infoList = [];
   for(var i = 0; i < quizlist.length; i++){
     infoList.push({
