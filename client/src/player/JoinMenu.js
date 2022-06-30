@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {images, SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
+import PlayGame from "./PlayGame";
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
@@ -95,7 +96,10 @@ function JoinMenu(props) {
     {
         return (
             <div className={"HostMenu"}>
-                PLAY GAME TODO
+                <PlayGame
+                    gid={gid}
+                    name={name}
+                />
             </div>
         )
     }

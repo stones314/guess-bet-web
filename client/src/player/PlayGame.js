@@ -1,8 +1,5 @@
 import React from "react";
-import CreateQuiz from "./CreateQuiz";
-import QuizListElement from "./QuizListElement";
 import {images, GameState} from "./../helper/Consts";
-import HostPlay from "./HostPlay";
 import { useState } from "react";
 import { useEffect } from "react";
 

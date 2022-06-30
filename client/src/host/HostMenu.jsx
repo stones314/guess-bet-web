@@ -55,11 +55,13 @@ function HostMenu(props) {
     }
 
     function loadQuizList(){
+        console.log("load quiz list");
         var qs = [];
 
         fetch(SERVER + "/load-quiz-list")
             .then((res) => res.json())
             .then((data) => {
+                console.log("loaded!");
                 for(const [i,q] of data.quizlist.entries()){
                     qs.push(
                     <QuizListElement
@@ -109,7 +111,15 @@ function HostMenu(props) {
         )
     }
 
-    if(pageState === SHOW_MENU)
+    if(pageState === LOADING)
+    {
+        return (
+            <div className={"HostMenu"}>
+                LOADING
+            </div>
+        )
+    }
+    else if(pageState === SHOW_MENU)
     {
         return (
             <div className={"HostMenu"}>
