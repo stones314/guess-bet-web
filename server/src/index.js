@@ -2,6 +2,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const game = require("./game");
+const cors = require("cors");
+
+var corsOptions = {
+  origin: 'https://rygg-gaard.no',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 ///////////////////////////////////////
 // Express stuff
@@ -27,7 +33,7 @@ var games = {};
  *  quizlist     array of name and length
  * 
  */
-app.get("/load-quiz-list", (req, res) => {
+app.get("/load-quiz-list", cors(corsOptions), (req, res) => {
   var infoList = [];
   for(var i = 0; i < quizlist.length; i++){
     infoList.push({
@@ -49,7 +55,7 @@ app.get("/load-quiz-list", (req, res) => {
  *  quiz         object with name and questions
  * 
  */
-app.post("/load-quiz", (req, res) => {
+app.post("/load-quiz", cors(corsOptions), (req, res) => {
   var data = req.body;
   console.log("Load quiz : " + quizlist[data.index].name);
   res.json({ quiz : quizlist[data.index] });
@@ -65,7 +71,7 @@ app.post("/load-quiz", (req, res) => {
  *  message     a message
  * 
  */
-app.post("/save-quiz", (req, res) => {
+app.post("/save-quiz", cors(corsOptions), (req, res) => {
   var data = req.body;
   var id = -1;
   for(var i = 0; i < quizlist.length; i++){
@@ -94,7 +100,7 @@ app.post("/save-quiz", (req, res) => {
  *  message     a message...
  * 
  */
-app.post("/delete-quiz", (req, res) => {
+app.post("/delete-quiz", cors(corsOptions), (req, res) => {
   var data = req.body;
   quizlist.splice(data.index,1);
   console.log("deleted at " + data.index);
@@ -112,7 +118,7 @@ app.post("/delete-quiz", (req, res) => {
  *  ok     1 = ok, 2 = invalid gid, 3 = name in use
  * 
  */
-app.post("/can-join-quiz", (req, res) => {
+app.post("/can-join-quiz", cors(corsOptions), (req, res) => {
   const data = req.body;
   var ok = 1;
   if(!(data.gid in games)){
