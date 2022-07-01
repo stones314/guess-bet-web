@@ -1,29 +1,15 @@
 import React from "react";
-import CreateQuiz from "./CreateQuiz";
-import QuizListElement from "./QuizListElement";
-import {images} from "./../helper/Consts";
+import {images, GameState} from "./../helper/Consts";
 import { useState, useEffect } from "react";
-
-const LOADING = -2;
-const WAIT_FOR_PLAYERS = -1;
-const WAIT_FOR_ANSWERS = 0;
-const WAIT_FOR_BETS = 1;
-const SHOW_BETS = 2;
-const SHOW_CORRECT = 3;
-const SHOW_STANDING = 4;
-const STATE_COUNT = 5;
 
 function HostPlay(props) {
     console.log("Host Play rendered");
 
-    const [hasWs, setHasWs] = useState(false);
-    const [state, setState] = useState({
-        pageState: LOADING,
-        gid: -1,
-        quiz: {},
-        questionId: -1,
-        players: [],
-    });
+    const [gameState, setGameState] = useState(GameState.LOADING);
+    const [gid, setGid] = useState(-1);
+    const [quiz, setQuiz] = useState(null);
+    const [qid, setQid] = useState(-1);
+    const [players, setPlayers] = useState([]);
 
     useEffect(() => {
         const ws = new WebSocket("ws://16.170.74.73:1337");
@@ -52,6 +38,7 @@ function HostPlay(props) {
                 onGameStarted(data);
             }
             else if(data.type === "join-game") {
+                console.log("handle join " + data.name);
                 onPlayerJoined(data);
             }
             else if(data.type === "left-game") {
@@ -60,40 +47,16 @@ function HostPlay(props) {
         }
         
         function onGameStarted(data) {
-            setState({
-                pageState : WAIT_FOR_PLAYERS,
-                gid : data.gid,
-                quiz : data.quiz,
-                questionId : state.questionId,
-                players : state.players
-            });
+            setGameState(GameState.WAIT_FOR_PLAYERS);
+            setGid(data.gid);
+            setQuiz(data.quiz);
         }
         function onPlayerJoined(data) {
-            var players = state.players;
-            players.push(data.name);
-            setState({
-                pageState : state.pageState,
-                gid : state.gid,
-                quiz : state.quiz,
-                questionId : state.questionId,
-                players : players,
-            });
+            setPlayers(data.data);
+            console.log("on join: " + data.data);
         }
         function onPlayerLeft(data) {
-            var players = state.players;
-            for(const [i, p] of players.entries()){
-                if(p.name === data.name) {
-                    players.splice(i,1);
-                    break;
-                }
-            }
-            setState({
-                pageState : WAIT_FOR_PLAYERS,
-                gid : data.gid,
-                quiz : data.quiz,
-                questionId : state.questionId,
-                players : players
-            });
+            setPlayers(data.data);
         }
 
         // Close socket on unmount:
@@ -117,11 +80,11 @@ function HostPlay(props) {
     }
 
     function renderWaitForPlayers() {
-        var players = [];
-        for(const [i, p] of state.players){
-            players.push(
-                <div>
-                    Player {i + " " + p.name}
+        var pList = [];
+        for(const [i, p] of players.entries()){
+            pList.push(
+                <div key={i}>
+                    Player {i + " " + p.name + " " + p.cash}
                 </div>
             )
         }
@@ -129,14 +92,14 @@ function HostPlay(props) {
             <div>
                 <div>
                     Quiz! <br/>
-                    Name: {state.quiz.name} <br/>
-                    Lenght: {state.quiz.questions.length} <br/>
+                    Name: {quiz.name} <br/>
+                    Lenght: {quiz.questions.length} <br/>
                     <br/>
-                    Game Id: {state.gid}<br/>
+                    Game Id: {gid}<br/>
                     <br/>
                     PLAYERS:
                     <br/>
-                    {players}
+                    {pList}
                     <br/>
                     WAITING FOR PLAYERS!
                 </div>
@@ -147,7 +110,7 @@ function HostPlay(props) {
         )
     }
 
-    if(state.pageState === LOADING)
+    if(gameState === GameState.LOADING)
     {
         return (
             <div className={"HostMenu"}>
@@ -155,7 +118,7 @@ function HostPlay(props) {
             </div>
         )
     }
-    else if(state.pageState === WAIT_FOR_PLAYERS)
+    else if(gameState === GameState.WAIT_FOR_PLAYERS)
     {
         return (
             <div className={"HostMenu"}>
@@ -163,7 +126,7 @@ function HostPlay(props) {
             </div>
         )
     }
-    else if(state.pageState === WAIT_FOR_ANSWERS)
+    else if(gameState === GameState.WAIT_FOR_ANSWERS)
     {
         return (
             <div className={"HostMenu"}>
@@ -171,7 +134,7 @@ function HostPlay(props) {
             </div>
         )
     }
-    else if(state.pageState === WAIT_FOR_BETS)
+    else if(gameState === GameState.WAIT_FOR_BETS)
     {
         return (
             <div className={"HostMenu"}>

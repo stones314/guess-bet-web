@@ -37,6 +37,9 @@ function PlayGame(props) {
             if(data.type === "join-game") {
                 onGameStarted(data);
             }
+            if(data.type === "end-game") {
+                props.onGameAbort();
+            }
         }
         
         function onGameStarted(data) {

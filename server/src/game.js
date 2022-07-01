@@ -1,17 +1,19 @@
-const player = require("./player");
+const pModule = require("./player");
 
 exports.create = function(id, quiz, hostConn) {
-    this.id = id;
-    this.quiz = quiz;
-    this.hostConn = hostConn;
-    this.state = 0;
-    this.players = [];
-    return this;
+    var game = {
+        id : id,
+        quiz : quiz,
+        hostConn : hostConn,
+        state : 0,
+        players : []
+    }
+    return game;
 }
 
-exports.getPlayerData = function() {
+exports.getPlayerData = function(game) {
     var pn = [];
-    for(const [i, p] of this.players.entries()){
+    for(const [i, p] of game.players.entries()){
         pn.push({
             name : p.name,
             cash : p.cash
@@ -20,26 +22,29 @@ exports.getPlayerData = function() {
     return pn;
 }
 
-exports.addPlayer = function(name, res) {
-    for(const [i, p] of this.players.entries()){
-        if(p.name === name) return false;
+exports.addPlayer = function(game, name, res) {
+    for(const [i, p] of game.players.entries()){
+        if(p.name === name){
+            console.log("player " + name + " already exists");
+            return false;
+        }
     }
-    this.players.push[player.create(name, res)];
+    game.players.push(pModule.create(name, res));
     return true;
 }
 
-exports.removePlayer = function(name) {
-    for(const [i, p] of this.players.entries()){
+exports.removePlayer = function(game, name) {
+    for(const [i, p] of game.players.entries()){
         if(p.name === name){
-            this.players.splice(i, 1);
+            game.players.splice(i, 1);
             return true;
         }
     }
     return false;
 }
 
-exports.hasPlayer = function(name) {
-    for(const [i, p] of this.players.entries()){
+exports.hasPlayer = function(game, name) {
+    for(const [i, p] of game.players.entries()){
         if(p.name === name){
             return true;
         }
@@ -47,8 +52,8 @@ exports.hasPlayer = function(name) {
     return false;
 }
 
-exports.step = function() {
-    this.state += 1;
-    this.state %= 6;
+exports.step = function(game) {
+    game.state += 1;
+    game.state %= 6;
     return true;
 }

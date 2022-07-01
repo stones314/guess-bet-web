@@ -6,6 +6,7 @@ import './../styles/EditQuiz.css';
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
+const ABORTED_GAME = 2;
 
 function JoinMenu(props) {
     console.log("JointMenu rendered");
@@ -69,6 +70,10 @@ function JoinMenu(props) {
         .then((data) => onResponse(data.ok));
     }
 
+    function onGameAbort() {
+        setPageState(ABORTED_GAME);
+    }
+
     function renderMenu() {
         return (
             <div className="hm-box">
@@ -115,7 +120,17 @@ function JoinMenu(props) {
                 <PlayGame
                     gid={gid}
                     name={name}
+                    onGameAbort={onGameAbort}
                 />
+            </div>
+        )
+    }
+    else if(pageState === ABORTED_GAME)
+    {
+        return (
+            <div className={"HostMenu"}>
+                Whoops! Host ended the game, or disconnected...
+                {renderMenu()}
             </div>
         )
     }

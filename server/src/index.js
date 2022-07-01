@@ -126,7 +126,7 @@ app.post("/can-join-quiz", (req, res) => {
   if(!(data.gid in games)){
     ok = 2;
   }
-  else if(games[data.gid].hasPlayer(data.name)){
+  else if(game.hasPlayer(games[data.gid], data.name)){
     ok = 3;
   }
   res.json({ ok: ok });
@@ -221,9 +221,9 @@ wsServer.on('request', function(request) {
         gid = data.gid;
         role = 2;
         name = data.name;
-        const ok = games[gid].addPlayer(name, connection);
+        const ok = game.addPlayer(games[gid], name, connection);
         games[gid].hostConn.sendUTF(
-            JSON.stringify({type : "join-game", name : name})
+            JSON.stringify({type : "join-game", data : game.getPlayerData(games[gid])})
         );
         connection.sendUTF(
             JSON.stringify({type : "join-game", ok : ok})
@@ -246,11 +246,13 @@ wsServer.on('request', function(request) {
       delete games[gid];
     }
     else if (role === 2) {
-        console.log(name + " (" + connection.remoteAddress + ") disconnected.");
-        games[gid].hostConn.sendUTF(
-          JSON.stringify({type : "left-game", name : name})
-        );
-        games[gid].removePlayer(name);
+        console.log(name + " [" + gid + "](" + connection.remoteAddress + ") disconnected.");
+        if(gid in games){
+          game.removePlayer(games[gid], name);
+          games[gid].hostConn.sendUTF(
+            JSON.stringify({type : "left-game", data : game.getPlayerData(games[gid])})
+          );
+        }
     }
     else {
       console.log("Client " + connection.remoteAddress + " disconnected.");
