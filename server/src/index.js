@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const game = require("./game");
 const cors = require("cors");
+const consts = require("./consts");
 
 var corsOptions = {
   origin: 'https://rygg-gaard.no',
@@ -197,7 +198,7 @@ wsServer.on('request', function(request) {
   // we need to know client index to remove them on 'close' event
   var name = false;
   var color = false;
-  var gid = false;          //unique game id this user is related to
+  var gid = false;      //unique game id this user is related to
   var role = 0;         //0: undefined, 1: host, 2: player
   console.log(' Connection accepted.');
     
@@ -233,7 +234,66 @@ wsServer.on('request', function(request) {
     }
     if(gid === false) { return; }   //Must have a gid to process any other message
 
+    if(data.type === "step-game"){
+      const newState = game.step(games[gid]);
+      games[gid].hostConn.sendUTF(
+          JSON.stringify({
+            type : "step-game",
+            data : game.getPlayerData(games[gid]),
+            newState : newState
+          })
+      );
+      if(newState === consts.GameState.WAIT_FOR_ANSWERS){
+        games[gid].players.forEach(player => player.conn.sendUTF(
+          JSON.stringify({type : "req-ans"})
+        ));
+      }
+      if(newState === consts.GameState.WAIT_FOR_BETS){
+        const betOpts = game.getBetOpts(games[gid]);
+        games[gid].players.forEach(player => player.conn.sendUTF(
+          JSON.stringify({type : "req-bets", betOpts : betOpts})
+        ));
+      }
+      console.log('Player Joined Game');
+      return;
+  }
+
     //TODO: impl other message types!
+    /*
+      Host Expects:
+        const handleData = function(data) {
+            else if(data.type === "step-game") {
+                onStepGame(data);
+            }
+            else if(data.type === "player-ans") {
+                onPlayerUpdate(data);
+            }
+            else if(data.type === "player-bet") {
+                onPlayerUpdate(data);
+            }
+        }
+      Host Send:
+            ws.current.send(JSON.stringify({
+                type : "step-game",
+                state : gameState
+            }));
+      
+      Player expects:
+        const handleData = function(data) {
+            else if(data.type === "winnings") {
+                onWinnings(data);
+            }
+        }
+      Player Send:
+            ws.current.send(JSON.stringify({
+                type : "send-ans",
+                ans : ans
+            }));
+            ws.current.send(JSON.stringify({
+                type : "send-bet",
+                bet : bet
+            }));
+     */
   });
   
   // user disconnected

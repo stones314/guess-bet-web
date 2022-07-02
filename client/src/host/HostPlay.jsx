@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {images, GameState} from "./../helper/Consts";
-import { useState, useEffect } from "react";
+import PlayerInfo from "./PlayerInfo";
 
 function HostGame(props) {
     console.log("Host Play rendered");
@@ -100,7 +100,9 @@ function HostGame(props) {
         setClick(click + 1);
     }
 
+    //**********************/
     //Rendering functions:
+    /***********************/
 
     function renderContinue() {
         return (
@@ -113,24 +115,20 @@ function HostGame(props) {
         )
     }
 
-    function renderPlayerHasRep(rep, gs){
-        if(gameState !== gs) return null;
-        if(rep === "") return (<div></div>)
-        return (<div>X</div>);
-    }
-
     function renderPlayerInfo(){
         var pList = [];
         for(const [i, p] of players.entries()){
             pList.push(
-                <div key={i}>
-                    Player {i + " " + p.name + " " + p.cash}
-                </div>
+                <PlayerInfo
+                    key={i}
+                    pInfo={p}
+                    gameState={gameState} 
+                />
             )
         }
         return(
             <div>
-                {plist}
+                {pList}
             </div>
         )
     }
@@ -139,7 +137,6 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Quiz! <br/>
                     Name: {quiz.name} <br/>
                     Lenght: {quiz.questions.length} <br/>
                     <br/>
@@ -155,6 +152,50 @@ function HostGame(props) {
         )
     }
 
+    function renderWaitForAnswers() {
+        return (
+            <div>
+                <div>
+                    Question {"- " + (qid + 1) + ":"}
+                </div>
+                <div>
+                    {quiz.questions[qid].text}
+                </div>
+                <div>
+                    Answer should be given in {quiz.questions[qid].unit}
+                </div>
+                <div>
+                    Answering:
+                </div>
+                <div>
+                    {renderPlayerInfo()}
+                </div>
+            </div>
+        )
+    }
+
+    function renderWaitForBets() {
+        return (
+            <div>
+                <div>
+                    Question {"- " + (qid + 1) + ":"}
+                </div>
+                <div>
+                    {quiz.questions[qid].text}
+                </div>
+                <div>
+                    Answer should be given in {quiz.questions[qid].unit}
+                </div>
+                <div>
+                    Betting:
+                </div>
+                <div>
+                    {renderPlayerInfo()}
+                </div>
+            </div>
+        )
+    }
+
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
@@ -162,23 +203,15 @@ function HostGame(props) {
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
-            return (renderWaitForPlayers());
+            return (renderWaitForPlayers())
         }
         else if(gameState === GameState.WAIT_FOR_ANSWERS)
         {
-            return (
-                <div className={"HostMenu"}>
-                    Wait for answers
-                </div>
-            )
+            return (renderWaitForAnswers())
         }
         else if(gameState === GameState.WAIT_FOR_BETS)
         {
-            return (
-                <div className={"HostMenu"}>
-                    Wait for bets
-                </div>
-            )
+            return (renderWaitForBets())
         }
     }
 
