@@ -2,7 +2,7 @@ import React from "react";
 import CreateQuiz from "./CreateQuiz";
 import QuizListElement from "./QuizListElement";
 import {images, SERVER} from "./../helper/Consts";
-import HostPlay from "./HostPlay";
+import HostGame from "./HostPlay";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -149,7 +149,7 @@ function HostMenu(props) {
     {
         return (
             <div className={"HostMenu"}>
-                <HostPlay
+                <HostGame
                     quizIndex = {quizIndex}
                     onClickExit = {() => onQuizSaved()}
                 />

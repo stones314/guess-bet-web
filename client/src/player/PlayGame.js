@@ -2,11 +2,13 @@ import React from "react";
 import {images, GameState} from "./../helper/Consts";
 import { useState } from "react";
 import { useEffect } from "react";
+import StringInput from "../helper/StringInput";
 
 function PlayGame(props) {
     console.log("HostMenu rendered");
 
     const [pageState, setPageState] = useState(GameState.LOADING);
+    const [ans, setAns] = useState("");
     //const [quizList, setQuizList] = useState([]);
     //const [quizIndex, setQuizIndex] = useState(-1);
 
@@ -51,6 +53,10 @@ function PlayGame(props) {
         return () => ws.close();
       }, []);
 
+    function onAnsChange(newVal){
+        setAns(newVal);
+    }
+
     if(pageState === GameState.LOADING)
     {
         return (
@@ -71,7 +77,13 @@ function PlayGame(props) {
     {
         return (
             <div className={"HostMenu"}>
-                Suggest what might be a correct answer for the quiestion!
+                <StringInput
+                    type="number"
+                    description={"Suggest what might be a correct answer for the quiestion:"}
+                    editVal={ans.toString()}
+                    errorMsg={""}
+                    onChange={(newValue) => onAnsChange(newValue)}
+                />
             </div>
         )
     }
