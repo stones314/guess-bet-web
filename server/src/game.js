@@ -56,6 +56,9 @@ exports.step = function(game) {
     if(wrap){
         game.quiz.pos += 1;
         if (game.quiz.pos == game.quiz.questions.length) game.state = consts.GameState.GAME_OVER;
+        game.players.forEach(p => {
+            player.resetInput(p)
+        });
     }
     return game.state;
 }

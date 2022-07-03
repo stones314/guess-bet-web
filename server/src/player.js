@@ -20,3 +20,18 @@ exports.create = function(name, conn, color) {
     }
     return p;
 }
+
+exports.resetInput = function(player) {
+    player.ans = -12345678;
+    player.bet = [
+        {
+            opt : 0,
+            val : 0
+        },
+        {
+            opt : 0,
+            val : 0
+        }
+    ];
+    player.won = 0;
+}

@@ -9,8 +9,6 @@ const PLAY_GAME = 1;
 const ABORTED_GAME = 2;
 
 function JoinMenu(props) {
-    console.log("JointMenu rendered");
-
     const [pageState, setPageState] = useState(ENTER_CREDENTIALS);
     const [name, setName] = useState("");
     const [gid, setGid] = useState("");

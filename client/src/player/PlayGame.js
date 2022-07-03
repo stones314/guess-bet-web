@@ -4,13 +4,12 @@ import StringInput from "../helper/StringInput";
 import BetInput from "./BetInput";
 
 function PlayGame(props) {
-    console.log("HostMenu rendered");
-
     const [gameState, setPageState] = useState(GameState.LOADING);
     const [ans, setAns] = useState("");
     const [bet, setBet] = useState([{opt : -1, val : 0}, {opt : -1, val : 0}]);
     const [betOptions, setBetOptions] = useState([]);
     const [cash, setCash] = useState(2);
+    const [won, setWon] = useState(0);
     const [dataSent, setDataSent] = useState(false);
     const [click, setClick] = useState(0);
     const ws = useRef(null);
@@ -75,7 +74,10 @@ function PlayGame(props) {
         }
 
         function onWinnings(data) {
-            setCash(data.cash)
+            setWon(data.won);
+            setCash(cash + data.won);
+            setBet([{opt : -1, val : 0}, {opt : -1, val : 0}]);
+            setAns("");
             setPageState(GameState.SHOW_STANDINGS);
         }
 
@@ -175,7 +177,6 @@ function PlayGame(props) {
         console.log(bet);
         return (
             <div className={"HostMenu"}>
-                <div>Balance: {cash}</div>
                 <BetInput
                     opts={betOptions}
                     bet={bet}
@@ -187,38 +188,73 @@ function PlayGame(props) {
         )
     }
 
-    if(gameState === GameState.LOADING)
-    {
-        return (
+    function renderGameState(){
+        if(gameState === GameState.LOADING)
+        {
+            return (
+                <div className={"HostMenu"}>
+                    LOADING...
+                </div>
+            )
+        }
+        else if(gameState === GameState.WAIT_FOR_PLAYERS)
+        {
+            return (
+                <div className={"HostMenu"}>
+                    Waiting for players to join and for host to start the quiz.
+                </div>
+            )
+        }
+        else if(gameState === GameState.WAIT_FOR_ANSWERS)
+        {
+            return (renderWaitForAnswer())
+        }
+        else if(gameState === GameState.WAIT_FOR_BETS)
+        {
+            return (renderWaitForBets())
+        }
+        else if(gameState === GameState.SHOW_BETS)
+        {
+            return (
+                <div className={"HostMenu"}>
+                    Did you bet like many others?
+                </div>
+            )
+        }
+        else if(gameState === GameState.SHOW_CORRECT)
+        {
+            var txt = "Wohoo, you won " + won;
+            if(won <= 2) txt = "Oh no, you did not win :( ";
+            return (
+                <div className={"HostMenu"}>
+                    {txt}
+                </div>
+            )
+        }
+        else if(gameState === GameState.SHOW_STANDINGS)
+        {
+            return (
+                <div className={"HostMenu"}>
+                    Are you winning?
+                </div>
+            )
+        }
+    }
+    
+    return (
+        <div className={"col"}>
             <div className={"HostMenu"}>
-                LOADING...
+                {"Game: " + props.gid}
             </div>
-        )
-    }
-    else if(gameState === GameState.WAIT_FOR_PLAYERS)
-    {
-        return (
             <div className={"HostMenu"}>
-                Waiting for players to join and for host to start the quiz.
+                {"Name: " + props.name}
             </div>
-        )
-    }
-    else if(gameState === GameState.WAIT_FOR_ANSWERS)
-    {
-        return (renderWaitForAnswer())
-    }
-    else if(gameState === GameState.WAIT_FOR_BETS)
-    {
-        return (renderWaitForBets())
-    }
-    else if(gameState >= GameState.SHOW_BETS && gameState <= GameState.SHOW_STANDINGS)
-    {
-        return (
             <div className={"HostMenu"}>
-                No user input required here!
+                {"Cash: " + cash}
             </div>
-        )
-    }
+            {renderGameState()}
+        </div>
+    )
 }
 
 export default PlayGame;

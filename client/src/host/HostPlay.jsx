@@ -4,8 +4,6 @@ import BetBoard from "./BetBoard";
 import PlayerInfo from "./PlayerInfo";
 
 function HostGame(props) {
-    console.log("Host Play rendered");
-
     const [gameState, setGameState] = useState(GameState.LOADING);
     const [gid, setGid] = useState(-1);
     const [quiz, setQuiz] = useState(null);
@@ -191,7 +189,7 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Question {"- " + (qid + 1) + ":"}
+                    Question {(qid + 1) + " of " + quiz.questions.length}
                 </div>
                 <div>
                     {quiz.questions[qid].text}
@@ -213,7 +211,7 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Question {"- " + (qid + 1) + ":"}
+                    Question {(qid + 1) + " of " + quiz.questions.length}
                 </div>
                 <div>
                     {quiz.questions[qid].text}

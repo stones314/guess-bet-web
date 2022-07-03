@@ -267,6 +267,7 @@ wsServer.on('request', function(request) {
       }
       if(newState === consts.GameState.SHOW_CORRECT){
         //Tell players how much they won
+        game.calculateResults(games[gid]);
         games[gid].players.forEach(player => player.conn.sendUTF(
           JSON.stringify({type : "winnings", won : game.getWinnings(games[gid], name)})
         ));

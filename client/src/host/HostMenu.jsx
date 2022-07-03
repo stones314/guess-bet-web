@@ -12,8 +12,6 @@ const CREATE_QUIZ = 1;
 const HOST_GAME = 2;
 
 function HostMenu(props) {
-    console.log("HostMenu rendered");
-
     const [pageState, setPageState] = useState(LOADING);
     const [quizList, setQuizList] = useState([]);
     const [quizIndex, setQuizIndex] = useState(-1);
