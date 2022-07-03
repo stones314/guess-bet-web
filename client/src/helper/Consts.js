@@ -11,6 +11,9 @@ export const images = {
     "q-save" : "https://rygg-gaard.no/gaia/img/TransdimHex.png",
     "q-play" : "https://rygg-gaard.no/quiz/img/PlayBtn.png",
     "hp-continue" : "https://rygg-gaard.no/gaia/img/BrownPlanet.png",
+    "bet1" : "https://rygg-gaard.no/quiz/img/Bet1Btn.png",
+    "bet-1" : "https://rygg-gaard.no/quiz/img/Undo1Btn.png",
+    "coin" : "https://rygg-gaard.no/quiz/img/Coin.png",
 };
 
 export const SERVER = "http://16.170.74.73:3001";
@@ -23,4 +26,5 @@ export const GameState = {
     SHOW_BETS : 2,
     SHOW_CORRECT : 3,
     SHOW_STANDINGS : 4,
+    GAME_OVER : 5,
 }

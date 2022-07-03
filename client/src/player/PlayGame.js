@@ -8,7 +8,7 @@ function PlayGame(props) {
 
     const [gameState, setPageState] = useState(GameState.LOADING);
     const [ans, setAns] = useState("");
-    const [bet, setBet] = useState([]);
+    const [bet, setBet] = useState([{opt : -1, val : 0}, {opt : -1, val : 0}]);
     const [betOptions, setBetOptions] = useState([]);
     const [cash, setCash] = useState(2);
     const [dataSent, setDataSent] = useState(false);
@@ -108,7 +108,6 @@ function PlayGame(props) {
 
     function onAnsChange(newVal){
         setAns(newVal);
-        setClick(click +1);
     }
 
     function onAnsConfirm(){
@@ -116,8 +115,21 @@ function PlayGame(props) {
         setClick(click +1);
     }
 
-    function onBetClick(optNo, ammount){
-
+    function onBetClick(opt, val){
+        console.log("Bet Click: opt = " + opt + ", val = " + val);
+        var newBet = bet;
+        if(bet[0].val === 0 || bet[0].opt === opt){
+            newBet[0].val += val;
+            newBet[0].opt = opt;
+            if(newBet[0].val === 0) newBet[0].opt = -1;
+        }
+        else if(bet[1].val === 0 || bet[1].opt === opt){
+            newBet[1].val += val;
+            newBet[1].opt = opt;
+            if(newBet[1].val === 0) newBet[1].opt = -1;
+        }
+        setCash(cash - val);
+        setBet(newBet);
     }
 
     function onBetConfirm(){
@@ -160,13 +172,15 @@ function PlayGame(props) {
 
     function renderWaitForBets(){
         if(dataSent) return (renderWaitForProgress());
+        console.log(bet);
         return (
             <div className={"HostMenu"}>
+                <div>Balance: {cash}</div>
                 <BetInput
                     opts={betOptions}
                     bet={bet}
                     cash={cash}
-                    onBetClick={(opt, val) => onBetClick(opt, val)}
+                    onClickBet={(opt, val) => onBetClick(opt, val)}
                     onBetConfirm={() => onBetConfirm()}
                 />
             </div>

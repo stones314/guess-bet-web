@@ -1,10 +1,5 @@
 import React from "react";
-import CreateQuiz from "./CreateQuiz";
-import QuizListElement from "./QuizListElement";
 import {images, SERVER, GameState} from "./../helper/Consts";
-import HostGame from "./HostPlay";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const LOADING = -1;
 const SHOW_MENU = 0;
@@ -17,17 +12,27 @@ function PlayerInfo(props) {
         /*
          * show if player has replied at the given game state
          */
-        if(props.gameState !== gs) return null;
-        if(!rep) return (<div></div>)
-        return (<div>X</div>);
+        if(!rep) return (<div className="center f1"></div>)
+        return (<div className="center f1">X</div>);
+    }
+
+    if (props.isHdr) {
+        return(
+            <div className="row">
+                <div className="center f1">{props.pInfo.name}</div>
+                <div className="center f1">{props.pInfo.cash}</div>
+                <div className="center f1">{props.pInfo.ans}</div>
+                <div className="center f1">{props.pInfo.bet}</div>
+            </div>
+        )
     }
 
     return (
-        <div className={"p-info"}>
-            <div className={"p-info-name"}>{props.pInfo.name}</div>
-            <div className={"p-info-name"}>{props.pInfo.cash}</div>
-            {renderPlayerHasRep(props.pInfo !== "", GameState.WAIT_FOR_ANSWERS)}
-            {renderPlayerHasRep(props.pInfo.bets.length > 0, GameState.WAIT_FOR_BETS)}
+        <div className="row">
+            <div className="center f1">{props.pInfo.name}</div>
+            <div className="center f1">{props.pInfo.cash}</div>
+            {renderPlayerHasRep(props.pInfo.ans !== -12345678, GameState.WAIT_FOR_ANSWERS)}
+            {renderPlayerHasRep(props.pInfo.bet[0].val + props.pInfo.bet[1].val > 0, GameState.WAIT_FOR_BETS)}
         </div>
     )
 }

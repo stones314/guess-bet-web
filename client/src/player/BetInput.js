@@ -8,22 +8,27 @@ function BetInput(props) {
     var opts = [];
     for(const [i, opt] of props.opts.entries()){
         var c = 0;
-        props.bets.forEach(bet => {
-            if(bet.id === i) c = bet.cash;
+        props.bet.forEach(bet => {
+            if(bet.opt === i && bet.val > 0) c = bet.val;
         });
         opts.push(
             <BetOption
                 key={i}
                 min={opt.min}
                 bet={c}
-                onClickBet={(val) => props.onClickBet(i, val)}
+                cash={props.cash}
+                opt={i}
+                onClickBet={(opt, val) => props.onClickBet(opt, val)}
             />
         );
     }
 
     return (
-        <div>
+    <div>
+        <div className="col-reverse">
             {opts}
+        </div>
+        <div>
             <img
                 className="q-btn-img"
                 src={images["q-play"]}
@@ -31,6 +36,7 @@ function BetInput(props) {
                 onClick={props.onBetConfirm}
             />
         </div>
+    </div>
     )
 }
 

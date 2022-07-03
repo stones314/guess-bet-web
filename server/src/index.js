@@ -124,12 +124,16 @@ app.post("/delete-quiz", (req, res) => {
 app.post("/can-join-quiz", (req, res) => {
   const data = req.body;
   var ok = 1;
+  var text = "OK";
   if(!(data.gid in games)){
     ok = 2;
+    text = "INVALID GID";
   }
   else if(game.hasPlayer(games[data.gid], data.name)){
     ok = 3;
+    text = "NAME USED";
   }
+  //console.log("Player " + data.name + " joining " + data.gid + " = " + text);
   res.json({ ok: ok });
 });
 
@@ -157,13 +161,6 @@ var webSocketsServerPort = 1337;
 var webSocketServer = require('websocket').server;
 var http = require('http');
 
-
-// Array with some colors
-var colors = [ 'red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange' ];
-
-// ... in random order
-colors.sort(function(a,b) { return Math.random() > 0.5; } );
-
 /**
  * HTTP server
  */
@@ -188,7 +185,7 @@ var wsServer = new webSocketServer({
 // This callback function is called every time someone
 // tries to connect to the WebSocket server
 wsServer.on('request', function(request) {
-  console.log(' Connection from origin ' + request.origin + '.');
+  //console.log(' Connection from origin ' + request.origin + '.');
   
   // accept connection - you should check 'request.origin' to
   // make sure that client is connecting from your website
@@ -200,7 +197,7 @@ wsServer.on('request', function(request) {
   var color = false;
   var gid = false;      //unique game id this user is related to
   var role = 0;         //0: undefined, 1: host, 2: player
-  console.log(' Connection accepted.');
+  //console.log(' Connection accepted.');
     
   // user sent some message
   connection.on('message', function(message) {
@@ -208,16 +205,19 @@ wsServer.on('request', function(request) {
     
     const data = JSON.parse(message.utf8Data);
 
+    //Host create game:
     if(data.type === "host-game"){
-      console.log('Host started new game');
       gid = Math.floor(Math.random() * 10000000);
         games[gid] = game.create(gid, quizlist[data.quizId], connection);
         connection.sendUTF(
             JSON.stringify({type : "host-game", gid : gid, quiz : quizlist[data.quizId]})
         );
         role = 1;
+        console.log("["+gid+"] Host started new game");
         return;
     }
+
+    //Player join game:
     if(data.type === "join-game"){
         gid = data.gid;
         role = 2;
@@ -229,14 +229,17 @@ wsServer.on('request', function(request) {
         connection.sendUTF(
             JSON.stringify({type : "join-game", ok : ok})
         );
-        console.log('Player Joined Game');
+        console.log("["+gid+"] Player Joined Game");
         return;
     }
+
     if(gid === false) { return; }   //Must have a gid to process any other message
 
+    //Host step  game:
     if(data.type === "step-game"){
       const newState = game.step(games[gid]);
       games[gid].hostConn.sendUTF(
+          //Notify host about latest player state and new game state
           JSON.stringify({
             type : "step-game",
             data : game.getPlayerData(games[gid]),
@@ -245,68 +248,73 @@ wsServer.on('request', function(request) {
       );
       if(newState === consts.GameState.WAIT_FOR_ANSWERS){
         games[gid].players.forEach(player => player.conn.sendUTF(
+          //Tell Player to provide an answer
           JSON.stringify({type : "req-ans"})
         ));
       }
       if(newState === consts.GameState.WAIT_FOR_BETS){
-        const betOpts = game.getBetOpts(games[gid]);
+        //Tell both Host and Player about bet options, and request bet from player
+        game.computeBetOpts(games[gid]);
+        games[gid].hostConn.sendUTF(
+          JSON.stringify({
+            type : "bet-opts",
+            betOpts : games[gid].betOpts
+          })
+        );
         games[gid].players.forEach(player => player.conn.sendUTF(
-          JSON.stringify({type : "req-bets", betOpts : betOpts})
+          JSON.stringify({type : "req-bets", betOpts : games[gid].betOpts})
         ));
       }
-      console.log('Player Joined Game');
+      if(newState === consts.GameState.SHOW_CORRECT){
+        //Tell players how much they won
+        games[gid].players.forEach(player => player.conn.sendUTF(
+          JSON.stringify({type : "winnings", won : game.getWinnings(games[gid], name)})
+        ));
+      }
+      console.log("["+gid+"] Game Stepped to " + newState);
       return;
-  }
+    }
 
-    //TODO: impl other message types!
-    /*
-      Host Expects:
-        const handleData = function(data) {
-            else if(data.type === "step-game") {
-                onStepGame(data);
-            }
-            else if(data.type === "player-ans") {
-                onPlayerUpdate(data);
-            }
-            else if(data.type === "player-bet") {
-                onPlayerUpdate(data);
-            }
-        }
-      Host Send:
-            ws.current.send(JSON.stringify({
-                type : "step-game",
-                state : gameState
-            }));
-      
-      Player expects:
-        const handleData = function(data) {
-            else if(data.type === "winnings") {
-                onWinnings(data);
-            }
-        }
-      Player Send:
-            ws.current.send(JSON.stringify({
-                type : "send-ans",
-                ans : ans
-            }));
-            ws.current.send(JSON.stringify({
-                type : "send-bet",
-                bet : bet
-            }));
-     */
+    //Player suggest an answer:
+    if(data.type === "send-ans"){
+      game.setAns(games[gid], name, data.ans);
+      games[gid].hostConn.sendUTF(
+        JSON.stringify({
+          type : "player-ans",
+          data : game.getPlayerData(games[gid]),
+        })
+      );
+      console.log("["+gid+"] Player " + name + "sent ans");
+      return;
+    }
+
+    //Player placed bet:
+    if(data.type === "send-bet"){
+      game.setBet(games[gid], name, data.bet);
+      games[gid].hostConn.sendUTF(
+        JSON.stringify({
+          type : "player-bet",
+          data : game.getPlayerData(games[gid]),
+        })
+      );
+      console.log("["+gid+"] Player " + name + "sent bet");
+      return;
+    }
   });
   
   // user disconnected
   connection.on('close', function(connection) {
     if (role === 1) {
-      console.log("Host " + connection.remoteAddress + " disconnected.");
+      //Host diconnect
+      console.log("["+gid+"] Host disconnected.");
       games[gid].players.forEach(player => player.conn.sendUTF(
         JSON.stringify({type : "end-game"})
       ));
       delete games[gid];
     }
     else if (role === 2) {
-        console.log(name + " [" + gid + "](" + connection.remoteAddress + ") disconnected.");
+        //Player diconnect
+        console.log("["+gid+"] " + name + " disconnected.");
         if(gid in games){
           game.removePlayer(games[gid], name);
           games[gid].hostConn.sendUTF(
@@ -315,7 +323,7 @@ wsServer.on('request', function(request) {
         }
     }
     else {
-      console.log("Client " + connection.remoteAddress + " disconnected.");
+      console.log("Unknown client disconnected.");
     }
   });
 });

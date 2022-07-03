@@ -9,46 +9,54 @@ function BetOption(props) {
         if(btnVal < 0 && props.bet === 0) return null;
         if(btnVal > props.cash) return null;
         return (
-            <div>
+            <div className="text-img">
                 <img
                     className="q-btn-img"
                     src={images["bet" + btnVal]}
                     alt={"bet"}
-                    onClick={props.onBetClick(btnVal)}
+                    onClick={() => props.onClickBet(props.opt, btnVal)}
                 />
             </div>
         )
     }
     
     function renderBet(){
+        if(props.bet <= 0) return null;
         return (
-            <div>
+            <div className="txt-img-box">
                 <img
-                    className="q-btn-img"
+                    className="txt-img-img"
                     src={images["coin"]}
                     alt={"bet"}
-                    onClick={props.onBetClick(-1)}
+                    onClick={() => props.onClickBet(props.opt, -1)}
                 />
-                <div className="centred">{props.bet}</div>
+                <div className="txt-img-txt">{props.bet}</div>
             </div>
         )
     }
 
     function renderMin(){
-        if(props.min === -12345678) return null;
+        if(props.min === -12345678) {
+            return (
+                <div>
+                    Lower than all above
+                </div>
+            )    
+        };
         return (
             <div>
-                Min: {props.min}
+                From {props.min}
             </div>
         )
     }
 
     return (
-        <div>
+        <div className="row">
+            <div>{"bet = " + props.bet}</div>
             {renderMin()}
             {renderBet()}
-            {renderBetButton(1, props.cash, props.bet)}
-            {renderBetButton(-1, props.cash, props.bet)}
+            {renderBetButton(1)}
+            {renderBetButton(-1)}
         </div>
     )
 }

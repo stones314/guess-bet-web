@@ -1,18 +1,17 @@
 
-class Quiz {
-    constructor(name) {
-        this.name = name;
-        this.questions = [];
+exports.create = function(name) {
+    var quiz = {
+        name : name,
+        pos : -1,
+        questions : [],
     }
-
-    AddQuestion(text, answer, unit, scale) {
-        this.questions.push({
-            "Text" : text,
-            "Answer" : answer,
-            "Unit" : unit,
-            "Scale" : scale
-        });
-    }
+    return quiz;
 }
 
-export default Quiz;
+exports.addQuestion = function(quiz, text, answer, unit) {
+    quiz.questions.push({
+        text : text,
+        answer : answer,
+        unit : unit
+    });
+}

@@ -84,6 +84,8 @@ class CreateQuiz extends React.Component {
             method: 'POST',
             body: JSON.stringify({
                 name : this.state.name,
+                qid : -1, //TODO: use qid the same way as gid to identify a quiz (except it is not shown to user)
+                pos : 0,
                 questions : this.state.questions 
                 }),
             headers: { 'Content-Type': 'application/json' }

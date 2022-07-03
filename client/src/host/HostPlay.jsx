@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import {images, GameState} from "./../helper/Consts";
+import BetBoard from "./BetBoard";
 import PlayerInfo from "./PlayerInfo";
 
 function HostGame(props) {
@@ -11,6 +12,7 @@ function HostGame(props) {
     const [qid, setQid] = useState(-1);
     const [players, setPlayers] = useState([]);
     const [click, setClick] = useState(0);
+    const [betOpts, setBetOpts] = useState([]);
     const ws = useRef(null);
 
     //Connect to server with WS Socket. This runs only once:
@@ -58,6 +60,9 @@ function HostGame(props) {
             else if(data.type === "player-bet") {
                 onPlayerUpdate(data);
             }
+            else if(data.type === "bet-opts") {
+                onBetOpts(data);
+            }
         }
         
         function onGameStarted(data) {
@@ -68,6 +73,9 @@ function HostGame(props) {
         }
         function onPlayerUpdate(data) {
             setPlayers(data.data);
+        }
+        function onBetOpts(data) {
+            setBetOpts(data.betOpts);
         }
         function onStepGame(data) {
             setGameState(data.newState);
@@ -107,7 +115,7 @@ function HostGame(props) {
     function renderContinue() {
         return (
         <img
-            className="hp-img"
+            className="q-btn-img"
             src={images["q-play"]}
             alt={"continue"}
             onClick={onClickContinue}
@@ -117,18 +125,45 @@ function HostGame(props) {
 
     function renderPlayerInfo(){
         var pList = [];
+        var hdr = {
+            name : "Name",
+            cash : "Cash",
+            ans : "Ans",
+            bet : "Bet"
+        }
+        pList.push(
+            <PlayerInfo
+                key={-1}
+                pInfo={hdr}
+                gameState={gameState}
+                isHdr={true} 
+            />
+        );
         for(const [i, p] of players.entries()){
             pList.push(
                 <PlayerInfo
                     key={i}
                     pInfo={p}
-                    gameState={gameState} 
+                    gameState={gameState}
+                    isHdr={false}
                 />
-            )
+            );
         }
         return(
-            <div>
+            <div className="col">
                 {pList}
+            </div>
+        )
+    }
+
+    function renderGameBoard() {
+        return (
+            <div>
+                <BetBoard
+                    pData={players}
+                    opts={betOpts}
+                    gameState={gameState}
+                />
             </div>
         )
     }
@@ -192,6 +227,7 @@ function HostGame(props) {
                 <div>
                     {renderPlayerInfo()}
                 </div>
+                <div>{renderGameBoard()}</div>
             </div>
         )
     }
@@ -209,18 +245,22 @@ function HostGame(props) {
         {
             return (renderWaitForAnswers())
         }
-        else if(gameState === GameState.WAIT_FOR_BETS)
+        else if(gameState >= GameState.WAIT_FOR_BETS && gameState < GameState.GAME_OVER)
         {
-            return (renderWaitForBets())
+            return ( renderWaitForBets() )
+        }
+        else if(gameState === GameState.GAME_OVER)
+        {
+            return (<div>GAME OVER</div>)
         }
     }
 
     return (
-        <div className={"hg-box"}>
-            <div className={"hg-state"}>
+        <div className={"col"}>
+            <div className={"col"}>
                 {renderGameState()}
             </div>
-            <div className={"hg-continue"}>
+            <div className={"col center"}>
                 {renderContinue()}
             </div>
         </div>

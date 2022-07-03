@@ -1,8 +1,44 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid green;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid pink;
+}
+
+.col-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+    border: 1px solid mediumaquamarine;
+}
+
+.center {
+    text-align: center;
+    align-items: center;
+}
+
+.f1 {
+    flex: 1;
+}
+
+.gold {
+    background-color: gold;
+}
+
+.green {
+    background-color: forestgreen;
+}
+
 .hm-box {
     position: relative;
     width: min(100%, 400px);
     left: 50%;
     transform: translate(-50%, 0%);
+    border: 1px solid blue;
 }
 
 .q-list {
@@ -59,20 +95,44 @@ input[type=text],input[type=number] {
 }
 
 .list-btn-holder {
+    position: relative;
     display: flex;
     flex-direction: row;
     margin-left: auto;
     margin-right: 0;
+    border: 1px solid red;
 }
 
 .q-btn-img {
+    position: relative;
+    top: 0;
+    left: 0;
     width: 40px;
     margin: 1px;
+    z-index: 50;
 }
 
-.centered {
+.txt-img-box {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.txt-img-img {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+}
+
+.txt-img-txt {
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 100;
+    border: 1px solid red;
+    font-size: 30px;
 }
