@@ -19,22 +19,26 @@ exports.create = function(gid, quiz, hostConn) {
     return game;
 }
 
-exports.addPlayer = function(game, name, res) {
+exports.addPlayer = function(game, name, conn) {
     for(const [i, p] of game.players.entries()){
         if(p.name === name){
+            if (!p.online){
+                p.online = true;
+                p.conn = conn;
+                return 2;
+            }
             console.log("player " + name + " already exists");
-            return false;
+            return 0;
         }
     }
-    game.players.push(player.create(name, res, game.colors.pop()));
-    return true;
+    game.players.push(player.create(name, conn, game.colors.pop()));
+    return 1;
 }
 
 exports.removePlayer = function(game, name) {
     for(const [i, p] of game.players.entries()){
         if(p.name === name){
-            game.colors.push(p.color);
-            game.players.splice(i, 1);
+            p.online = false;
             return true;
         }
     }
@@ -44,22 +48,25 @@ exports.removePlayer = function(game, name) {
 exports.hasPlayer = function(game, name) {
     for(const [i, p] of game.players.entries()){
         if(p.name === name){
-            return true;
+            return p.online;
         }
     }
     return false;
 }
 
 exports.step = function(game) {
-    var wrap = game.state === consts.GameState.SHOW_STANDINGS;
+    var wrap = game.state === consts.GameState.SHOW_CORRECT;
     game.state += 1;
-    game.state %= 5;
+    game.state %= 4;
     if(wrap){
         game.quiz.pos += 1;
-        if (game.quiz.pos == game.quiz.questions.length) game.state = consts.GameState.GAME_OVER;
         game.players.forEach(p => {
             player.resetInput(p)
         });
+        game.players.sort((a, b) => b.cash - a.cash);
+        if (game.quiz.pos == game.quiz.questions.length){
+             game.state = consts.GameState.SHOW_STANDINGS;
+        }
     }
     return game.state;
 }
@@ -74,14 +81,7 @@ exports.getPlayer = function(game, name){
 exports.getPlayerData = function(game) {
     var pn = [];
     for(const [i, p] of game.players.entries()){
-        pn.push({
-            name : p.name,
-            cash : p.cash,
-            color: p.color,
-            ans : p.ans,
-            bet : p.bet,
-            won : p.won
-        });
+        pn.push(player.getPlayerData(p));
     }
     return pn;
 }
@@ -97,11 +97,15 @@ exports.setAns = function(game, pname, ans) {
 }
 
 exports.computeBetOpts = function(game) {
-    var bo = [{min: -12345678, others: 0, odds : 2, correct : false}]; //this is the "lower than any provided answers" option
+    var bo = [{min: consts.MIN_INF, others: 0, odds : 2, correct : false}]; //this is the "lower than any provided answers" option
 
     //Add player options
     for(const [i, p] of game.players.entries()){
-        const ans_at = bo.indexOf(p.ans);
+
+        var ans_at = -1;
+        for (const [j, o] of bo.entries()) {
+            if(p.ans === o.min)ans_at = j;
+        }
         if(ans_at < 0){
             bo.push({min : p.ans, others : 0, odds : 2, correct : false});
         }
