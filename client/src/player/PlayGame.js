@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import {images, GameState} from "./../helper/Consts";
+import {images, GameState, MIN_INF} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 import BetInput from "./BetInput";
 
@@ -34,7 +34,6 @@ function PlayGame(props) {
         ws.current.onmessage = function (event) {
             const data = JSON.parse(event.data);
             try {
-                console.log(data);
                 handleData(data);
             } catch (err) {
                 console.log(err);
@@ -42,55 +41,71 @@ function PlayGame(props) {
         };
     
         const handleData = function(data) {
-            if(data.type === "join-game") {
+            if(data.type === "state-update"){
+                onStateUpdate(data);
+            }
+            else if(data.type === "connect"){
+                onConnect(data);
+            }
+            else if(data.type === "host-died"){
+                props.onGameAbort();
+            }
+        }
+
+        function onStateUpdate(data){
+            if(data.state === GameState.WAIT_FOR_PLAYERS){
                 onGameStarted(data);
             }
-            else if(data.type === "req-ans") {
+            else if(data.state === GameState.WAIT_FOR_ANSWERS){
                 onRequestAns(data);
             }
-            else if(data.type === "req-bets") {
+            else if(data.state === GameState.WAIT_FOR_BETS){
                 onRequestBets(data);
             }
-            else if(data.type === "winnings") {
-                onWinnings(data);
-            }
-            else if(data.type === "step-game") {
+            else if(data.state === GameState.SHOW_BETS){
                 onStepGame(data);
             }
-            else if(data.type === "end-game") {
+            else if(data.state === GameState.SHOW_CORRECT){
+                onWinnings(data);
+            }
+            else if(data.state === GameState.GAME_OVER){
                 props.onGameAbort();
             }
         }
         
         function onGameStarted(data) {
-            console.log("Game Started : " + data);
-            setColor(data.color);
-            setPageState(GameState.WAIT_FOR_PLAYERS);
+            setColor(data.player.color);
+            setPageState(data.state);
         }
 
         function onRequestAns(data) {
-            setDataSent(false);
+            setDataSent(data.player.ans !== MIN_INF);
             setQuestion(data.question);
-            setPageState(GameState.WAIT_FOR_ANSWERS);
+            setPageState(data.state);
         }
 
         function onRequestBets(data) {
-            setDataSent(false);
+            setDataSent(data.player.bet[0].val + data.player.bet[1].val > 0);
             setBetOptions(data.betOpts)
-            setPageState(GameState.WAIT_FOR_BETS);
+            setPageState(data.state);
         }
 
         function onWinnings(data) {
-            console.log(data);
-            setWon(data.won);
-            setCash(data.cash);
+            setWon(data.player.won);
+            setCash(data.player.cash);
             setBet([{opt : -1, val : 0}, {opt : -1, val : 0}]);
             setAns("");
-            setPageState(GameState.SHOW_STANDINGS);
+            setPageState(data.state);
         }
 
         function onStepGame(data){
-            setPageState(data.newState);
+            setPageState(data.state);
+        }
+
+        function onConnect(data){
+            setColor(data.player.color);
+            setCash(data.player.cash);
+            onStateUpdate(data);
         }
 
         const wsCurrent = ws.current;
@@ -162,16 +177,17 @@ function PlayGame(props) {
     //Rendering functions:
     /***********************/
 
-    function renderWaitForProgress(){
+    function renderWaitForProgress(text){
+        //TODO: animert vente-grafikk!
         return (
-            <div className={"HostMenu"}>
-                Waiting...
+            <div className={"m6"}>
+                {text}
             </div>
         )
     }
 
     function renderWaitForAnswer(){
-        if(dataSent) return (renderWaitForProgress());
+        if(dataSent) return (renderWaitForProgress("Venter på at andre svarer..."));
         return (
             <div className="narrow">
                 <div className="m3">{question.text}</div>
@@ -193,8 +209,7 @@ function PlayGame(props) {
     }
 
     function renderWaitForBets(){
-        if(dataSent) return (renderWaitForProgress());
-        console.log(bet);
+        if(dataSent) return (renderWaitForProgress("Venter på at andre satser..."));
         return (
             <div className="narrow">
                 <div className="m6">{question.text}</div>
@@ -220,7 +235,7 @@ function PlayGame(props) {
             fade = " fade";
         }
         return (
-            <div className={"txt-img-box" + fade}>
+            <div className={"f1 txt-img-box" + fade}>
                 <img
                     className={"txt-img-img"}
                     src={images["coin"+color]}
@@ -234,19 +249,11 @@ function PlayGame(props) {
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
-            return (
-                <div className={"HostMenu"}>
-                    LOADING...
-                </div>
-            )
+            return (renderWaitForProgress("Laster... (mulig serveren er nede?)"))
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
-            return (
-                <div className={"HostMenu"}>
-                    Waiting for players to join and for host to start the quiz.
-                </div>
-            )
+            return (renderWaitForProgress("Venter på at quizen skal starte..."))
         }
         else if(gameState === GameState.WAIT_FOR_ANSWERS)
         {
@@ -258,16 +265,12 @@ function PlayGame(props) {
         }
         else if(gameState === GameState.SHOW_BETS)
         {
-            return (
-                <div className={"HostMenu"}>
-                    Did you bet like many others?
-                </div>
-            )
+            return (renderWaitForProgress("Venter på resultatet..."))
         }
         else if(gameState === GameState.SHOW_CORRECT)
         {
-            var txt = "Wohoo, you won " + won;
-            if(won <= 2) txt = "Oh no, you did not win :( ";
+            var txt = "Wohoo, du vant " + won + "!";
+            if(won <= 2) txt = "Huff, ingen rette, men du fekk 2 i trøstepremie :) ";
             return (
                 <div className={"HostMenu"}>
                     {txt}
@@ -276,9 +279,10 @@ function PlayGame(props) {
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
+            //TODO: vis kva plass speleren kom på, og knapp for å gå ut.
             return (
                 <div className={"HostMenu"}>
-                    Are you winning?
+                    Vant du?
                 </div>
             )
         }
@@ -286,13 +290,10 @@ function PlayGame(props) {
     
     return (
         <div className="narrow col center">
-            <div className="HostMenu">
-                {"Game: " + props.gid}
+            <div className="narrow row center">
+                <div className="f1">{props.name}</div>
+                {renderCash()}
             </div>
-            <div className="HostMenu">
-                {"Name: " + props.name}
-            </div>
-            {renderCash()}
             {renderGameState()}
         </div>
     )

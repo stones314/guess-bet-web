@@ -1,5 +1,5 @@
 import React from "react";
-import {images, SERVER, GameState} from "./../helper/Consts";
+import {images, SERVER, GameState, MIN_INF} from "./../helper/Consts";
 
 const LOADING = -1;
 const SHOW_MENU = 0;
@@ -12,7 +12,7 @@ function PlayerInfo(props) {
         /*
          * show if player has replied at the given game state
          */
-        if(props.pInfo.ans === -12345678) return (<div className="center f1"></div>)
+        if(props.pInfo.ans === MIN_INF) return (<div className="center f1"></div>)
         else if(props.gameState > GameState.WAIT_FOR_ANSWERS){
             return (<div className="center f1">{props.pInfo.ans}</div>);
         }
@@ -64,8 +64,10 @@ function PlayerInfo(props) {
         )
     }
 
+    const fade = props.pInfo.online ? "" : " fade";
+
     return (
-        <div className="row center brdr">
+        <div className={"row center brdr" + fade}>
             <div className="center f2">{props.pInfo.name}</div>
             {renderCash()}
             {renderAns()}

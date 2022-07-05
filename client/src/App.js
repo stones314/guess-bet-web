@@ -12,7 +12,6 @@ const HOST_MENU = 2;
 const JOIN_MENU = 3;
 
 function App() {
-    console.log("App rendered");
 
     const [pageState, setPageState] = useState(HOST_VS_JOIN);
 

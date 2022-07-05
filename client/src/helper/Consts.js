@@ -36,6 +36,7 @@ export const images = {
 //Color of range indicator is #f9e7a2
 
 export const SERVER = "http://16.170.74.73:3001";
+export const MIN_INF = -123456789;
 
 export const GameState = {
     LOADING : -2,

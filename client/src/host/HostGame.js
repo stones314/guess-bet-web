@@ -31,7 +31,6 @@ function HostGame(props) {
         ws.current.onmessage = function (event) {
             const data = JSON.parse(event.data);
             try {
-                console.log(data);
                 handleData(data);
             } catch (err) {
                 console.log(err);
@@ -43,7 +42,6 @@ function HostGame(props) {
                 onGameStarted(data);
             }
             else if(data.type === "join-game") {
-                console.log("handle join " + data.name);
                 onPlayerUpdate(data);
             }
             else if(data.type === "left-game") {
@@ -250,13 +248,17 @@ function HostGame(props) {
         {
             return (renderWaitForAnswers())
         }
-        else if(gameState >= GameState.WAIT_FOR_BETS && gameState < GameState.GAME_OVER)
+        else if(gameState >= GameState.WAIT_FOR_BETS && gameState < GameState.SHOW_STANDINGS)
         {
             return ( renderWaitForBets() )
         }
-        else if(gameState === GameState.GAME_OVER)
+        else if(gameState === GameState.SHOW_STANDINGS)
         {
-            return (<div>GAME OVER</div>)
+            return (
+                <div>
+                    Resultatliste:
+                    {renderPlayerInfo()}
+                </div>)
         }
     }
 

@@ -44,7 +44,7 @@ function HostMenu(props) {
             headers: { 'Content-Type': 'application/json' }
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => null);
         loadQuizList();
     }
 
@@ -54,7 +54,6 @@ function HostMenu(props) {
     }
 
     function loadQuizList(){
-        console.log("load quiz list");
         var qs = [];
 
         fetch(SERVER + "/load-quiz-list", {
@@ -66,7 +65,6 @@ function HostMenu(props) {
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log("loaded!");
             for(const [i,q] of data.quizlist.entries()){
                 qs.push(
                 <QuizListElement

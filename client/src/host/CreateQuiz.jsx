@@ -26,7 +26,6 @@ class CreateQuiz extends React.Component {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.quiz);
                 this.setState({
                     questions : data.quiz.questions,
                     name : data.quiz.name,
@@ -90,7 +89,7 @@ class CreateQuiz extends React.Component {
             headers: { 'Content-Type': 'application/json' }
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => null);
         this.props.onQuizSaved();
     }
 

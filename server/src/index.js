@@ -2,6 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const game = require("./game");
+const player = require("./player");
 const cors = require("cors");
 const consts = require("./consts");
 const fs = require("fs");
@@ -269,14 +270,19 @@ wsServer.on('request', function(request) {
         games[gid].hostConn.sendUTF(
             JSON.stringify({type : "join-game", data : game.getPlayerData(games[gid])})
         );
-        var color = game.getPlayer(games[gid], name).color;
-        connection.sendUTF(
-            JSON.stringify({
-              type : "join-game",
-              ok : ok,
-              color : color})
-        );
-        console.log("["+gid+"] "+ name +" Joined Game as " + color);
+        const p = game.getPlayer(games[gid], name);
+        const q = games[gid].quiz.questions[games[gid].quiz.pos];
+        if(ok === 1){
+          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, "connect");
+          console.log("["+gid+"] "+ name +" Joined Game :)");
+        }
+        else if(ok === 2) {
+          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, "connect");
+          console.log("["+gid+"] "+ name +" Reconnected :) ");
+        }
+        else{
+          console.log("["+gid+"] "+ name +" error at Join Game ! ");  
+        }
         return;
     }
 
@@ -288,12 +294,7 @@ wsServer.on('request', function(request) {
       if(newState === consts.GameState.WAIT_FOR_ANSWERS){
         const q = games[gid].quiz.questions[games[gid].quiz.pos];
         console.log(q);
-        games[gid].players.forEach(player => player.conn.sendUTF(
-          //Tell Player to provide an answer
-          JSON.stringify({
-            type : "req-ans",
-            question : q})
-        ));
+        games[gid].players.forEach(p => player.sendGameState(p, q, 0, newState));
       }
       else if(newState === consts.GameState.WAIT_FOR_BETS){
         //Tell both Host and Player about bet options, and request bet from player
@@ -304,26 +305,16 @@ wsServer.on('request', function(request) {
             betOpts : games[gid].betOpts
           })
         );
-        games[gid].players.forEach(player => player.conn.sendUTF(
-          JSON.stringify({type : "req-bets", betOpts : games[gid].betOpts})
-        ));
+        games[gid].players.forEach(p => player.sendGameState(p, 0, games[gid].betOpts, newState));
       }
       else if(newState === consts.GameState.SHOW_CORRECT){
         //Tell players how much they won
         game.calculateResults(games[gid]);
-        games[gid].players.forEach(player => player.conn.sendUTF(
-          JSON.stringify({
-            type : "winnings",
-            won : player.won,
-            cash : player.cash
-          })
-        ));
+        games[gid].players.forEach(p => player.sendGameState(p, 0, 0, newState));
       }
       else {
-        games[gid].players.forEach(player => player.conn.sendUTF(
-          //Tell player about other state changes:
-          JSON.stringify({type : "step-game", newState : newState})
-        ));
+        //Tell player about other state changes:
+        games[gid].players.forEach(p => player.sendGameState(p, 0, 0, newState));
       }
 
       games[gid].hostConn.sendUTF(
@@ -334,8 +325,8 @@ wsServer.on('request', function(request) {
           newState : newState,
           qid : games[gid].quiz.pos
         })
-    );
-    console.log("["+gid+"] Game Stepped to " + newState);
+      );
+      console.log("["+gid+"] Game Stepped to " + newState);
       return;
     }
 
@@ -371,9 +362,7 @@ wsServer.on('request', function(request) {
     if (role === 1) {
       //Host diconnect
       console.log("["+gid+"] Host disconnected.");
-      games[gid].players.forEach(player => player.conn.sendUTF(
-        JSON.stringify({type : "end-game"})
-      ));
+      games[gid].players.forEach(p => player.sendHostDied(p));
       delete games[gid];
     }
     else if (role === 2) {

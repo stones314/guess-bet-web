@@ -1,5 +1,5 @@
 import React from "react";
-import {images, GameState} from "./../helper/Consts";
+import {images, GameState, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 
 
@@ -41,7 +41,7 @@ function BetBoardElement(props) {
 
     function renderMin(){
         var val = props.min;
-        if(props.min === -12345678) {
+        if(props.min === MIN_INF) {
             val = "Mindre"    
         };
         return (

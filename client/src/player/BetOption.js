@@ -1,5 +1,5 @@
 import React from "react";
-import {images} from "./../helper/Consts";
+import {images, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 
 
@@ -41,7 +41,7 @@ function BetOption(props) {
 
     function renderMin(){
         var minVal = props.min;
-        if(props.min === -12345678) {
+        if(props.min === MIN_INF) {
             minVal = "Mindre";
         }
         return (

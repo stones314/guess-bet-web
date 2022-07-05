@@ -24,7 +24,6 @@ function JoinMenu(props) {
     }
 
     function onResponse(canJoin){
-        console.log("Response " + canJoin);
         if(canJoin === 1) {
             setGerr("");
             setNerr("");
@@ -55,7 +54,6 @@ function JoinMenu(props) {
             setGerr("Enter game id");
             return;
         }
-        console.log("Click Play");
         fetch(SERVER + "/can-join-quiz", {
             method: 'POST',
             body: JSON.stringify({
@@ -127,7 +125,7 @@ function JoinMenu(props) {
     {
         return (
             <div className={"HostMenu"}>
-                Whoops! Host ended the game, or disconnected...
+                Whoops! Den som haldt quizen mista kontakten med serveren...
                 {renderMenu()}
             </div>
         )
