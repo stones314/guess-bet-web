@@ -14,6 +14,21 @@ export const images = {
     "bet1" : "https://rygg-gaard.no/quiz/img/Bet1Btn.png",
     "bet-1" : "https://rygg-gaard.no/quiz/img/Undo1Btn.png",
     "coin" : "https://rygg-gaard.no/quiz/img/Coin.png",
+    "coinfffac8" : "https://rygg-gaard.no/quiz/img/Coin_fffac8.png",
+    "coinffe119" : "https://rygg-gaard.no/quiz/img/Coin_ffe119.png",
+    "coinff9a00" : "https://rygg-gaard.no/quiz/img/Coin_ff9a00.png",
+    "coinfabed4" : "https://rygg-gaard.no/quiz/img/Coin_fabed4.png",
+    "coine6194B" : "https://rygg-gaard.no/quiz/img/Coin_e6194B.png",
+    "coine3do55" : "https://rygg-gaard.no/quiz/img/Coin_e3do55.png",
+    "coine14eff" : "https://rygg-gaard.no/quiz/img/Coin_e14eff.png",
+    "coindcbeff" : "https://rygg-gaard.no/quiz/img/Coin_dcbeff.png",
+    "coinbdbdbd" : "https://rygg-gaard.no/quiz/img/Coin_bdbdbd.png",
+    "coinaaffc3" : "https://rygg-gaard.no/quiz/img/Coin_aaffc3.png",
+    "coin8f7c31" : "https://rygg-gaard.no/quiz/img/Coin_8f7c31.png",
+    "coin80ffe3" : "https://rygg-gaard.no/quiz/img/Coin_80ffe3.png",
+    "coin50bde3" : "https://rygg-gaard.no/quiz/img/Coin_50bde3.png",
+    "coin4363d8" : "https://rygg-gaard.no/quiz/img/Coin_4363d8.png",
+    "coin3cb44b" : "https://rygg-gaard.no/quiz/img/Coin_3cb44b.png",
 };
 
 export const SERVER = "http://16.170.74.73:3001";

@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const game = require("./game");
 const cors = require("cors");
 const consts = require("./consts");
+const fs = require("fs");
 
 var corsOptions = {
   origin: 'https://rygg-gaard.no',
@@ -30,6 +31,21 @@ var quizlist = [];
 var games = {};
 
 /*
+ * Load saved quizes from file:
+ */
+var files = fs.readdirSync("quizes/");
+
+files.forEach(fname => {
+  var data = fs.readFileSync("quizes/"+fname, "utf-8", (err, data) => {
+    if(err){
+      console.log("ERR? " + err);
+      throw err;
+    }
+  });
+  quizlist.push(JSON.parse(data.toString()));
+});
+
+/*
  * load-quiz-list
  * 
  * Res data:
@@ -41,7 +57,8 @@ app.post("/load-quiz-list", (req, res) => {
   for(var i = 0; i < quizlist.length; i++){
     infoList.push({
       name : quizlist[i].name,
-      length : quizlist[i].questions.length
+      length : quizlist[i].questions.length,
+      file : quizlist[i].file
     });
   }
   console.log("Load quiz-list : " + infoList.length + " from " + quizlist.length);
@@ -60,8 +77,12 @@ app.post("/load-quiz-list", (req, res) => {
  */
 app.post("/load-quiz", (req, res) => {
   var data = req.body;
-  console.log("Load quiz : " + quizlist[data.index].name);
-  res.json({ quiz : quizlist[data.index] });
+  for(const [i, q] of quizlist.entries()){
+    if(q.file === data.file){
+      res.json({ quiz : q });
+      break;
+    }
+  }
 });
 
 /*
@@ -77,8 +98,12 @@ app.post("/load-quiz", (req, res) => {
 app.post("/save-quiz", (req, res) => {
   var data = req.body;
   var id = -1;
+  if(data.file === "") {
+    var x = Math.floor(Math.random() * 10000000000);
+    data.file = "quizes/Q"+x+".json";
+  }
   for(var i = 0; i < quizlist.length; i++){
-    if(quizlist[i].name === data.name){
+    if(quizlist[i].file === data.file){
       id = i;
       break;
     }
@@ -89,7 +114,14 @@ app.post("/save-quiz", (req, res) => {
   else {
     quizlist.push(data);
   }
-  console.log(data);
+
+  fs.writeFile(data.file, JSON.stringify(data), (err) => {
+    if(err){
+      console.log("quiz save to file error");
+      throw err;
+    }
+  })
+
   res.json({ message: "Quiz Saved!" });
 });
 
@@ -105,8 +137,14 @@ app.post("/save-quiz", (req, res) => {
  */
 app.post("/delete-quiz", (req, res) => {
   var data = req.body;
-  quizlist.splice(data.index,1);
-  console.log("deleted at " + data.index);
+  for(const [i, q] of quizlist.entries()){
+    if(q.file === data.file){
+      quizlist.splice(i, 1);
+      fs.unlink(data.file, (err) => {if(err)throw err;});
+      console.log("deleted " + data.file);
+      break;
+    }
+  }
   res.json({ message: "Quiz Deleted!" });
 });
 
@@ -208,13 +246,18 @@ wsServer.on('request', function(request) {
     //Host create game:
     if(data.type === "host-game"){
       gid = Math.floor(Math.random() * 10000000);
-        games[gid] = game.create(gid, quizlist[data.quizId], connection);
-        connection.sendUTF(
-            JSON.stringify({type : "host-game", gid : gid, quiz : quizlist[data.quizId]})
-        );
-        role = 1;
-        console.log("["+gid+"] Host started new game");
-        return;
+      quizlist.forEach(q => {
+        if(q.file == data.file){
+          games[gid] = game.create(gid, q, connection);
+        }
+      });
+        
+      connection.sendUTF(
+        JSON.stringify({type : "host-game", gid : gid, quiz : games[gid].quiz})
+      );
+      role = 1;
+      console.log("["+gid+"] Host started new game");
+      return;
     }
 
     //Player join game:
@@ -226,10 +269,14 @@ wsServer.on('request', function(request) {
         games[gid].hostConn.sendUTF(
             JSON.stringify({type : "join-game", data : game.getPlayerData(games[gid])})
         );
+        var color = game.getPlayer(games[gid], name).color;
         connection.sendUTF(
-            JSON.stringify({type : "join-game", ok : ok})
+            JSON.stringify({
+              type : "join-game",
+              ok : ok,
+              color : color})
         );
-        console.log("["+gid+"] Player Joined Game");
+        console.log("["+gid+"] "+ name +" Joined Game as " + color);
         return;
     }
 
@@ -238,21 +285,13 @@ wsServer.on('request', function(request) {
     //Host step  game:
     if(data.type === "step-game"){
       const newState = game.step(games[gid]);
-      games[gid].hostConn.sendUTF(
-          //Notify host about latest player state and new game state
-          JSON.stringify({
-            type : "step-game",
-            data : game.getPlayerData(games[gid]),
-            newState : newState
-          })
-      );
       if(newState === consts.GameState.WAIT_FOR_ANSWERS){
         games[gid].players.forEach(player => player.conn.sendUTF(
           //Tell Player to provide an answer
           JSON.stringify({type : "req-ans"})
         ));
       }
-      if(newState === consts.GameState.WAIT_FOR_BETS){
+      else if(newState === consts.GameState.WAIT_FOR_BETS){
         //Tell both Host and Player about bet options, and request bet from player
         game.computeBetOpts(games[gid]);
         games[gid].hostConn.sendUTF(
@@ -265,14 +304,34 @@ wsServer.on('request', function(request) {
           JSON.stringify({type : "req-bets", betOpts : games[gid].betOpts})
         ));
       }
-      if(newState === consts.GameState.SHOW_CORRECT){
+      else if(newState === consts.GameState.SHOW_CORRECT){
         //Tell players how much they won
         game.calculateResults(games[gid]);
         games[gid].players.forEach(player => player.conn.sendUTF(
-          JSON.stringify({type : "winnings", won : game.getWinnings(games[gid], name)})
+          JSON.stringify({
+            type : "winnings",
+            won : player.won,
+            cash : player.cash
+          })
         ));
       }
-      console.log("["+gid+"] Game Stepped to " + newState);
+      else {
+        games[gid].players.forEach(player => player.conn.sendUTF(
+          //Tell player about other state changes:
+          JSON.stringify({type : "step-game", newState : newState})
+        ));
+      }
+
+      games[gid].hostConn.sendUTF(
+        //Notify host about latest player state and new game state
+        JSON.stringify({
+          type : "step-game",
+          data : game.getPlayerData(games[gid]),
+          newState : newState,
+          qid : games[gid].quiz.pos
+        })
+    );
+    console.log("["+gid+"] Game Stepped to " + newState);
       return;
     }
 

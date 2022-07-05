@@ -18,11 +18,10 @@ class CreateQuiz extends React.Component {
     }
 
     componentDidMount() {
-        console.log("CreateQuiz loaded " + this.props.editQuizIndex);
-        if(this.props.editQuizIndex >= 0){
+        if(this.props.quizFile !== ""){
             fetch(SERVER + "/load-quiz", {
                 method: 'POST',
-                body: JSON.stringify({ index : this.props.editQuizIndex }),
+                body: JSON.stringify({ file : this.props.quizFile }),
                 headers: { 'Content-Type': 'application/json' }
             })
             .then((res) => res.json())
@@ -84,7 +83,7 @@ class CreateQuiz extends React.Component {
             method: 'POST',
             body: JSON.stringify({
                 name : this.state.name,
-                qid : -1, //TODO: use qid the same way as gid to identify a quiz (except it is not shown to user)
+                file : this.props.quizFile, //TODO: use qid the same way as gid to identify a quiz (except it is not shown to user)
                 pos : 0,
                 questions : this.state.questions 
                 }),
@@ -113,7 +112,7 @@ class CreateQuiz extends React.Component {
             );
         }
         return (
-            <div className={"hm-box"}>
+            <div className={"narrow"}>
                 <div className={"cq-name"}>
                     <StringInput
                         type="text"

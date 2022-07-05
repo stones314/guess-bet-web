@@ -6,8 +6,8 @@ class QuizListElement extends React.Component {
 
     render() {
         return (
-            <div className={"q-info-holder"}>
-                <div className={"q-info"}>
+            <div className={"row brdr"}>
+                <div className={"col txt-left"}>
                     <div className={"q-text"}>
                         Name: {this.props.name}
                     </div>
@@ -15,7 +15,7 @@ class QuizListElement extends React.Component {
                         Length: {this.props.length}
                     </div>
                 </div>
-                <div className="list-btn-holder">
+                <div className="row items-right">
                     <img
                         className="q-btn-img"
                         src={images["q-edit"]}

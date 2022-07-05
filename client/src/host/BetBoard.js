@@ -10,7 +10,11 @@ function BetBoard(props) {
         var bets = [];
         props.pData.forEach(pd => {
             pd.bet.forEach(bet => {
-                if(bet.opt === i && bet.val > 0)bets.push({player : pd.name, val : bet.val});
+                if(bet.opt === i && bet.val > 0)bets.push({
+                    player : pd.name,
+                    val : bet.val,
+                    color : pd.color 
+                });
             })
         });
         elements.push(

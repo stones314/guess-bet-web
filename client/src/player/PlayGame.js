@@ -12,6 +12,7 @@ function PlayGame(props) {
     const [won, setWon] = useState(0);
     const [dataSent, setDataSent] = useState(false);
     const [click, setClick] = useState(0);
+    const [color, setColor] = useState("white");
     const ws = useRef(null);
 
     //Web Socket Connect and handling of data from the server.
@@ -52,6 +53,9 @@ function PlayGame(props) {
             else if(data.type === "winnings") {
                 onWinnings(data);
             }
+            else if(data.type === "step-game") {
+                onStepGame(data);
+            }
             else if(data.type === "end-game") {
                 props.onGameAbort();
             }
@@ -59,6 +63,7 @@ function PlayGame(props) {
         
         function onGameStarted(data) {
             console.log("Game Started : " + data);
+            setColor(data.color);
             setPageState(GameState.WAIT_FOR_PLAYERS);
         }
 
@@ -74,11 +79,16 @@ function PlayGame(props) {
         }
 
         function onWinnings(data) {
+            console.log(data);
             setWon(data.won);
-            setCash(cash + data.won);
+            setCash(data.cash);
             setBet([{opt : -1, val : 0}, {opt : -1, val : 0}]);
             setAns("");
             setPageState(GameState.SHOW_STANDINGS);
+        }
+
+        function onStepGame(data){
+            setPageState(data.newState);
         }
 
         const wsCurrent = ws.current;
@@ -97,7 +107,7 @@ function PlayGame(props) {
         else if(gameState === GameState.WAIT_FOR_ANSWERS){
             ws.current.send(JSON.stringify({
                 type : "send-ans",
-                ans : ans
+                ans : Number.parseFloat(ans)
             }));
         }
         else if(gameState === GameState.WAIT_FOR_BETS){
@@ -118,7 +128,6 @@ function PlayGame(props) {
     }
 
     function onBetClick(opt, val){
-        console.log("Bet Click: opt = " + opt + ", val = " + val);
         var newBet = bet;
         if(bet[0].val === 0 || bet[0].opt === opt){
             newBet[0].val += val;
@@ -154,10 +163,10 @@ function PlayGame(props) {
     function renderWaitForAnswer(){
         if(dataSent) return (renderWaitForProgress());
         return (
-            <div className={"HostMenu"}>
+            <div className="narrow">
                 <StringInput
                     type="number"
-                    description={"Suggest what might be a correct answer for the quiestion:"}
+                    description={"Suggest what might be a correct answer for the question:"}
                     editVal={ans.toString()}
                     errorMsg={""}
                     onChange={(newValue) => onAnsChange(newValue)}
@@ -176,16 +185,34 @@ function PlayGame(props) {
         if(dataSent) return (renderWaitForProgress());
         console.log(bet);
         return (
-            <div className={"HostMenu"}>
+            <div className="narrow">
                 <BetInput
                     opts={betOptions}
                     bet={bet}
                     cash={cash}
+                    color={color}
                     onClickBet={(opt, val) => onBetClick(opt, val)}
                     onBetConfirm={() => onBetConfirm()}
                 />
             </div>
         )
+    }
+
+    function renderCash(){
+        var fade = "";
+        if(cash <= 0) {
+            fade = " fade";
+        }
+        return (
+            <div className={"txt-img-box" + fade}>
+                <img
+                    className={"txt-img-img"}
+                    src={images["coin"+color]}
+                    alt={"coin"+color}
+                />
+                <div className="txt-img-txt">{cash}</div>
+            </div>
+        );
     }
 
     function renderGameState(){
@@ -242,16 +269,14 @@ function PlayGame(props) {
     }
     
     return (
-        <div className={"col"}>
-            <div className={"HostMenu"}>
+        <div className="narrow col center">
+            <div className="HostMenu">
                 {"Game: " + props.gid}
             </div>
-            <div className={"HostMenu"}>
+            <div className="HostMenu">
                 {"Name: " + props.name}
             </div>
-            <div className={"HostMenu"}>
-                {"Cash: " + cash}
-            </div>
+            {renderCash()}
             {renderGameState()}
         </div>
     )

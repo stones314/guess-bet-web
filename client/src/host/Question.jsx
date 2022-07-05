@@ -25,14 +25,14 @@ class QuestionInput extends React.Component {
     renderOk(doIt){
         if(!doIt)return null;
         return (
-            <div className={"q-edit"}>
+            <div className={""}>
                 <input type="submit" value="OK" />
             </div>
         );
     }
     render() {
         return (
-            <div className={"q-holder"}>
+            <div className="col brdr">
                 <div style={{ color: "purple" }}>
                     {this.props.errorMsg}
                 </div>
@@ -42,11 +42,11 @@ class QuestionInput extends React.Component {
                         <textarea value={this.props.Q.text} onChange={this.handleChangeQ} className="q-inn-q"/>
                     </div>
                     Answer:
-                    <div className={"q-ans"}>
+                    <div className={"txt-left"}>
                         <input type="number" value={this.props.Q.answer} onChange={this.handleChangeA}  className="q-inn-a"/>
                     </div>
                     Unit:
-                    <div className={"q-ans"}>
+                    <div className={"txt-left"}>
                         <input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className="q-inn-u"/>
                     </div>
                     {this.renderOk(true)}
@@ -56,53 +56,53 @@ class QuestionInput extends React.Component {
     }
 }
 
-class Question extends React.Component {
+function Question(props) {
 
-    renderEdit() {
+    function renderEdit() {
         return (
             <div>
                 <QuestionInput
-                    id={this.props.id}
-                    onSubmit={(event, index) => this.props.onQSubmit(event, index)}
-                    onStringChange={(value, index, field) => this.props.onQChange(value, index, field)}
-                    Q={this.props.question}
+                    id={props.id}
+                    onSubmit={(event, index) => props.onQSubmit(event, index)}
+                    onStringChange={(value, index, field) => props.onQChange(value, index, field)}
+                    Q={props.question}
                     errorMsg={""}
                 />
             </div>
         )
     }
     
-    renderShort() {
+    function renderShort() {
         return (
-            <div className={"q-holder"}>
-                <div className="q-input">
-                <div className={"q-question"}>
-                    Q: {this.props.question.text}
-                </div>
-                <div className={"q-ans"}>
-                    <div className={"q-text"}>
-                        A: {this.props.question.answer}
+            <div className="row brdr">
+                <div className="col">
+                    <div className="q-question">
+                        Q: {props.question.text}
                     </div>
-                    <div className={"q-text"}>
-                        ({this.props.question.unit})
+                    <div className="row">
+                        <div>
+                            A: {props.question.answer}
+                        </div>
+                        <div>
+                            ({props.question.unit})
+                        </div>
                     </div>
                 </div>
-                </div>
-                <div className={"list-btn-holder"}>
+                <div className="row items-right">
                     <div>
                         <img
                             className="q-btn-img"
                             src={images["q-edit"]}
-                            alt={"edit"}
-                            onClick={this.props.onClickEdit}
+                            alt="edit"
+                            onClick={props.onClickEdit}
                         />
                     </div>
                     <div>
                         <img
                             className="q-btn-img"
                             src={images["q-del"]}
-                            alt={"delete"}
-                            onClick={this.props.onClickDelete}
+                            alt="delete"
+                            onClick={props.onClickDelete}
                         />
                     </div>
                 </div>
@@ -110,23 +110,13 @@ class Question extends React.Component {
         )
     }
 
-    render() {
-        if(this.props.edit)
-        {
-            return (
-                <div>
-                    {this.renderEdit()}
-                </div>
-            )
-        }
-        else
-        {
-            return (
-                <div>
-                    {this.renderShort()}
-                </div>
-            )
-        }
+    if(props.edit)
+    {
+        return (renderEdit())
+    }
+    else
+    {
+        return (renderShort())
     }
 }
 

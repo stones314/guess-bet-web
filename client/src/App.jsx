@@ -31,7 +31,7 @@ function App() {
     if(pageState === LOADING)
     {
         return (
-            <div className={"col center"}>
+            <div className={"wide col center"}>
                 Loading...
             </div>
         )
@@ -39,7 +39,7 @@ function App() {
     else if(pageState === HOST_VS_JOIN)
     {
         return (
-            <div className={"col center"}>
+            <div className={"wide col center"}>
                 <h1>QUIZ !</h1>
                 
                 <div className={"app-btn"}>
@@ -66,7 +66,7 @@ function App() {
     else if(pageState === HOST_MENU)
     {
         return (
-            <div className={"col center"}>
+            <div className={"wide col center"}>
                 <h1>QUIZ !</h1>
                 <HostMenu
                     onClickExit={() => onClickExitHost()}
@@ -77,7 +77,7 @@ function App() {
     else if(pageState === JOIN_MENU)
     {
         return (
-            <div className={"col center"}>
+            <div className={"wide col center"}>
                 <h1>QUIZ !</h1>
                 <JoinMenu/>
             </div>

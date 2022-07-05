@@ -16,8 +16,8 @@ function BetBoardElement(props) {
             <div key={i} className="txt-img-box">
                 <img
                     className="txt-img-img pink"
-                    src={images["coin"]}
-                    alt={"coin"}
+                    src={images["coin"+bet.color]}
+                    alt={"coin"+bet.color}
                 />
                 <div className="txt-img-txt">{bet.val}</div>
             </div>
@@ -57,7 +57,7 @@ function BetBoardElement(props) {
     var bg = " green";
     if(props.gameState >= GameState.SHOW_CORRECT && props.betData.correct) bg = " gold";
     return (
-        <div className={"col-reverse center f1" + bg}>
+        <div className={"col-reverse center f1 brdr" + bg}>
             {renderMin()}
             {renderOdds()}
             {renderBets()}

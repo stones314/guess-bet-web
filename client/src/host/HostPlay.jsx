@@ -19,7 +19,7 @@ function HostGame(props) {
         ws.current = new WebSocket("ws://16.170.74.73:1337");
         const apiCall = {
             type: "host-game",
-            quizId: props.quizIndex,
+            file: props.quizFile,
         };
         ws.current.onopen = (event) => {
             ws.current.send(JSON.stringify(apiCall));
@@ -76,6 +76,7 @@ function HostGame(props) {
             setBetOpts(data.betOpts);
         }
         function onStepGame(data) {
+            setQid(data.qid);
             setGameState(data.newState);
             setPlayers(data.data);
         }
@@ -148,7 +149,7 @@ function HostGame(props) {
             );
         }
         return(
-            <div className="col">
+            <div className="narrow col">
                 {pList}
             </div>
         )
@@ -156,7 +157,7 @@ function HostGame(props) {
 
     function renderGameBoard() {
         return (
-            <div>
+            <div className="wide">
                 <BetBoard
                     pData={players}
                     opts={betOpts}
@@ -217,7 +218,7 @@ function HostGame(props) {
                     {quiz.questions[qid].text}
                 </div>
                 <div>
-                    Answer should be given in {quiz.questions[qid].unit}
+                    Answers were given in {quiz.questions[qid].unit}
                 </div>
                 <div>
                     Betting:
@@ -225,6 +226,7 @@ function HostGame(props) {
                 <div>
                     {renderPlayerInfo()}
                 </div>
+                <div>Betting Options:</div>
                 <div>{renderGameBoard()}</div>
             </div>
         )
@@ -254,7 +256,7 @@ function HostGame(props) {
     }
 
     return (
-        <div className={"col"}>
+        <div className={"col center"}>
             <div className={"col"}>
                 {renderGameState()}
             </div>

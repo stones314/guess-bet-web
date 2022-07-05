@@ -3,7 +3,8 @@ const consts = require("./consts");
 
 exports.create = function(gid, quiz, hostConn) {
     var game = {
-        colors : [ 'red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange', "yellow", "pink" ],
+        colors : [ '50bde3', '80ffe3', '3cb44b', '4363d8', '8f7c31', 'aaffc3', 'bdbdbd', "dcbeff",
+         "e14eff", "e3d055", "e6194b", "fabed4", "ff9a00", "fffac8", "ffe119" ],
         gid : gid,
         quiz : quiz,
         hostConn : hostConn,
@@ -63,6 +64,13 @@ exports.step = function(game) {
     return game.state;
 }
 
+exports.getPlayer = function(game, name){
+    for(const [i, p] of game.players.entries()){
+        if(p.name === name) return p;
+    }
+    return null;
+}
+
 exports.getPlayerData = function(game) {
     var pn = [];
     for(const [i, p] of game.players.entries()){
@@ -89,11 +97,17 @@ exports.setAns = function(game, pname, ans) {
 }
 
 exports.computeBetOpts = function(game) {
-    var bo = [{min: -12345678, others: 0, odds : 2}]; //this is the "lower than any provided answers" option
+    var bo = [{min: -12345678, others: 0, odds : 2, correct : false}]; //this is the "lower than any provided answers" option
 
     //Add player options
     for(const [i, p] of game.players.entries()){
-        bo.push({min : p.ans, others : 0, odds : 2, correct : false});
+        const ans_at = bo.indexOf(p.ans);
+        if(ans_at < 0){
+            bo.push({min : p.ans, others : 0, odds : 2, correct : false});
+        }
+        else{
+            bo[ans_at].others += 1;
+        }
     }
     bo.sort((a, b) => a.min - b.min);
 
@@ -131,12 +145,17 @@ exports.computeBetOpts = function(game) {
             reduceAt(mId);
         }
     }
+    // Find correct:
+    const ans = Number.parseFloat(game.quiz.questions[game.quiz.pos].answer);
+    game.correct = -1;
     for (const [i, o] of bo.entries()) {
-        o.odds = consts.OddsDist[bo.length][i];
-        const ans = game.quiz.questions[game.quiz.pos].answer;
-        o.correct = (o.min <= ans && (i === (bo.length - 1) || bo[i+1].min > ans));
-        if(o.correct) game.correct = i;
+        o.odds = consts.OddsDist[bo.length - 3][i];
+        if(o.min <= ans)game.correct++;
     }
+    bo[game.correct].correct = true;
+    console.log(bo);
+    console.log("a: " + ans);
+    console.log("p: " + game.quiz.pos);
     game.betOpts = bo;
 }
 
@@ -158,7 +177,7 @@ exports.calculateResults = function(game) {
     for(const [i, p] of game.players.entries()){
         p.won = 2;//always get two coins back!
         p.bet.forEach(bet => {
-           if(bet.opt === game.correct) p.won = bet.val *  odds;
+           if(bet.opt === game.correct) p.won += bet.val * odds;
         });
         p.cash += p.won;
     }

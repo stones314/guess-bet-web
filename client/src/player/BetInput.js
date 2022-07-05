@@ -7,33 +7,39 @@ function BetInput(props) {
 
     var opts = [];
     for(const [i, opt] of props.opts.entries()){
-        var c = 0;
+        var betHere = 0;
+        var numBet = 0;
         props.bet.forEach(bet => {
-            if(bet.opt === i && bet.val > 0) c = bet.val;
+            if(bet.opt === i && bet.val > 0) betHere = bet.val;
+            if(bet.val > 0) numBet += 1;
         });
         opts.push(
             <BetOption
                 key={i}
                 min={opt.min}
-                bet={c}
+                bet={betHere}
+                numBet={numBet}
                 cash={props.cash}
                 opt={i}
+                color={props.color}
                 onClickBet={(opt, val) => props.onClickBet(opt, val)}
             />
         );
     }
 
+    var fade = "";
+    if(props.bet[0].val + props.bet[1].val < 2) fade = " fade";
     return (
-    <div>
+    <div className="narrow">
         <div className="col-reverse">
             {opts}
         </div>
         <div>
             <img
-                className="q-btn-img"
+                className={"q-btn-img" + fade}
                 src={images["q-play"]}
                 alt={"confirm"}
-                onClick={props.onBetConfirm}
+                onClick={() => {if(fade === "") props.onBetConfirm()}}
             />
         </div>
     </div>

@@ -14,32 +14,32 @@ const HOST_GAME = 2;
 function HostMenu(props) {
     const [pageState, setPageState] = useState(LOADING);
     const [quizList, setQuizList] = useState([]);
-    const [quizIndex, setQuizIndex] = useState(-1);
+    const [quizFile, setQuizFile] = useState("");
 
     useEffect(() => {
         loadQuizList();
     }, []);
 
     function onClickNewQuiz() {
-        setQuizIndex(-1);
+        setQuizFile("");
         setPageState(CREATE_QUIZ);
     }
 
     function onQuizSaved(){
-        setPageState(SHOW_MENU);
         loadQuizList();
+        setPageState(SHOW_MENU);
     }
 
-    function onQuizEdit(index){
-        setQuizIndex(index);
+    function onQuizEdit(file){
+        setQuizFile(file);
         setPageState(CREATE_QUIZ);
     }
 
-    function onQuizDelete(index){
+    function onQuizDelete(file){
         fetch(SERVER + "/delete-quiz", {
             method: 'POST',
             body: JSON.stringify({
-                index : index 
+                file : file 
                 }),
             headers: { 'Content-Type': 'application/json' }
         })
@@ -48,8 +48,8 @@ function HostMenu(props) {
         loadQuizList();
     }
 
-    function onQuizPlay(index) {
-        setQuizIndex(index);
+    function onQuizPlay(file) {
+        setQuizFile(file);
         setPageState(HOST_GAME);
     }
 
@@ -73,9 +73,10 @@ function HostMenu(props) {
                     key={i}
                     name={q.name}
                     length={q.length}
-                    onClickEdit={() => onQuizEdit(i)}
-                    onClickDelete={() => onQuizDelete(i)}
-                    onClickPlay={() => onQuizPlay(i)}
+                    file={q.file}
+                    onClickEdit={() => onQuizEdit(q.file)}
+                    onClickDelete={() => onQuizDelete(q.file)}
+                    onClickPlay={() => onQuizPlay(q.file)}
                 />
                 );
             }
@@ -88,11 +89,11 @@ function HostMenu(props) {
 
     function renderMenu() {
         return (
-            <div className="hm-box">
+            <div className="narrow">
                 <div className={"hm-play"}>
                     Quiz List:
                 </div>
-                <div className={"hm-play"}>
+                <div className={"col"}>
                     {quizList}
                 </div>
                 <div className={"hm-create"}>
@@ -119,7 +120,7 @@ function HostMenu(props) {
     if(pageState === LOADING)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className="wide">
                 LOADING
             </div>
         )
@@ -127,7 +128,7 @@ function HostMenu(props) {
     else if(pageState === SHOW_MENU)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className="wide">
                 {renderMenu()}
             </div>
         )
@@ -135,9 +136,9 @@ function HostMenu(props) {
     else if(pageState === CREATE_QUIZ)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className="wide">
                 <CreateQuiz
-                    editQuizIndex = {quizIndex}
+                    quizFile = {quizFile}
                     onQuizSaved = {() => onQuizSaved()}
                 />
             </div>
@@ -146,9 +147,9 @@ function HostMenu(props) {
     else if(pageState === HOST_GAME)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className="wide txt-left">
                 <HostGame
-                    quizIndex = {quizIndex}
+                    quizFile = {quizFile}
                     onClickExit = {() => onQuizSaved()}
                 />
             </div>
