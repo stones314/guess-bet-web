@@ -13,6 +13,9 @@ function PlayerInfo(props) {
          * show if player has replied at the given game state
          */
         if(props.pInfo.ans === -12345678) return (<div className="center f1"></div>)
+        else if(props.gameState > GameState.WAIT_FOR_ANSWERS){
+            return (<div className="center f1">{props.pInfo.ans}</div>);
+        }
         return (<div className="center f1">X</div>);
     }
 
@@ -52,18 +55,18 @@ function PlayerInfo(props) {
 
     if (props.isHdr) {
         return(
-            <div className="row">
-                <div className="center f1">{props.pInfo.name}</div>
-                <div className="center f1">{props.pInfo.cash}</div>
-                <div className="center f1">{props.pInfo.ans}</div>
-                <div className="center f1">{props.pInfo.bet}</div>
+            <div className="row center brdr">
+                <div className="center f2 brdr">{props.pInfo.name}</div>
+                <div className="center f1 brdr">{props.pInfo.cash}</div>
+                <div className="center f1 brdr">{props.pInfo.ans}</div>
+                <div className="center f1 brdr">{props.pInfo.bet}</div>
             </div>
         )
     }
 
     return (
-        <div className="row center">
-            <div className="center f1">{props.pInfo.name}</div>
+        <div className="row center brdr">
+            <div className="center f2">{props.pInfo.name}</div>
             {renderCash()}
             {renderAns()}
             {renderBet()}

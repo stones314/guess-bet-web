@@ -18,19 +18,19 @@ class QuizListElement extends React.Component {
                 <div className="row items-right">
                     <img
                         className="q-btn-img"
-                        src={images["q-edit"]}
+                        src={images["edit"]}
                         alt={"edit"}
                         onClick={this.props.onClickEdit}
                     />
                     <img
                         className="q-btn-img"
-                        src={images["q-del"]}
+                        src={images["del"]}
                         alt={"delete"}
                         onClick={this.props.onClickDelete}
                     />
                     <img
                         className="q-btn-img"
-                        src={images["q-play"]}
+                        src={images["play"]}
                         alt={"play"}
                         onClick={this.props.onClickPlay}
                     />

@@ -34,22 +34,26 @@ function BetBoardElement(props) {
     function renderOdds(){
         return (
             <div>
-                {"1 : " + props.betData.odds}
+                {props.betData.odds + "x"}
             </div>
         )
     }
 
     function renderMin(){
+        var val = props.min;
         if(props.min === -12345678) {
-            return (
-                <div>
-                    -Inf
-                </div>
-            )    
+            val = "Mindre"    
         };
         return (
-            <div>
-                {props.min}
+            <div className="row w100 m1">
+                <div className="yellow f1 txt-left">
+                    {val}
+                </div>
+                    <img
+                        className="f3 rihost-img"
+                        src={images["rihost"]}
+                        alt={"cihost"}
+                    />
             </div>
         )
     }
@@ -57,7 +61,7 @@ function BetBoardElement(props) {
     var bg = " green";
     if(props.gameState >= GameState.SHOW_CORRECT && props.betData.correct) bg = " gold";
     return (
-        <div className={"col-reverse center f1 brdr" + bg}>
+        <div className={"col center f1 brdr" + bg}>
             {renderMin()}
             {renderOdds()}
             {renderBets()}

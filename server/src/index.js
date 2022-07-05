@@ -248,7 +248,7 @@ wsServer.on('request', function(request) {
       gid = Math.floor(Math.random() * 10000000);
       quizlist.forEach(q => {
         if(q.file == data.file){
-          games[gid] = game.create(gid, q, connection);
+          games[gid] = game.create(gid, JSON.parse(JSON.stringify(q)), connection);
         }
       });
         
@@ -286,9 +286,13 @@ wsServer.on('request', function(request) {
     if(data.type === "step-game"){
       const newState = game.step(games[gid]);
       if(newState === consts.GameState.WAIT_FOR_ANSWERS){
+        const q = games[gid].quiz.questions[games[gid].quiz.pos];
+        console.log(q);
         games[gid].players.forEach(player => player.conn.sendUTF(
           //Tell Player to provide an answer
-          JSON.stringify({type : "req-ans"})
+          JSON.stringify({
+            type : "req-ans",
+            question : q})
         ));
       }
       else if(newState === consts.GameState.WAIT_FOR_BETS){

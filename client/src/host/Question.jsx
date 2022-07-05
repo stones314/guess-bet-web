@@ -92,7 +92,7 @@ function Question(props) {
                     <div>
                         <img
                             className="q-btn-img"
-                            src={images["q-edit"]}
+                            src={images["edit"]}
                             alt="edit"
                             onClick={props.onClickEdit}
                         />
@@ -100,7 +100,7 @@ function Question(props) {
                     <div>
                         <img
                             className="q-btn-img"
-                            src={images["q-del"]}
+                            src={images["del"]}
                             alt="delete"
                             onClick={props.onClickDelete}
                         />

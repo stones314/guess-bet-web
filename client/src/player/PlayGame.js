@@ -13,6 +13,7 @@ function PlayGame(props) {
     const [dataSent, setDataSent] = useState(false);
     const [click, setClick] = useState(0);
     const [color, setColor] = useState("white");
+    const [question, setQuestion] = useState({});
     const ws = useRef(null);
 
     //Web Socket Connect and handling of data from the server.
@@ -69,6 +70,7 @@ function PlayGame(props) {
 
         function onRequestAns(data) {
             setDataSent(false);
+            setQuestion(data.question);
             setPageState(GameState.WAIT_FOR_ANSWERS);
         }
 
@@ -127,17 +129,25 @@ function PlayGame(props) {
         setClick(click +1);
     }
 
-    function onBetClick(opt, val){
+    function onClickBet(opt, val){
         var newBet = bet;
-        if(bet[0].val === 0 || bet[0].opt === opt){
+        if(bet[0].opt === opt){
             newBet[0].val += val;
             newBet[0].opt = opt;
             if(newBet[0].val === 0) newBet[0].opt = -1;
         }
-        else if(bet[1].val === 0 || bet[1].opt === opt){
+        else if(bet[1].opt === opt){
             newBet[1].val += val;
             newBet[1].opt = opt;
             if(newBet[1].val === 0) newBet[1].opt = -1;
+        }
+        else if(bet[0].val === 0){
+            newBet[0].val += val;
+            newBet[0].opt = opt;
+        }
+        else if(bet[1].val === 0){
+            newBet[1].val += val;
+            newBet[1].opt = opt;
         }
         setCash(cash - val);
         setBet(newBet);
@@ -164,16 +174,17 @@ function PlayGame(props) {
         if(dataSent) return (renderWaitForProgress());
         return (
             <div className="narrow">
+                <div className="m3">{question.text}</div>
                 <StringInput
                     type="number"
-                    description={"Suggest what might be a correct answer for the question:"}
+                    description={"Svar i "+question.unit+":"}
                     editVal={ans.toString()}
                     errorMsg={""}
                     onChange={(newValue) => onAnsChange(newValue)}
                 />
                 <img
                     className="q-btn-img"
-                    src={images["q-play"]}
+                    src={images["play"]}
                     alt={"confirm"}
                     onClick={onAnsConfirm}
                 />
@@ -186,12 +197,17 @@ function PlayGame(props) {
         console.log(bet);
         return (
             <div className="narrow">
+                <div className="m6">{question.text}</div>
+                <div className="m6">
+                    <div className="fs16">Sats på alternativ du tror har riktig svar.</div>
+                    <div className="fs16">Velg opp til to alternativer.</div>
+                </div>
                 <BetInput
                     opts={betOptions}
                     bet={bet}
                     cash={cash}
                     color={color}
-                    onClickBet={(opt, val) => onBetClick(opt, val)}
+                    onClickBet={(opt, val) => onClickBet(opt, val)}
                     onBetConfirm={() => onBetConfirm()}
                 />
             </div>

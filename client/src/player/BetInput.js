@@ -17,6 +17,7 @@ function BetInput(props) {
             <BetOption
                 key={i}
                 min={opt.min}
+                odds={opt.odds}
                 bet={betHere}
                 numBet={numBet}
                 cash={props.cash}
@@ -37,7 +38,7 @@ function BetInput(props) {
         <div>
             <img
                 className={"q-btn-img" + fade}
-                src={images["q-play"]}
+                src={images["play"]}
                 alt={"confirm"}
                 onClick={() => {if(fade === "") props.onBetConfirm()}}
             />

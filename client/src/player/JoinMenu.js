@@ -74,8 +74,8 @@ function JoinMenu(props) {
 
     function renderMenu() {
         return (
-            <div className="hm-box">
-                <div className={"hm-play"}>
+            <div className="narrow">
+                <div className={"narrow"}>
                     <StringInput
                         description={"User Name:"}
                         type="text"
@@ -94,7 +94,7 @@ function JoinMenu(props) {
                 <div className={"hm-play"}>
                     <img
                         className="q-btn-img"
-                        src={images["q-play"]}
+                        src={images["play"]}
                         alt={"play"}
                         onClick={onClickPlay}
                     />

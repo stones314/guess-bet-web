@@ -2,7 +2,7 @@ import React from "react";
 import CreateQuiz from "./CreateQuiz";
 import QuizListElement from "./QuizListElement";
 import {images, SERVER} from "./../helper/Consts";
-import HostGame from "./HostPlay";
+import HostGame from "./HostGame";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -99,8 +99,8 @@ function HostMenu(props) {
                 <div className={"hm-create"}>
                     <img
                         className="q-btn-img"
-                        src={images["q-add"]}
-                        alt={"add new quiz"}
+                        src={images["add"]}
+                        alt={"add"}
                         onClick={() => onClickNewQuiz()}
                     />
                 </div>

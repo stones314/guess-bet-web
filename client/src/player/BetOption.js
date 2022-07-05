@@ -6,8 +6,8 @@ import './../styles/EditQuiz.css';
 function BetOption(props) {
 
     function renderBetButton(btnVal){
-        console.log("o: " + props.opt + "bh: " + props.bet + ", nb: " + props.numBet);
         var fade = "";
+        var btnImg = btnVal < 0 ? "minus" : "add";
         if(btnVal < 0 && props.bet === 0) fade = " fade";
         else if(btnVal > props.cash) fade = " fade";
         else if(props.bet <= 0 && props.numBet === 2) fade = " fade";
@@ -15,8 +15,8 @@ function BetOption(props) {
             <div className={"text-img f1" + fade}>
                 <img
                     className="q-btn-img"
-                    src={images["bet" + btnVal]}
-                    alt={"bet"}
+                    src={images[btnImg]}
+                    alt={btnImg}
                     onClick={() => {
                         if(fade === "") props.onClickBet(props.opt, btnVal)
                     }}
@@ -40,26 +40,37 @@ function BetOption(props) {
     }
 
     function renderMin(){
+        var minVal = props.min;
         if(props.min === -12345678) {
-            return (
-                <div className="f2">
-                    -Inf
-                </div>
-            )    
-        };
+            minVal = "Mindre";
+        }
         return (
-            <div className="f2">
-                {props.min}
+            <div className="txt-img-box f2">
+                <img
+                    className="txt-img-img-2"
+                    src={images["riclient"]}
+                    alt={"riclient"}
+                />
+                <div className="txt-img-txt-2">{minVal}</div>
             </div>
         )
     }
 
+    function renderOdds(){
+        return (<div className="f1 fs20">{props.odds+"x"}</div>)
+    }
+
+    var addVal = 1;
+    if(props.cash >= 20)addVal = 5;
+    var minusVal = -1;
+    if(props.bet >= 20)minusVal = -5;
     return (
         <div className="row brdr center">
             {renderMin()}
+            {renderOdds()}
             {renderBet()}
-            {renderBetButton(1)}
-            {renderBetButton(-1)}
+            {renderBetButton(addVal)}
+            {renderBetButton(minusVal)}
         </div>
     )
 }

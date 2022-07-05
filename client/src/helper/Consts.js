@@ -1,25 +1,27 @@
 export const images = {
     "app-host" : "https://rygg-gaard.no/gaia/img/BluePlanet.png",
     "app-join" : "https://rygg-gaard.no/gaia/img/RedPlanet.png",
-    "hm-play" : "https://rygg-gaard.no/quiz/img/PlayBtn.png",
     "hm-create" : "https://rygg-gaard.no/gaia/img/WhitePlanet.png",
     "hm-exit" : "https://rygg-gaard.no/gaia/img/BlackHex.png",
-    "q-add" : "https://rygg-gaard.no/quiz/img/AddBtn.png",
-    "q-edit" : "https://rygg-gaard.no/quiz/img/EditBtn.png",
     "q-edit-ok" : "https://rygg-gaard.no/gaia/img/YellowPlanet.png",
-    "q-del" : "https://rygg-gaard.no/quiz/img/DeleteBtn.png",
     "q-save" : "https://rygg-gaard.no/gaia/img/TransdimHex.png",
-    "q-play" : "https://rygg-gaard.no/quiz/img/PlayBtn.png",
     "hp-continue" : "https://rygg-gaard.no/gaia/img/BrownPlanet.png",
+    "add" : "https://rygg-gaard.no/quiz/img/AddBtn.png",
+    "minus" : "https://rygg-gaard.no/quiz/img/MinusBtn.png",
+    "edit" : "https://rygg-gaard.no/quiz/img/EditBtn.png",
+    "del" : "https://rygg-gaard.no/quiz/img/DeleteBtn.png",
+    "play" : "https://rygg-gaard.no/quiz/img/PlayBtn.png",
     "bet1" : "https://rygg-gaard.no/quiz/img/Bet1Btn.png",
     "bet-1" : "https://rygg-gaard.no/quiz/img/Undo1Btn.png",
+    "riclient" : "https://rygg-gaard.no/quiz/img/RangeIndicatorClient.png",
+    "rihost" : "https://rygg-gaard.no/quiz/img/RangeIndicatorHost.png",
     "coin" : "https://rygg-gaard.no/quiz/img/Coin.png",
     "coinfffac8" : "https://rygg-gaard.no/quiz/img/Coin_fffac8.png",
     "coinffe119" : "https://rygg-gaard.no/quiz/img/Coin_ffe119.png",
     "coinff9a00" : "https://rygg-gaard.no/quiz/img/Coin_ff9a00.png",
     "coinfabed4" : "https://rygg-gaard.no/quiz/img/Coin_fabed4.png",
-    "coine6194B" : "https://rygg-gaard.no/quiz/img/Coin_e6194B.png",
-    "coine3do55" : "https://rygg-gaard.no/quiz/img/Coin_e3do55.png",
+    "coine6194b" : "https://rygg-gaard.no/quiz/img/Coin_e6194B.png",
+    "coine3d055" : "https://rygg-gaard.no/quiz/img/Coin_e3d055.png",
     "coine14eff" : "https://rygg-gaard.no/quiz/img/Coin_e14eff.png",
     "coindcbeff" : "https://rygg-gaard.no/quiz/img/Coin_dcbeff.png",
     "coinbdbdbd" : "https://rygg-gaard.no/quiz/img/Coin_bdbdbd.png",
@@ -30,6 +32,8 @@ export const images = {
     "coin4363d8" : "https://rygg-gaard.no/quiz/img/Coin_4363d8.png",
     "coin3cb44b" : "https://rygg-gaard.no/quiz/img/Coin_3cb44b.png",
 };
+
+//Color of range indicator is #f9e7a2
 
 export const SERVER = "http://16.170.74.73:3001";
 

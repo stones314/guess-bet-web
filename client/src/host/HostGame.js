@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import {images, GameState} from "./../helper/Consts";
+import {images, GameState} from "../helper/Consts";
 import BetBoard from "./BetBoard";
 import PlayerInfo from "./PlayerInfo";
 
@@ -112,12 +112,14 @@ function HostGame(props) {
     /***********************/
 
     function renderContinue() {
+        var fade = "";
+        if(players.length < 2) fade = " fade";
         return (
         <img
-            className="q-btn-img"
-            src={images["q-play"]}
+            className={"q-btn-img" + fade}
+            src={images["play"]}
             alt={"continue"}
-            onClick={onClickContinue}
+            onClick={() => {if(fade === "") onClickContinue()}}
         />
         )
     }
@@ -125,10 +127,10 @@ function HostGame(props) {
     function renderPlayerInfo(){
         var pList = [];
         var hdr = {
-            name : "Name",
-            cash : "Cash",
-            ans : "Ans",
-            bet : "Bet"
+            name : "Navn",
+            cash : "Penger",
+            ans : "Svar",
+            bet : "Innsats"
         }
         pList.push(
             <PlayerInfo
@@ -155,6 +157,18 @@ function HostGame(props) {
         )
     }
 
+    function renderGameInfo() {
+        if(gameState === GameState.LOADING) return null;
+        return (
+            <div className="wide">
+                    {quiz.name} <br/>
+                    <br/>
+                    ID: {gid}<br/>
+                    <br/>
+            </div>
+        )
+    }
+
     function renderGameBoard() {
         return (
             <div className="wide">
@@ -171,16 +185,10 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Name: {quiz.name} <br/>
-                    Lenght: {quiz.questions.length} <br/>
-                    <br/>
-                    Game Id: {gid}<br/>
-                    <br/>
-                    PLAYERS:
-                    <br/>
+                    {quiz.questions.length + " spørsmål"} <br/>
+                </div>
+                <div className="m6">
                     {renderPlayerInfo()}
-                    <br/>
-                    WAITING FOR PLAYERS!
                 </div>
             </div>
         )
@@ -190,18 +198,17 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Question {(qid + 1) + " of " + quiz.questions.length}
+                    Spørsmål {(qid + 1) + " av " + quiz.questions.length}
                 </div>
-                <div>
-                    {quiz.questions[qid].text}
+                <div className="m6 brdr">
+                    <div className="m3">
+                        {quiz.questions[qid].text}
+                    </div>
+                    <div className="m3">
+                        Svar i {quiz.questions[qid].unit}
+                    </div>
                 </div>
-                <div>
-                    Answer should be given in {quiz.questions[qid].unit}
-                </div>
-                <div>
-                    Answering:
-                </div>
-                <div>
+                <div className="m6">
                     {renderPlayerInfo()}
                 </div>
             </div>
@@ -212,22 +219,20 @@ function HostGame(props) {
         return (
             <div>
                 <div>
-                    Question {(qid + 1) + " of " + quiz.questions.length}
+                    Spørsmål {(qid + 1) + " av " + quiz.questions.length}
                 </div>
-                <div>
-                    {quiz.questions[qid].text}
+                <div className="narrow m6 brdr">
+                    <div className="m3">
+                        {quiz.questions[qid].text}
+                    </div>
+                    <div className="m3">
+                        Svar i {quiz.questions[qid].unit}
+                    </div>
                 </div>
-                <div>
-                    Answers were given in {quiz.questions[qid].unit}
-                </div>
-                <div>
-                    Betting:
-                </div>
-                <div>
+                <div className="m6">
                     {renderPlayerInfo()}
                 </div>
-                <div>Betting Options:</div>
-                <div>{renderGameBoard()}</div>
+                <div className="m6">{renderGameBoard()}</div>
             </div>
         )
     }
@@ -257,6 +262,9 @@ function HostGame(props) {
 
     return (
         <div className={"col center"}>
+            <div className={"col"}>
+                {renderGameInfo()}
+            </div>
             <div className={"col"}>
                 {renderGameState()}
             </div>
