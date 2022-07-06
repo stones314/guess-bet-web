@@ -14,6 +14,7 @@ function PlayGame(props) {
     const [click, setClick] = useState(0);
     const [color, setColor] = useState("white");
     const [question, setQuestion] = useState({});
+    const [rank, setRank] = useState(0);
     const ws = useRef(null);
 
     //Web Socket Connect and handling of data from the server.
@@ -34,6 +35,7 @@ function PlayGame(props) {
         ws.current.onmessage = function (event) {
             const data = JSON.parse(event.data);
             try {
+                console.log(data);
                 handleData(data);
             } catch (err) {
                 console.log(err);
@@ -48,7 +50,8 @@ function PlayGame(props) {
                 onConnect(data);
             }
             else if(data.type === "host-died"){
-                props.onGameAbort();
+                console.log("host died at " +gameState);
+                if(data.state < GameState.SHOW_STANDINGS) props.onGameAbort();
             }
         }
 
@@ -68,8 +71,8 @@ function PlayGame(props) {
             else if(data.state === GameState.SHOW_CORRECT){
                 onWinnings(data);
             }
-            else if(data.state === GameState.GAME_OVER){
-                props.onGameAbort();
+            else if(data.state === GameState.SHOW_STANDINGS){
+                onStepGame(data);
             }
         }
         
@@ -95,6 +98,7 @@ function PlayGame(props) {
             setCash(data.player.cash);
             setBet([{opt : -1, val : 0}, {opt : -1, val : 0}]);
             setAns("");
+            setRank(data.player.rank);
             setPageState(data.state);
         }
 
@@ -272,8 +276,10 @@ function PlayGame(props) {
             var txt = "Wohoo, du vant " + won + "!";
             if(won <= 2) txt = "Huff, ingen rette, men du fekk 2 i trøstepremie :) ";
             return (
-                <div className={"HostMenu"}>
-                    {txt}
+                <div className="narrow col">
+                    <div className="m3">
+                        {txt}
+                    </div>
                 </div>
             )
         }
@@ -281,8 +287,19 @@ function PlayGame(props) {
         {
             //TODO: vis kva plass speleren kom på, og knapp for å gå ut.
             return (
-                <div className={"HostMenu"}>
-                    Vant du?
+                <div className={""}>
+                    <div className={"m3"}>
+                        {"Quizen er ferdig"}
+                    </div>
+                    <div className={"m6"}>
+                        {"Du kom på " + rank + " plass!"}
+                    </div>
+                    <img
+                        className={"q-btn-img"}
+                        src={images["play"]}
+                        alt={"play"}
+                        onClick={() => props.onClickExit()}
+                    />
                 </div>
             )
         }

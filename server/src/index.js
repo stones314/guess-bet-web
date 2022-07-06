@@ -362,7 +362,7 @@ wsServer.on('request', function(request) {
     if (role === 1) {
       //Host diconnect
       console.log("["+gid+"] Host disconnected.");
-      games[gid].players.forEach(p => player.sendHostDied(p));
+      games[gid].players.forEach(p => player.sendHostDied(p,games[gid].state));
       delete games[gid];
     }
     else if (role === 2) {

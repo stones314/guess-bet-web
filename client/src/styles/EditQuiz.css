@@ -119,9 +119,9 @@ form {
 }
 
 textarea {
-    width : min(100%, 400px);
+    position: relative;
+    width : min(95%, 400px);
     height : 100px;
-    margin : 3px;
     resize: none
 }
 

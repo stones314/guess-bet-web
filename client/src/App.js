@@ -23,7 +23,7 @@ function App() {
         setPageState(JOIN_MENU);
     }
 
-    function onClickExitHost() {
+    function onClickExit() {
         setPageState(HOST_VS_JOIN);
     }
 
@@ -68,7 +68,7 @@ function App() {
             <div className={"wide col center"}>
                 <h1>QUIZ !</h1>
                 <HostMenu
-                    onClickExit={() => onClickExitHost()}
+                    onClickExit={() => onClickExit()}
                 />
             </div>
         )
@@ -78,7 +78,9 @@ function App() {
         return (
             <div className={"wide col center"}>
                 <h1>QUIZ !</h1>
-                <JoinMenu/>
+                <JoinMenu
+                    onClickExit={() => onClickExit()}
+                />
             </div>
         )
     }

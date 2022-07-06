@@ -148,7 +148,7 @@ function HostMenu(props) {
             <div className="wide txt-left">
                 <HostGame
                     quizFile = {quizFile}
-                    onClickExit = {() => onQuizSaved()}
+                    onClickExit = {() => props.onClickExit()}
                 />
             </div>
         )

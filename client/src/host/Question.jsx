@@ -37,17 +37,17 @@ class QuestionInput extends React.Component {
                     {this.props.errorMsg}
                 </div>
                 <form onSubmit={this.handleSubmit} className="q-inn-f">
-                    Question:
+                    Spørsmål:
                     <div className={"q-question"}>
-                        <textarea value={this.props.Q.text} onChange={this.handleChangeQ} className="q-inn-q"/>
+                        <textarea value={this.props.Q.text} onChange={this.handleChangeQ} className=""/>
                     </div>
-                    Answer:
+                    Svar:
                     <div className={"txt-left"}>
-                        <input type="number" value={this.props.Q.answer} onChange={this.handleChangeA}  className="q-inn-a"/>
+                        <input type="number" value={this.props.Q.answer} onChange={this.handleChangeA}  className=""/>
                     </div>
-                    Unit:
+                    Enhet:
                     <div className={"txt-left"}>
-                        <input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className="q-inn-u"/>
+                        <input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className=""/>
                     </div>
                     {this.renderOk(true)}
                 </form>
@@ -76,12 +76,12 @@ function Question(props) {
         return (
             <div className="row brdr">
                 <div className="col">
-                    <div className="q-question">
-                        Q: {props.question.text}
+                    <div className="txt-left">
+                        {props.question.text}
                     </div>
-                    <div className="row">
+                    <div className="row m3">
                         <div>
-                            A: {props.question.answer}
+                            {props.question.answer}
                         </div>
                         <div>
                             ({props.question.unit})

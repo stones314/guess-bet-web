@@ -19,7 +19,8 @@ exports.create = function(name, conn, color) {
             }
         ],
         won : 0,
-        online : true
+        online : true,
+        rank : 0
     }
     return p;
 }
@@ -32,7 +33,8 @@ exports.getPlayerData = function(p){
         ans : p.ans,
         bet : p.bet,
         won : p.won,
-        online : p.online
+        online : p.online,
+        rank : p.rank
     }
 }
 
@@ -51,10 +53,10 @@ exports.resetInput = function(player) {
     player.won = 0;
 }
 
-exports.sendHostDied = function(player) {
+exports.sendHostDied = function(player, state) {
     if(!player.online) return;
     player.conn.sendUTF(
-        JSON.stringify({type : "host-died"})
+        JSON.stringify({type : "host-died", state : state})
     )
 }
 
@@ -67,7 +69,8 @@ exports.sendGameState = function(player, question, betOpts, state, type = "state
         ans : player.ans,
         bet : player.bet,
         won : player.won,
-        online : player.online
+        online : player.online,
+        rank : player.rank
     }
     player.conn.sendUTF(
         JSON.stringify({

@@ -63,7 +63,6 @@ exports.step = function(game) {
         game.players.forEach(p => {
             player.resetInput(p)
         });
-        game.players.sort((a, b) => b.cash - a.cash);
         if (game.quiz.pos == game.quiz.questions.length){
              game.state = consts.GameState.SHOW_STANDINGS;
         }
@@ -184,6 +183,10 @@ exports.calculateResults = function(game) {
            if(bet.opt === game.correct) p.won += bet.val * odds;
         });
         p.cash += p.won;
+    }
+    game.players.sort((a, b) => b.cash - a.cash);
+    for(const [i, p] of game.players.entries()){
+        p.rank = i+1;
     }
 }
 

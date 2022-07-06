@@ -112,17 +112,17 @@ class CreateQuiz extends React.Component {
         }
         return (
             <div className={"narrow"}>
-                <div className={"cq-name"}>
+                <div className={"m6"}>
                     <StringInput
                         type="text"
-                        description={"Quiz Name: "}
+                        description={"Navn:"}
                         editVal={this.state.name}
                         errorMsg={""}
                         onChange={(newValue) => this.onNameChange(newValue)}
                     />
                 </div>
-                <div className={"header-text"}>
-                    Questions
+                <div className={""}>
+                    Spørsmål:
                 </div>
                 <div className={"q-list"}>
                     {q_rows}
@@ -130,7 +130,7 @@ class CreateQuiz extends React.Component {
                 <div className={"q-add"}>
                     <img
                         className="q-btn-img"
-                        src={images["q-add"]}
+                        src={images["add"]}
                         alt={"add"}
                         onClick={() => this.onClickAdd()}
                     />

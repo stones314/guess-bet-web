@@ -117,6 +117,7 @@ function JoinMenu(props) {
                     gid={gid}
                     name={name}
                     onGameAbort={onGameAbort}
+                    onClickExit={() => props.onClickExit()}
                 />
             </div>
         )

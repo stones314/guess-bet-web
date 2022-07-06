@@ -21,7 +21,7 @@ class StringInput extends React.Component {
     render() {
         return (
             <div className="string-inn-box">
-                <div className="m3">
+                <div className="">
                     {this.props.description}
                 </div>
                 <div style={{ color: "purple" }}>

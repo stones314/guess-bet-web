@@ -111,13 +111,22 @@ function HostGame(props) {
 
     function renderContinue() {
         var fade = "";
-        if(players.length < 2) fade = " fade";
+        if(players.length < 2 && gameState < GameState.SHOW_STANDINGS){
+            fade = " fade";
+        }
         return (
         <img
             className={"q-btn-img" + fade}
             src={images["play"]}
             alt={"continue"}
-            onClick={() => {if(fade === "") onClickContinue()}}
+            onClick={() => {
+                if(gameState === GameState.SHOW_STANDINGS){
+                    props.onClickExit();
+                }
+                if(fade === ""){
+                    onClickContinue()
+                }
+            }}
         />
         )
     }
@@ -198,7 +207,7 @@ function HostGame(props) {
                 <div>
                     Spørsmål {(qid + 1) + " av " + quiz.questions.length}
                 </div>
-                <div className="m6 brdr">
+                <div className="narrow m6 brdr">
                     <div className="m3">
                         {quiz.questions[qid].text}
                     </div>
