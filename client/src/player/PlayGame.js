@@ -216,11 +216,6 @@ function PlayGame(props) {
         if(dataSent) return (renderWaitForProgress("Venter på at andre satser..."));
         return (
             <div className="narrow">
-                <div className="m6">{question.text}</div>
-                <div className="m6">
-                    <div className="fs16">Sats på alternativ du tror har riktig svar.</div>
-                    <div className="fs16">Velg opp til to alternativer.</div>
-                </div>
                 <BetInput
                     opts={betOptions}
                     bet={bet}

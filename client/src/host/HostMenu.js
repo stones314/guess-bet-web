@@ -88,13 +88,22 @@ function HostMenu(props) {
     function renderMenu() {
         return (
             <div className="narrow">
-                <div className={"hm-play"}>
-                    Quiz List:
+                <div className={""}>
+                    
                 </div>
                 <div className={"col"}>
                     {quizList}
                 </div>
-                <div className={"hm-create"}>
+                <div className={"row"}>
+                <div className={"items-left"}>
+                    <img
+                        className="q-btn-img"
+                        src={images["back"]}
+                        alt={"exit"}
+                        onClick={() => props.onClickExit()}
+                    />
+                </div>
+                <div className={"items-right"}>
                     <img
                         className="q-btn-img"
                         src={images["add"]}
@@ -102,14 +111,6 @@ function HostMenu(props) {
                         onClick={() => onClickNewQuiz()}
                     />
                 </div>
-                <div className={"hm-exit"}>
-                    <img
-                        className="hm-img"
-                        src={images["hm-exit"]}
-                        alt={"exit"}
-                        onClick={() => props.onClickExit()}
-                    />
-                    EXIT
                 </div>
             </div>
         )
@@ -119,7 +120,7 @@ function HostMenu(props) {
     {
         return (
             <div className="wide">
-                LOADING
+                Laster...
             </div>
         )
     }

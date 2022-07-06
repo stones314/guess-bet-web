@@ -25,7 +25,7 @@ function BetBoardElement(props) {
         }
 
         return (
-            <div>
+            <div className="row">
                 {coins}
             </div>
         )
@@ -40,31 +40,27 @@ function BetBoardElement(props) {
     }
 
     function renderMin(){
-        var val = props.min;
+        var minVal = props.min;
         if(props.min === MIN_INF) {
-            val = "Mindre"    
-        };
+            minVal = "";
+        }
         return (
-            <div className="row w100 m1">
-                <div className="yellow f1 txt-left">
-                    {val}
-                </div>
-                    <img
-                        className="f3 rihost-img"
-                        src={images["rihost"]}
-                        alt={"cihost"}
-                    />
+            <div className="txt-img-box-2">
+                <img
+                    className="txt-img-img-2"
+                    src={images["riclient"]}
+                    alt={"riclient"}
+                />
+                <div className="txt-img-txt-2">{minVal}</div>
             </div>
         )
     }
 
-    var bg = " green";
-    if(props.gameState >= GameState.SHOW_CORRECT && props.betData.correct) bg = " gold";
+    var bg = "";
+    if(props.gameState >= GameState.SHOW_CORRECT && props.betData.correct) bg = " green";
     return (
-        <div className={"col center f1 brdr" + bg}>
-            {renderMin()}
-            {renderOdds()}
-            {renderBets()}
+        <div className={"row wrap brdr" + bg}>
+            <div className="row mid items-left">{renderMin()}{renderOdds()}{renderBets()}</div>
         </div>
     )
 }

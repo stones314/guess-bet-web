@@ -1,3 +1,8 @@
+.trans-mid {
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -16,6 +21,12 @@
 .center {
     text-align: center;
     align-items: center;
+    justify-content: center;
+}
+
+.mid {
+    text-align: center;
+    align-items: center;
 }
 
 .fs20 {
@@ -32,6 +43,11 @@
     flex: 3;
 }
 
+.wrap {
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
 .m1 {
     margin-top: 1px;
     margin-bottom: 1px;
@@ -45,8 +61,21 @@
     margin-bottom: 20px;
 }
 
+.ma3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.pa3 {
+    padding: 5px;
+}
+
 .fs16 {
     font-size: 18px;
+}
+.fs26 {
+    font-size: 26px;
 }
 
 .gold {
@@ -66,25 +95,28 @@
 }
 
 .fade {
-    filter: opacity(0.1);
+    filter: opacity(0.2);
 }
 
 .narrow {
     position: relative;
     width: min(100vmin, 400px);
-    left: 50%;
-    transform: translate(-50%, 0%);
 }
 
 .wide {
     position: relative;
     width: min(100vmin, 800px);
-    left: 50%;
-    transform: translate(-50%, 0%);
 }
 
 .brdr {
     border: 1px solid black;
+}
+
+.brdr4 {
+    border: 4px solid black;
+}
+.brdr4d {
+    border: 4px dotted black;
 }
 
 .items-right {
@@ -183,6 +215,13 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 26px;
 }
 
+.txt-img-box-2 {
+    position: relative;
+    height: 52px;
+    width: 104px;
+    text-align: center;
+}
+
 .txt-img-img-2 {
     position: absolute;
     top: 50%;
@@ -198,3 +237,19 @@ input[type=number]::-webkit-outer-spin-button {
     z-index: 100;
     font-size: 20px;
 }
+
+.bg-fffac8 {background-color: #fffac8;}
+.bg-ffe119 {background-color: #ffe119;}
+.bg-ff9a00 {background-color: #ff9a00;}
+.bg-fabed4 {background-color: #fabed4;}
+.bg-e6194b {background-color: #e6194B; color: #fff;}
+.bg-e3d055 {background-color: #e3d055;}
+.bg-e14eff {background-color: #e14eff;}
+.bg-dcbeff {background-color: #dcbeff;}
+.bg-bdbdbd {background-color: #bdbdbd;}
+.bg-aaffc3 {background-color: #aaffc3;}
+.bg-8f7c31 {background-color: #8f7c31; color: #fff;}
+.bg-80ffe3 {background-color: #80ffe3;}
+.bg-50bde3 {background-color: #50bde3;}
+.bg-4363d8 {background-color: #4363d8; color: #fff;}
+.bg-3cb44b {background-color: #3cb44b;}

@@ -7,12 +7,12 @@ class QuizListElement extends React.Component {
     render() {
         return (
             <div className={"row brdr"}>
-                <div className={"col txt-left"}>
-                    <div className={"q-text"}>
-                        Name: {this.props.name}
+                <div className={"row f1 center"}>
+                    <div className={"f3"}>
+                        {this.props.name}
                     </div>
-                    <div className={"q-ans"}>
-                        Length: {this.props.length}
+                    <div className={"f1"}>
+                        {""+this.props.length+" spm"}
                     </div>
                 </div>
                 <div className="row items-right">

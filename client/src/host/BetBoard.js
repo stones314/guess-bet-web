@@ -29,7 +29,7 @@ function BetBoard(props) {
     }
 
     return (
-    <div className="row">
+    <div className="col-reverse">
         {elements}
     </div>
     )

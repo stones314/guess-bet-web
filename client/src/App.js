@@ -30,7 +30,7 @@ function App() {
     if(pageState === LOADING)
     {
         return (
-            <div className={"wide col center"}>
+            <div className={"wide col center trans-mid"}>
                 Loading...
             </div>
         )
@@ -38,26 +38,26 @@ function App() {
     else if(pageState === HOST_VS_JOIN)
     {
         return (
-            <div className={"wide col center"}>
-                <h1>QUIZ !</h1>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
                 
-                <div className={"app-btn"}>
+                <div className={"col m6"}>
                     <img
-                        className="app-btn-img"
-                        src={images["app-host"]}
-                        alt={"host"}
-                        onClick={() => onClickHost()}
-                    />
-                    HOST
-                </div>
-                <div className={"app-btn"}>
-                    <img
-                        className="app-btn-img"
-                        src={images["app-join"]}
+                        className="join-btn-img"
+                        src={images["join"]}
                         alt={"join"}
                         onClick={() => onClickJoin()}
                     />
-                    JOIN
+                    Bli med
+                </div>
+                <div className={"col m6"}>
+                    <img
+                        className="host-btn-img"
+                        src={images["host"]}
+                        alt={"host"}
+                        onClick={() => onClickHost()}
+                    />
+                    Arranger
                 </div>
             </div>
         )
@@ -65,8 +65,8 @@ function App() {
     else if(pageState === HOST_MENU)
     {
         return (
-            <div className={"wide col center"}>
-                <h1>QUIZ !</h1>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
                 <HostMenu
                     onClickExit={() => onClickExit()}
                 />
@@ -76,8 +76,8 @@ function App() {
     else if(pageState === JOIN_MENU)
     {
         return (
-            <div className={"wide col center"}>
-                <h1>QUIZ !</h1>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
                 <JoinMenu
                     onClickExit={() => onClickExit()}
                 />

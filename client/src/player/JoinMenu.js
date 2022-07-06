@@ -72,10 +72,10 @@ function JoinMenu(props) {
 
     function renderMenu() {
         return (
-            <div className="narrow">
+            <div className="narrow center">
                 <div className={"narrow"}>
                     <StringInput
-                        description={"User Name:"}
+                        description={"Navn:"}
                         type="text"
                         editVal={name}
                         errorMsg={nErr}
@@ -83,19 +83,29 @@ function JoinMenu(props) {
                     />
                     <StringInput
                         type="number"
-                        description={"Game Id:"}
+                        description={"Quiz ID:"}
                         editVal={gid.toString()}
                         errorMsg={gErr}
                         onChange={(newValue) => onGidChange(newValue)}
                     />
                 </div>
-                <div className={"hm-play"}>
+                <div className="row m6">
+                    <div className="f1">
+                    <img
+                        className="q-btn-img"
+                        src={images["back"]}
+                        alt={"exit"}
+                        onClick={() => props.onClickExit()}
+                    />
+                    </div>
+                    <div className="f1">
                     <img
                         className="q-btn-img"
                         src={images["play"]}
                         alt={"play"}
                         onClick={onClickPlay}
                     />
+                    </div>
                 </div>
             </div>
         )

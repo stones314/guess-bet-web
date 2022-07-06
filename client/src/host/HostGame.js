@@ -157,8 +157,9 @@ function HostGame(props) {
                 />
             );
         }
+        const dir = gameState === GameState.SHOW_STANDINGS ? " col" : " row";
         return(
-            <div className="narrow col">
+            <div className={"wide wrap center" + dir}>
                 {pList}
             </div>
         )
@@ -166,12 +167,13 @@ function HostGame(props) {
 
     function renderGameInfo() {
         if(gameState === GameState.LOADING) return null;
+        var qNoInfo = "Spørsmål " + (qid + 1) + " av " + quiz.questions.length
+        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
         return (
-            <div className="wide">
-                    {quiz.name} <br/>
-                    <br/>
-                    ID: {gid}<br/>
-                    <br/>
+            <div className="wide row center">
+                <div className="f1"> {quiz.name} </div>
+                <div className="f1 fs26"> {gid} </div>
+                <div className="f1"> {qNoInfo} </div>
             </div>
         )
     }
@@ -191,8 +193,8 @@ function HostGame(props) {
     function renderWaitForPlayers() {
         return (
             <div>
-                <div>
-                    {quiz.questions.length + " spørsmål"} <br/>
+                <div className="m6">
+                    Venter på at deltagere logger på med ID-en over...
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -204,10 +206,7 @@ function HostGame(props) {
     function renderWaitForAnswers() {
         return (
             <div>
-                <div>
-                    Spørsmål {(qid + 1) + " av " + quiz.questions.length}
-                </div>
-                <div className="narrow m6 brdr">
+                <div className="wide m6 brdr">
                     <div className="m3">
                         {quiz.questions[qid].text}
                     </div>
@@ -225,10 +224,25 @@ function HostGame(props) {
     function renderWaitForBets() {
         return (
             <div>
-                <div>
-                    Spørsmål {(qid + 1) + " av " + quiz.questions.length}
+                <div className="wide m6 brdr">
+                    <div className="m3">
+                        {quiz.questions[qid].text}
+                    </div>
+                    <div className="m3">
+                        Svar i {quiz.questions[qid].unit}
+                    </div>
                 </div>
-                <div className="narrow m6 brdr">
+                <div className="m6">
+                    {renderPlayerInfo()}
+                </div>
+            </div>
+        )
+    }
+
+    function renderShowBets() {
+        return (
+            <div>
+                <div className="wide m6 brdr">
                     <div className="m3">
                         {quiz.questions[qid].text}
                     </div>
@@ -257,9 +271,17 @@ function HostGame(props) {
         {
             return (renderWaitForAnswers())
         }
-        else if(gameState >= GameState.WAIT_FOR_BETS && gameState < GameState.SHOW_STANDINGS)
+        else if(gameState === GameState.WAIT_FOR_BETS)
         {
             return ( renderWaitForBets() )
+        }
+        else if(gameState === GameState.SHOW_BETS)
+        {
+            return ( renderShowBets() )
+        }
+        else if(gameState === GameState.SHOW_CORRECT)
+        {
+            return ( renderShowBets() )
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {

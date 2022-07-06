@@ -42,7 +42,7 @@ function BetOption(props) {
     function renderMin(){
         var minVal = props.min;
         if(props.min === MIN_INF) {
-            minVal = "Mindre";
+            minVal = "";
         }
         return (
             <div className="txt-img-box f2">
