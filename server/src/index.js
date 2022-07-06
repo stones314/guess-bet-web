@@ -293,7 +293,6 @@ wsServer.on('request', function(request) {
       const newState = game.step(games[gid]);
       if(newState === consts.GameState.WAIT_FOR_ANSWERS){
         const q = games[gid].quiz.questions[games[gid].quiz.pos];
-        console.log(q);
         games[gid].players.forEach(p => player.sendGameState(p, q, 0, newState));
       }
       else if(newState === consts.GameState.WAIT_FOR_BETS){

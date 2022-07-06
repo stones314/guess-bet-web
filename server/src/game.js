@@ -156,9 +156,6 @@ exports.computeBetOpts = function(game) {
         if(o.min <= ans)game.correct++;
     }
     bo[game.correct].correct = true;
-    console.log(bo);
-    console.log("a: " + ans);
-    console.log("p: " + game.quiz.pos);
     game.betOpts = bo;
 }
 
