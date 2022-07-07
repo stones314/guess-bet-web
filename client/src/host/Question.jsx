@@ -71,8 +71,10 @@ function Question(props) {
             </div>
         )
     }
+
     
     function renderShort() {
+        const fade = props.id === 0 ? " fade" : "";
         return (
             <div className="row brdr">
                 <div className="col">
@@ -103,6 +105,16 @@ function Question(props) {
                             src={images["del"]}
                             alt="delete"
                             onClick={props.onClickDelete}
+                        />
+                    </div>
+                    <div>
+                        <img
+                            className={"q-btn-img"+fade}
+                            src={images["moveup"]}
+                            alt="moveup"
+                            onClick={() => {
+                                if(fade === "")props.onClickMoveUp()
+                            }}
                         />
                     </div>
                 </div>

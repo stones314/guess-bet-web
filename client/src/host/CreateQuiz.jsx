@@ -69,6 +69,12 @@ class CreateQuiz extends React.Component {
         this.setState({editIndex : index});
     }
 
+    onClickMoveUp(index) {
+        var qs = this.state.questions.slice();
+        [qs[index], qs[index-1]] = [qs[index-1], qs[index]];
+        this.setState({questions : qs});
+    }
+
     onClickDelete(index) {
         var ei = this.state.editIndex;
         if(index < ei) ei--;
@@ -105,13 +111,14 @@ class CreateQuiz extends React.Component {
                     edit={this.state.editIndex === i}
                     onClickDelete={() => this.onClickDelete(i)}
                     onClickEdit={() => this.onClickEdit(i)}
+                    onClickMoveUp={() => this.onClickMoveUp(i)}
                     onQChange={(newValue, index, field) => this.onQChange(newValue, index, field)}
                     onQSubmit={(event, index) => this.onQSubmit(event, index)}
                 />
             );
         }
         return (
-            <div className={"narrow"}>
+            <div className={"wide"}>
                 <div className={"m6"}>
                     <StringInput
                         type="text"
@@ -127,22 +134,31 @@ class CreateQuiz extends React.Component {
                 <div className={"q-list"}>
                     {q_rows}
                 </div>
-                <div className={"q-add"}>
-                    <img
-                        className="q-btn-img"
-                        src={images["add"]}
-                        alt={"add"}
-                        onClick={() => this.onClickAdd()}
-                    />
-                </div>
-                <div className={"q-save"}>
-                    <img
-                        className="q-save-img"
-                        src={images["q-save"]}
-                        alt={"save"}
-                        onClick={() => this.onClickSave()}
-                    />
-                    Save
+                <div className="row wrap">
+                    <div className={""}>
+                        <img
+                            className="q-btn-img"
+                            src={images["back"]}
+                            alt={"back"}
+                            onClick={() => this.props.onClickBack()}
+                        />
+                    </div>
+                    <div className={""}>
+                        <img
+                            className="q-btn-img"
+                            src={images["add"]}
+                            alt={"add"}
+                            onClick={() => this.onClickAdd()}
+                        />
+                    </div>
+                    <div className={""}>
+                        <img
+                            className="q-btn-img"
+                            src={images["save"]}
+                            alt={"save"}
+                            onClick={() => this.onClickSave()}
+                        />
+                    </div>
                 </div>
             </div>
         )

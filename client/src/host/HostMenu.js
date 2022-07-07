@@ -27,7 +27,10 @@ function HostMenu(props) {
 
     function onQuizSaved(){
         loadQuizList();
-        setPageState(SHOW_MENU);
+    }
+
+    function onClickBack(){
+        loadQuizList();
     }
 
     function onQuizEdit(file){
@@ -53,7 +56,7 @@ function HostMenu(props) {
         setPageState(HOST_GAME);
     }
 
-    function loadQuizList(){
+    function loadQuizList(stateAfter = SHOW_MENU){
         var qs = [];
 
         fetch(SERVER + "/load-quiz-list", {
@@ -79,15 +82,13 @@ function HostMenu(props) {
                 );
             }
             setQuizList(qs);
-            if(pageState === LOADING){
-                setPageState(SHOW_MENU);
-            }
+            setPageState(stateAfter);
         });
     }
 
     function renderMenu() {
         return (
-            <div className="narrow">
+            <div className="">
                 <div className={""}>
                     
                 </div>
@@ -139,6 +140,7 @@ function HostMenu(props) {
                 <CreateQuiz
                     quizFile = {quizFile}
                     onQuizSaved = {() => onQuizSaved()}
+                    onClickBack = {() => onClickBack()}
                 />
             </div>
         )
