@@ -12,14 +12,25 @@ function BetBoardElement(props) {
         var coins = [];
         //TODO: use player color on coin somehow
         for(const [i, bet] of props.bets.entries()) {
+            var c_txt = bet.val;
+            var fade = "";
+            if(props.gameState === GameState.SHOW_CORRECT){
+                if(props.betData.correct){
+                    c_txt = bet.val * props.betData.odds;
+                }
+                else {
+                    c_txt = 0;
+                    fade = " fade";
+                }
+            }
             coins.push(
-            <div key={i} className="txt-img-box">
+            <div key={i} className={"txt-img-box"+fade}>
                 <img
                     className="txt-img-img pink"
                     src={images["coin"+bet.color]}
                     alt={"coin"+bet.color}
                 />
-                <div className="txt-img-txt">{bet.val}</div>
+                <div className="txt-img-txt">{c_txt}</div>
             </div>
             );
         }
@@ -33,7 +44,7 @@ function BetBoardElement(props) {
 
     function renderOdds(){
         return (
-            <div>
+            <div className="mlr3">
                 {props.betData.odds + "x"}
             </div>
         )
@@ -60,7 +71,11 @@ function BetBoardElement(props) {
     if(props.gameState >= GameState.SHOW_CORRECT && props.betData.correct) bg = " green";
     return (
         <div className={"row wrap brdr" + bg}>
-            <div className="row mid items-left">{renderMin()}{renderOdds()}{renderBets()}</div>
+            <div className="row mid items-left">
+                {renderMin()}
+                {renderOdds()}
+                {renderBets()}
+            </div>
         </div>
     )
 }

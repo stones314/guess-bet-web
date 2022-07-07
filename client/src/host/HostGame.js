@@ -235,11 +235,14 @@ function HostGame(props) {
                 <div className="m6">
                     {renderPlayerInfo()}
                 </div>
+                <div className="m6">{renderGameBoard()}</div>
             </div>
         )
     }
 
-    function renderShowBets() {
+    function renderShowBets(showCorrect = false) {
+        var ansTxt = "Svar i " + quiz.questions[qid].unit;
+        if(showCorrect) ansTxt = "Riktig svar er " + quiz.questions[qid].answer + " " + quiz.questions[qid].unit;
         return (
             <div>
                 <div className="wide m6 brdr">
@@ -247,7 +250,7 @@ function HostGame(props) {
                         {quiz.questions[qid].text}
                     </div>
                     <div className="m3">
-                        Svar i {quiz.questions[qid].unit}
+                        {ansTxt}
                     </div>
                 </div>
                 <div className="m6">
@@ -281,7 +284,7 @@ function HostGame(props) {
         }
         else if(gameState === GameState.SHOW_CORRECT)
         {
-            return ( renderShowBets() )
+            return ( renderShowBets(true) )
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {

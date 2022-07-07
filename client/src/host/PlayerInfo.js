@@ -66,15 +66,15 @@ function PlayerInfo(props) {
     }
 
     const fade = props.pInfo.online ? "" : " fade";
-    var thinking = "";
+    var thinking = " green";
     if(props.gameState === GameState.WAIT_FOR_ANSWERS) {
         if( props.pInfo.ans === MIN_INF){
-            thinking = "d";
+            thinking = " red";
         }
     }
     if(props.gameState === GameState.WAIT_FOR_BETS) {
         if( props.pInfo.bet[0].val + props.pInfo.bet[1].val <= 0 ){
-            thinking = "d";
+            thinking = " red";
         }
     }
 

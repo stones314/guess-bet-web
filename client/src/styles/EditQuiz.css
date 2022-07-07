@@ -67,6 +67,12 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+.mlr3 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
 .pa3 {
     padding: 5px;
 }
@@ -83,7 +89,7 @@
 }
 
 .green {
-    background-color: #61c466;
+    background-color: #c1f1c1;
 }
 
 .yellow {
@@ -96,6 +102,10 @@
 
 .fade {
     filter: opacity(0.2);
+}
+
+.red {
+    background-color: #f1c1c1;
 }
 
 .narrow {

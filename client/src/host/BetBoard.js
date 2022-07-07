@@ -13,7 +13,8 @@ function BetBoard(props) {
                 if(bet.opt === i && bet.val > 0)bets.push({
                     player : pd.name,
                     val : bet.val,
-                    color : pd.color 
+                    color : pd.color,
+                    won : pd.won
                 });
             })
         });
