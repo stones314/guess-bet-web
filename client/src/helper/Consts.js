@@ -13,6 +13,7 @@ export const images = {
     "bet-1" : "https://rygg-gaard.no/quiz/img/Undo1Btn.png",
     "riclient" : "https://rygg-gaard.no/quiz/img/RangeIndicatorClient.png",
     "rihost" : "https://rygg-gaard.no/quiz/img/RangeIndicatorHost.png",
+    "wait" : "https://rygg-gaard.no/quiz/img/Coin.png",
     "coin" : "https://rygg-gaard.no/quiz/img/Coin.png",
     "coinfffac8" : "https://rygg-gaard.no/quiz/img/Coin_fffac8.png",
     "coinffe119" : "https://rygg-gaard.no/quiz/img/Coin_ffe119.png",

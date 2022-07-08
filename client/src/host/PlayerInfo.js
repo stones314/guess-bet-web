@@ -40,7 +40,7 @@ function PlayerInfo(props) {
     function renderCash(){
         const fade = props.pInfo.cash === 0 ? " fade" : "";
         return(
-            <div className={"txt-img-box"+fade}>
+            <div className={"txt-img-box"}>
                 <img
                     className="txt-img-img"
                     src={images["coin"+props.pInfo.color]}

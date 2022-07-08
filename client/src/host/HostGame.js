@@ -171,9 +171,17 @@ function HostGame(props) {
         if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
         return (
             <div className="wide row center">
-                <div className="f1"> {quiz.name} </div>
-                <div className="f1 fs26"> {gid} </div>
-                <div className="f1"> {qNoInfo} </div>
+                <div className="f1 mid">
+                    <div className="f1"> {quiz.name} </div>
+                    <div className="f1"> {qNoInfo} </div>
+                </div>
+                <div className="f1">
+                    <div className="f1"> Quiz ID: </div>
+                    <div className="f1 fs26"> {gid} </div>
+                </div>
+                <div className={"col center f1"}>
+                    {renderContinue()}
+                </div>
             </div>
         )
     }
@@ -303,9 +311,6 @@ function HostGame(props) {
             </div>
             <div className={"col"}>
                 {renderGameState()}
-            </div>
-            <div className={"col center"}>
-                {renderContinue()}
             </div>
         </div>
     )

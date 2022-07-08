@@ -1,6 +1,6 @@
 import React from "react";
 import Question from "./Question";
-import {images, SERVER, GameState} from "./../helper/Consts";
+import {images, SERVER, GameState, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 import StringInput from "../helper/StringInput";
 
@@ -84,13 +84,25 @@ class CreateQuiz extends React.Component {
     }
 
     onClickSave() {
+        var qs = this.state.questions.slice();
+        for(var i = qs.length -1; i >= 0; i--){
+            if(qs.text === "") {
+                qs.splice(i,1);
+                continue;
+            }
+            if (qs.answer === "") qs.answer = "0";
+            else if (Number.parseFloat(qs.answer) < MIN_INF)qs.answer = MIN_INF.toString();
+            if (qs.unit === "") qs.unit = "stk";
+        }
+        var name = this.state.name;
+        if (name === "") name = "Uten navn";
         fetch(SERVER + "/save-quiz", {
             method: 'POST',
             body: JSON.stringify({
-                name : this.state.name,
-                file : this.props.quizFile, //TODO: use qid the same way as gid to identify a quiz (except it is not shown to user)
+                name : name,
+                file : this.props.quizFile,
                 pos : 0,
-                questions : this.state.questions 
+                questions : qs 
                 }),
             headers: { 'Content-Type': 'application/json' }
         })

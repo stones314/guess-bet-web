@@ -12,7 +12,7 @@ function BetOption(props) {
         else if(btnVal > props.cash) fade = " fade";
         else if(props.bet <= 0 && props.numBet === 2) fade = " fade";
         return (
-            <div className={"text-img f1" + fade}>
+            <div className={"txt-img-box f1" + fade}>
                 <img
                     className="q-btn-img"
                     src={images[btnImg]}

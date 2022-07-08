@@ -184,8 +184,27 @@ function PlayGame(props) {
     function renderWaitForProgress(text){
         //TODO: animert vente-grafikk!
         return (
+            <div className="col m6">
             <div className={"m6"}>
                 {text}
+            </div>
+            <div className={"m6"}>
+                <img
+                    className="load-img"
+                    src={images["coin"+color]}
+                    alt={"coin"+color}
+                />
+                <img
+                    className="load-img"
+                    src={images["coin"+color]}
+                    alt={"coin"+color}
+                />
+                <img
+                    className="load-img"
+                    src={images["coin"+color]}
+                    alt={"coin"+color}
+                />
+            </div>
             </div>
         )
     }
