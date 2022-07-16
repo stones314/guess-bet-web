@@ -35,7 +35,6 @@ function PlayGame(props) {
         ws.current.onmessage = function (event) {
             const data = JSON.parse(event.data);
             try {
-                console.log(data);
                 handleData(data);
             } catch (err) {
                 console.log(err);
@@ -50,7 +49,6 @@ function PlayGame(props) {
                 onConnect(data);
             }
             else if(data.type === "host-died"){
-                console.log("host died at " +gameState);
                 if(data.state < GameState.SHOW_STANDINGS) props.onGameAbort();
             }
         }
@@ -118,34 +116,18 @@ function PlayGame(props) {
         return () => wsCurrent.close();
     }, []);
 
-    //Messages to server. This runs when user clicks a button
-    useEffect(() => {
-       if(!ws.current) return;
-        
-        if(gameState === GameState.LOADING){
-            //No action
-        }
-        else if(gameState === GameState.WAIT_FOR_ANSWERS){
-            ws.current.send(JSON.stringify({
-                type : "send-ans",
-                ans : Number.parseFloat(ans)
-            }));
-        }
-        else if(gameState === GameState.WAIT_FOR_BETS){
-            ws.current.send(JSON.stringify({
-                type : "send-bet",
-                bet : bet
-            }));
-        }
-    }, [click]);
-
     function onAnsChange(newVal){
         setAns(newVal);
     }
 
     function onAnsConfirm(){
-        setDataSent(true);
-        setClick(click +1);
+        if(!ws.current) return;
+        
+            ws.current.send(JSON.stringify({
+                type : "send-ans",
+                ans : Number.parseFloat(ans)
+            }));
+            setDataSent(true);
     }
 
     function onClickBet(opt, val){
@@ -173,8 +155,12 @@ function PlayGame(props) {
     }
 
     function onBetConfirm(){
-        setDataSent(true);
-        setClick(click +1);
+        if(!ws.current) return;
+        ws.current.send(JSON.stringify({
+            type : "send-bet",
+            bet : bet
+        }));
+    setDataSent(true);
     }
 
     //**********************/
@@ -248,18 +234,49 @@ function PlayGame(props) {
     }
 
     function renderCash(){
-        var fade = "";
-        if(cash <= 0) {
+        var fade = "", fade2 = "";
+        const usedCash = bet[0].val + bet[1].val;
+        var freeCoins = 0, wonCoins = cash  + usedCash - 2;
+        if(usedCash <= 2) {
+            freeCoins = 2 - usedCash;
+        }
+        else {
+            wonCoins = cash;
+        }
+        if(freeCoins <= 0) {
             fade = " fade";
         }
+        if(wonCoins <= 0) {
+            fade2 = " fade";
+        }
         return (
-            <div className={"f1 txt-img-box" + fade}>
-                <img
-                    className={"txt-img-img"}
-                    src={images["coin"+color]}
-                    alt={"coin"+color}
-                />
-                <div className="txt-img-txt">{cash}</div>
+            <div className={"f1 row"}>
+                <div className="f1 col center">
+                    <div className="">
+                        Gjenbruk:
+                    </div>
+                    <div className={"txt-img-box" + fade}>
+                        <img
+                            className={"txt-img-img"}
+                            src={images["coin"+color]}
+                            alt={"coin"+color}
+                        />
+                        <div className="txt-img-txt">{freeCoins}</div>
+                    </div>
+                </div>
+                <div className="f1 col center">
+                    <div className="">
+                        Vunnet:
+                    </div>
+                    <div className={"txt-img-box" + fade2}>
+                        <img
+                            className={"txt-img-img"}
+                            src={images["coin"]}
+                            alt={"coin"}
+                        />
+                        <div className="txt-img-txt">{wonCoins}</div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -287,8 +304,8 @@ function PlayGame(props) {
         }
         else if(gameState === GameState.SHOW_CORRECT)
         {
-            var txt = "Wohoo, du vant " + won + "!";
-            if(won <= 2) txt = "Huff, ingen rette, men du fekk 2 i trøstepremie :) ";
+            var txt = "Wohoo, du vant " + (won-2) + "!";
+            if(won <= 2) txt = "Huff, ingen rette :( ";
             return (
                 <div className="narrow col">
                     <div className="m3">

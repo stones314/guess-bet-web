@@ -257,7 +257,8 @@ wsServer.on('request', function(request) {
         JSON.stringify({type : "host-game", gid : gid, quiz : games[gid].quiz})
       );
       role = 1;
-      console.log("["+gid+"] Host started new game");
+      console.log("["+gid+"] Host started new game, nr " + Object.keys(games).length);
+      
       return;
     }
 

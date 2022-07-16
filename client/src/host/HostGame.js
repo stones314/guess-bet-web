@@ -233,7 +233,7 @@ function HostGame(props) {
                         {quiz.questions[qid].text}
                     </div>
                     <div className="m3">
-                        Svar i {quiz.questions[qid].unit}
+                        Sats på opp til to alternativer.
                     </div>
                 </div>
                 <div className="m6">

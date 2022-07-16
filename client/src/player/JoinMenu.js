@@ -16,6 +16,7 @@ function JoinMenu(props) {
     const [gErr, setGerr] = useState("");
 
     function onNameChange(newValue) {
+        if (newValue.length > 10) return;
         setName(newValue);
     }
 
