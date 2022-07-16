@@ -9,13 +9,14 @@ function HostGame(props) {
     const [quiz, setQuiz] = useState(null);
     const [qid, setQid] = useState(-1);
     const [players, setPlayers] = useState([]);
-    const [click, setClick] = useState(0);
     const [betOpts, setBetOpts] = useState([]);
     const ws = useRef(null);
 
     //Connect to server with WS Socket. This runs only once:
     //Handles connect and all messages received from server
     useEffect(() => {
+        console.log("Host game, creating host ws-connection:");
+
         ws.current = new WebSocket("ws://16.170.74.73:1337");
         const apiCall = {
             type: "host-game",
@@ -83,26 +84,21 @@ function HostGame(props) {
 
         // Close socket on unmount:
         return () => wsCurrent.close();
-      }, []);
+      }, [props.quizFile]);
     
-      //Messages to server. This runs when user clicks a button
-      useEffect(() => {
+
+    function onClickContinue() {
         if(!ws.current) return;
 
         if(gameState === GameState.LOADING){
             //No action
         }
-        else if(gameState >= GameState.WAIT_FOR_PLAYERS && gameState <= GameState.SHOW_STANDINGS){
+        else if(gameState >= GameState.WAIT_FOR_PLAYERS && gameState < GameState.SHOW_STANDINGS){
             ws.current.send(JSON.stringify({
                 type : "step-game",
                 state : gameState
             }));
         }
-      }, [click]);
-
-
-    function onClickContinue() {
-        setClick(click + 1);
     }
 
     //**********************/
@@ -202,7 +198,7 @@ function HostGame(props) {
         return (
             <div>
                 <div className="m6">
-                    Venter på at deltagere logger på med ID-en over...
+                    Bli med på http://rygg-gaard.no/quiz
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}

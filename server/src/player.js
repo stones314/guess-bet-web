@@ -1,5 +1,4 @@
 const consts = require("./consts");
-const { getPlayerData } = require("./game");
 
 exports.create = function(name, conn, color) {
     var p = {
