@@ -21,6 +21,7 @@ function JoinMenu(props) {
     }
 
     function onGidChange(newValue) {
+        newValue.trim();
         setGid(newValue);
     }
 
@@ -58,8 +59,8 @@ function JoinMenu(props) {
         fetch(SERVER + "/can-join-quiz", {
             method: 'POST',
             body: JSON.stringify({
-                gid : gid,
-                name : name 
+                gid : gid.trim(),
+                name : name.trim()
             }),
             headers: { 'Content-Type': 'application/json' }
         })
