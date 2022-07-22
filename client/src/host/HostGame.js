@@ -165,6 +165,13 @@ function HostGame(props) {
         if(gameState === GameState.LOADING) return null;
         var qNoInfo = "Spørsmål " + (qid + 1) + " av " + quiz.questions.length
         if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
+        var gid_split = gid.toString();
+        if(gid_split.length === 6){
+            gid_split = [gid_split.slice(0,3)," ",gid_split.slice(3)].join("");
+        }
+        else if(gid_split > 6){
+            gid_split = [gid_split.slice(0,4)," ",gid_split.slice(4)].join("");
+        }
         return (
             <div className="wide row center">
                 <div className="f1 mid">
@@ -173,7 +180,7 @@ function HostGame(props) {
                 </div>
                 <div className="f1">
                     <div className="f1"> Quiz ID: </div>
-                    <div className="f1 fs26"> {gid} </div>
+                    <div className="f1 fs26"> {gid_split} </div>
                 </div>
                 <div className={"col center f1"}>
                     {renderContinue()}
@@ -189,6 +196,7 @@ function HostGame(props) {
                     pData={players}
                     opts={betOpts}
                     gameState={gameState}
+                    question={quiz.questions[qid]}
                 />
             </div>
         )

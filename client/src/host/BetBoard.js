@@ -25,6 +25,7 @@ function BetBoard(props) {
                 bets={bets}
                 betData={props.opts[i]}
                 gameState={props.gameState}
+                question={props.question}
             />
         );
     }

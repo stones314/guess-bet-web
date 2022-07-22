@@ -5,6 +5,16 @@ import './../styles/EditQuiz.css';
 
 function BetBoardElement(props) {
 
+    function renderAnswer(thisIsCorrect){
+        if(!thisIsCorrect) return null;
+        if(props.gameState < GameState.SHOW_CORRECT) return null;
+        return (
+            <div className="mlr3">
+                {"Fasit: " + props.question.answer + " " + props.question.unit}
+            </div>
+        )
+    }
+
     function renderBets(){
         if(props.gameState < GameState.SHOW_BETS) return null;
         if(props.bets.length === 0) return null;
@@ -75,6 +85,7 @@ function BetBoardElement(props) {
                 {renderMin()}
                 {renderOdds()}
                 {renderBets()}
+                {renderAnswer(bg === " green")}
             </div>
         </div>
     )
