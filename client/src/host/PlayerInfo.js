@@ -68,15 +68,15 @@ function PlayerInfo(props) {
     const usedCash = props.pInfo.bet[0].val + props.pInfo.bet[1].val;
     var dispCash = props.pInfo.cash + usedCash - 2;
     const fade = props.pInfo.online ? "" : " fade";
-    var thinking = " green";
+    var thinking = "";
     if(props.gameState === GameState.WAIT_FOR_ANSWERS) {
         if( props.pInfo.ans === MIN_INF){
-            thinking = " red";
+            thinking = "d";
         }
     }
     else if(props.gameState === GameState.WAIT_FOR_BETS) {
         if( props.pInfo.bet[0].val + props.pInfo.bet[1].val <= 0 ){
-            thinking = " red";
+            thinking = "d";
         }
         else {
             dispCash = props.pInfo.cash;
@@ -93,7 +93,7 @@ function PlayerInfo(props) {
         return (
             <div className={"narrow row wrap center" + fade}>
                 {renderCash(dispCash)}
-                <div className={"pa3 bg-"+props.pInfo.color + " brdr4" + thinking}>
+                <div className={"pa3 bg-"+props.pInfo.color + " brdr4"}>
                     {props.pInfo.name}
                 </div>
             </div>
