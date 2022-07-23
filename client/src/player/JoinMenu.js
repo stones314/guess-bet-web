@@ -82,6 +82,7 @@ function JoinMenu(props) {
                         editVal={name}
                         errorMsg={nErr}
                         onChange={(newValue) => onNameChange(newValue)}
+                        onEnterDown={(e) => {e.preventDefault(); onClickPlay()}}
                     />
                     <StringInput
                         type="number"
@@ -89,6 +90,7 @@ function JoinMenu(props) {
                         editVal={gid.toString()}
                         errorMsg={gErr}
                         onChange={(newValue) => onGidChange(newValue)}
+                        onEnterDown={(e) => {e.preventDefault(); onClickPlay()}}
                     />
                 </div>
                 <div className="row m6">
