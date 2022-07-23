@@ -206,6 +206,7 @@ function PlayGame(props) {
                     editVal={ans.toString()}
                     errorMsg={""}
                     onChange={(newValue) => onAnsChange(newValue)}
+                    onEnterDown={(e) => {e.preventDefault(); onAnsConfirm()}}
                 />
                 <img
                     className="q-btn-img"
