@@ -55,16 +55,16 @@ exports.hasPlayer = function(game, name) {
 }
 
 exports.step = function(game) {
-    var wrap = game.state === consts.GameState.SHOW_CORRECT;
+    var wrap = game.state === consts.GameState.SHOW_STANDINGS;
     game.state += 1;
-    game.state %= 4;
+    game.state %= 5;
     if(wrap){
         game.quiz.pos += 1;
         game.players.forEach(p => {
             player.resetInput(p)
         });
         if (game.quiz.pos == game.quiz.questions.length){
-             game.state = consts.GameState.SHOW_STANDINGS;
+             game.state = consts.GameState.GAME_OVER;
         }
     }
     return game.state;

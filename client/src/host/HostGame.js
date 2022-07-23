@@ -93,7 +93,7 @@ function HostGame(props) {
         if(gameState === GameState.LOADING){
             //No action
         }
-        else if(gameState >= GameState.WAIT_FOR_PLAYERS && gameState < GameState.SHOW_STANDINGS){
+        else if(gameState >= GameState.WAIT_FOR_PLAYERS && gameState < GameState.GAME_OVER){
             ws.current.send(JSON.stringify({
                 type : "step-game",
                 state : gameState
@@ -107,7 +107,7 @@ function HostGame(props) {
 
     function renderContinue() {
         var fade = "";
-        if(players.length < 2 && gameState < GameState.SHOW_STANDINGS){
+        if(players.length < 2 && gameState < GameState.GAME_OVER){
             fade = " fade";
         }
         return (
@@ -116,7 +116,7 @@ function HostGame(props) {
             src={images["play"]}
             alt={"continue"}
             onClick={() => {
-                if(gameState === GameState.SHOW_STANDINGS){
+                if(gameState === GameState.GAME_OVER){
                     props.onClickExit();
                 }
                 if(fade === ""){
@@ -153,7 +153,7 @@ function HostGame(props) {
                 />
             );
         }
-        const dir = gameState === GameState.SHOW_STANDINGS ? " col" : " row";
+        const dir = gameState >= GameState.SHOW_STANDINGS ? " col" : " row";
         return(
             <div className={"wide wrap center" + dir}>
                 {pList}
@@ -165,11 +165,12 @@ function HostGame(props) {
         if(gameState === GameState.LOADING) return null;
         var qNoInfo = "Spørsmål " + (qid + 1) + " av " + quiz.questions.length
         if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
+        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = "Ferdig!";
         var gid_split = gid.toString();
         if(gid_split.length === 6){
             gid_split = [gid_split.slice(0,3)," ",gid_split.slice(3)].join("");
         }
-        else if(gid_split > 6){
+        else if(gid_split.length > 6){
             gid_split = [gid_split.slice(0,4)," ",gid_split.slice(4)].join("");
         }
         return (
@@ -300,10 +301,19 @@ function HostGame(props) {
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
+            var header = "Ledertavle:";
+            if(qid + 1 === quiz.questions.length) header = "Resultatliste:";
             return (
-                <div>
-                    Resultatliste:
+                <div className="m6">
+                    {header}
                     {renderPlayerInfo()}
+                </div>)
+        }
+        else if(gameState === GameState.GAME_OVER)
+        {
+            return (
+                <div className="m6">
+                    Spelet er slutt. Takk for at du deltok!
                 </div>)
         }
     }

@@ -88,14 +88,14 @@ function PlayerInfo(props) {
     else if(props.gameState === GameState.SHOW_CORRECT){
         dispCash = props.pInfo.cash - 2;
     }
-    else if(props.gameState === GameState.SHOW_STANDINGS){
+    else if(props.gameState >= GameState.SHOW_STANDINGS){
         dispCash = props.pInfo.cash - 2;
         return (
             <div className={"narrow row wrap center" + fade}>
-                {renderCash(dispCash)}
                 <div className={"pa3 bg-"+props.pInfo.color + " brdr4"}>
                     {props.pInfo.name}
                 </div>
+                {renderCash(dispCash)}
             </div>
         )
     }

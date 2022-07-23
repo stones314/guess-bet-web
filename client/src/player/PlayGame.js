@@ -49,7 +49,7 @@ function PlayGame(props) {
                 onConnect(data);
             }
             else if(data.type === "host-died"){
-                if(data.state < GameState.SHOW_STANDINGS) props.onGameAbort();
+                if(data.state < GameState.GAME_OVER) props.onGameAbort();
             }
         }
 
@@ -70,6 +70,9 @@ function PlayGame(props) {
                 onWinnings(data);
             }
             else if(data.state === GameState.SHOW_STANDINGS){
+                onStepGame(data);
+            }
+            else if(data.state === GameState.GAME_OVER){
                 onStepGame(data);
             }
         }
@@ -317,7 +320,16 @@ function PlayGame(props) {
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
-            //TODO: vis kva plass speleren kom på, og knapp for å gå ut.
+            return (
+                <div className={""}>
+                    <div className={"m6"}>
+                        {"Du er på " + rank + " plass!"}
+                    </div>
+                </div>
+            )
+        }
+        else if(gameState === GameState.GAME_OVER)
+        {
             return (
                 <div className={""}>
                     <div className={"m3"}>
