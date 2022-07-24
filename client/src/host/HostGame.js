@@ -165,7 +165,7 @@ function HostGame(props) {
         if(gameState === GameState.LOADING) return null;
         var qNoInfo = "Spørsmål " + (qid + 1) + " av " + quiz.questions.length
         if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
-        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = "Ferdig!";
+        if(gameState === GameState.GAME_OVER) qNoInfo = "Ferdig!";
         var gid_split = gid.toString();
         if(gid_split.length === 6){
             gid_split = [gid_split.slice(0,3)," ",gid_split.slice(3)].join("");
@@ -313,7 +313,9 @@ function HostGame(props) {
         {
             return (
                 <div className="m6">
-                    Spelet er slutt. Takk for at du deltok!
+                    <h3>Spelet er slutt. Takk for at du deltok!</h3>
+                    Resultatliste:
+                    {renderPlayerInfo()}
                 </div>)
         }
     }
