@@ -207,7 +207,7 @@ function HostGame(props) {
         return (
             <div>
                 <div className="m6">
-                    Bli med på http://rygg-gaard.no/quiz
+                    Bli med på: <b>rygg-gaard.no/quiz</b>
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
