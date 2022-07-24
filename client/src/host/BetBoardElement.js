@@ -40,7 +40,7 @@ function BetBoardElement(props) {
                     src={images["coin"+bet.color]}
                     alt={"coin"+bet.color}
                 />
-                <div className="txt-img-txt">{c_txt}</div>
+                <div className="txt-img-txt-small">{c_txt}</div>
             </div>
             );
         }

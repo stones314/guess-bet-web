@@ -234,6 +234,15 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: calc(var(--btn-h)/2);
 }
 
+.txt-img-txt-small {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    font-size: calc(var(--btn-h)/3);
+}
+
 .txt-img-box-2 {
     position: relative;
     height: var(--btn-h);

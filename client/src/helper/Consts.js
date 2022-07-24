@@ -37,6 +37,8 @@ export const images = {
 export const SERVER = "http://16.170.74.73:3001";
 export const MIN_INF = -123456789;
 
+export const BetSizes = [0.01, 0.1, 0.5, 1.0];
+
 export const GameState = {
     LOADING : -2,
     WAIT_FOR_PLAYERS : -1,

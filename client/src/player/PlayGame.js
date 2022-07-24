@@ -11,7 +11,7 @@ function PlayGame(props) {
     const [cash, setCash] = useState(2);
     const [won, setWon] = useState(0);
     const [dataSent, setDataSent] = useState(false);
-    const [click, setClick] = useState(0);
+    const [betSizeId, setbetSizeId] = useState(0);
     const [color, setColor] = useState("white");
     const [question, setQuestion] = useState({});
     const [rank, setRank] = useState(0);
@@ -133,6 +133,10 @@ function PlayGame(props) {
             setDataSent(true);
     }
 
+    function onClickBetSize(index){
+        setbetSizeId(index);
+    }
+
     function onClickBet(opt, val){
         var newBet = bet;
         if(bet[0].opt === opt){
@@ -163,7 +167,7 @@ function PlayGame(props) {
             type : "send-bet",
             bet : bet
         }));
-    setDataSent(true);
+        setDataSent(true);
     }
 
     //**********************/
@@ -232,6 +236,8 @@ function PlayGame(props) {
                     color={color}
                     onClickBet={(opt, val) => onClickBet(opt, val)}
                     onBetConfirm={() => onBetConfirm()}
+                    onClickBetSize={(index) => onClickBetSize(index)}
+                    betSizeId={betSizeId}
                 />
             </div>
         )
@@ -265,7 +271,7 @@ function PlayGame(props) {
                             src={images["coin"+color]}
                             alt={"coin"+color}
                         />
-                        <div className="txt-img-txt">{freeCoins}</div>
+                        <div className="txt-img-txt-small">{freeCoins}</div>
                     </div>
                 </div>
                 <div className="f1 col center">
@@ -278,7 +284,7 @@ function PlayGame(props) {
                             src={images["coin"]}
                             alt={"coin"}
                         />
-                        <div className="txt-img-txt">{wonCoins}</div>
+                        <div className="txt-img-txt-small">{wonCoins}</div>
                     </div>
                 </div>
             </div>

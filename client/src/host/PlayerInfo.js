@@ -1,10 +1,5 @@
 import React from "react";
-import {images, SERVER, GameState, MIN_INF} from "./../helper/Consts";
-
-const LOADING = -1;
-const SHOW_MENU = 0;
-const CREATE_QUIZ = 1;
-const HOST_GAME = 2;
+import {images, GameState, MIN_INF} from "./../helper/Consts";
 
 function PlayerInfo(props) {
 
@@ -38,7 +33,6 @@ function PlayerInfo(props) {
     }
 
     function renderCash(dispCash){
-        const fade = dispCash === 0 ? " fade" : "";
         return(
             <div className={"txt-img-box"}>
                 <img
@@ -46,7 +40,7 @@ function PlayerInfo(props) {
                     src={images["coin"+props.pInfo.color]}
                     alt={"coin"+props.pInfo.color}
                 />
-                <div className="txt-img-txt">{dispCash}</div>
+                <div className="txt-img-txt-small">{dispCash}</div>
             </div>
         );
     }

@@ -5,10 +5,9 @@ import './../styles/EditQuiz.css';
 
 function BetOption(props) {
 
-    function renderBetButton(btnVal){
+    function renderBetButton(btnVal, btnImg){
         var fade = "";
-        var btnImg = btnVal < 0 ? "minus" : "add";
-        if(btnVal < 0 && props.bet === 0) fade = " fade";
+        if(btnVal <= 0 && props.bet === 0) fade = " fade";
         else if(btnVal > props.cash) fade = " fade";
         else if(props.bet <= 0 && props.numBet === 2) fade = " fade";
         return (
@@ -28,13 +27,13 @@ function BetOption(props) {
     function renderBet(){
         if(props.bet <= 0) return (<div className="f2"></div>);
         return (
-            <div className="txt-img-box f2">
+            <div className="txt-img-box f2" onClick={() => props.onClickBet(props.opt, -props.bet)}>
                 <img
                     className="txt-img-img"
                     src={images["coin"+props.color]}
                     alt={"coin"+props.color}
                 />
-                <div className="txt-img-txt">{props.bet}</div>
+                <div className="txt-img-txt-small">{props.bet}</div>
             </div>
         )
     }
@@ -61,16 +60,20 @@ function BetOption(props) {
     }
 
     var addVal = 1;
-    if(props.cash >= 20)addVal = 5;
     var minusVal = -1;
-    if(props.bet >= 20)minusVal = -5;
+    const founds = props.totBet + props.cash;
+    if(props.betSize > 0.02) {
+        addVal = Math.min(props.cash, Math.ceil(founds * props.betSize));
+        minusVal = -Math.min(props.bet, Math.ceil(founds * props.betSize));
+    }
+
     return (
         <div className="row brdr center">
             {renderMin()}
             {renderOdds()}
             {renderBet()}
-            {renderBetButton(addVal)}
-            {renderBetButton(minusVal)}
+            {renderBetButton(addVal, "add")}
+            {renderBetButton(minusVal, "minus")}
         </div>
     )
 }
