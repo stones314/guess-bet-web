@@ -182,8 +182,14 @@ exports.calculateResults = function(game) {
         p.cash += p.won;
     }
     game.players.sort((a, b) => b.cash - a.cash);
+    var pos = 0;
+    var score = 123456789;
     for(const [i, p] of game.players.entries()){
-        p.rank = i+1;
+        if(p.cash < score){
+            pos = i+1;
+            score = p.cash;
+        }
+        p.rank = pos;
     }
 }
 
