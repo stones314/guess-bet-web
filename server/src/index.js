@@ -246,7 +246,7 @@ wsServer.on('request', function(request) {
 
     //Host create game:
     if(data.type === "host-game"){
-      gid = 1000000 + Math.floor(Math.random() * 8999999);
+      gid = 100000 + Math.floor(Math.random() * 899999);
       quizlist.forEach(q => {
         if(q.file === data.file){
           games[gid] = game.create(gid, JSON.parse(JSON.stringify(q)), connection);
