@@ -291,42 +291,8 @@ wsServer.on('request', function(request) {
 
     //Host step  game:
     if(data.type === "step-game"){
-      const newState = game.step(games[gid]);
-      if(newState === consts.GameState.WAIT_FOR_ANSWERS){
-        const q = games[gid].quiz.questions[games[gid].quiz.pos];
-        games[gid].players.forEach(p => player.sendGameState(p, q, 0, newState));
-      }
-      else if(newState === consts.GameState.WAIT_FOR_BETS){
-        //Tell both Host and Player about bet options, and request bet from player
-        game.computeBetOpts(games[gid]);
-        games[gid].hostConn.sendUTF(
-          JSON.stringify({
-            type : "bet-opts",
-            betOpts : games[gid].betOpts
-          })
-        );
-        games[gid].players.forEach(p => player.sendGameState(p, 0, games[gid].betOpts, newState));
-      }
-      else if(newState === consts.GameState.SHOW_CORRECT){
-        //Tell players how much they won
-        game.calculateResults(games[gid]);
-        games[gid].players.forEach(p => player.sendGameState(p, 0, 0, newState));
-      }
-      else {
-        //Tell player about other state changes:
-        games[gid].players.forEach(p => player.sendGameState(p, 0, 0, newState));
-      }
-
-      games[gid].hostConn.sendUTF(
-        //Notify host about latest player state and new game state
-        JSON.stringify({
-          type : "step-game",
-          data : game.getPlayerData(games[gid]),
-          newState : newState,
-          qid : games[gid].quiz.pos
-        })
-      );
-      console.log("["+gid+"] Game Stepped to " + newState);
+      game.step(games[gid]);
+      game.notifyNewState(games[gid]);
       return;
     }
 
@@ -340,6 +306,11 @@ wsServer.on('request', function(request) {
         })
       );
       console.log("["+gid+"] Player " + name + "sent ans");
+
+      if(game.allPlayersResponded(games[gid])){
+        game.step(games[gid]);
+        game.notifyNewState(games[gid]);
+      }
       return;
     }
 
@@ -353,6 +324,11 @@ wsServer.on('request', function(request) {
         })
       );
       console.log("["+gid+"] Player " + name + "sent bet");
+
+      if(game.allPlayersResponded(games[gid])){
+        game.step(games[gid]);
+        game.notifyNewState(games[gid]);
+      }
       return;
     }
   });

@@ -70,6 +70,57 @@ exports.step = function(game) {
     return game.state;
 }
 
+exports.notifyNewState = function(game){
+    if(game.state === consts.GameState.WAIT_FOR_ANSWERS){
+        const q = game.quiz.questions[game.quiz.pos];
+        game.players.forEach(p => player.sendGameState(p, q, 0, game.state));
+      }
+      else if(game.state === consts.GameState.WAIT_FOR_BETS){
+        //Tell both Host and Player about bet options, and request bet from player
+        computeBetOpts(game);
+        game.hostConn.sendUTF(
+          JSON.stringify({
+            type : "bet-opts",
+            betOpts : game.betOpts
+          })
+        );
+        game.players.forEach(p => player.sendGameState(p, 0, game.betOpts, game.state));
+      }
+      else if(game.state === consts.GameState.SHOW_CORRECT){
+        //Tell players how much they won
+        calculateResults(game);
+        game.players.forEach(p => player.sendGameState(p, 0, 0, game.state));
+      }
+      else {
+        //Tell player about other state changes:
+        game.players.forEach(p => player.sendGameState(p, 0, 0, game.state));
+      }
+
+      game.hostConn.sendUTF(
+        //Notify host about latest player state and new game state
+        JSON.stringify({
+          type : "step-game",
+          data : getPlayerData(game),
+          newState : game.state,
+          qid : game.quiz.pos
+        })
+      );
+      console.log("["+game.gid+"] Game Stepped to " + game.state);
+}
+
+exports.allPlayersResponded = function(game){
+    var ok = true;
+    for(const [i, p] of game.players.entries()){
+        if(game.state === consts.GameState.WAIT_FOR_ANSWERS){
+            if(p.ans === consts.MIN_INF){ok = false; break;}
+        }
+        else if(game.state === consts.GameState.WAIT_FOR_BETS){
+            if(p.bet[0].val + p.bet[1].val === 0){ok = false; break;}
+        }
+    };
+    return ok;
+}
+
 exports.getPlayer = function(game, name){
     for(const [i, p] of game.players.entries()){
         if(p.name === name) return p;
@@ -77,7 +128,7 @@ exports.getPlayer = function(game, name){
     return null;
 }
 
-exports.getPlayerData = function(game) {
+var getPlayerData = exports.getPlayerData = function(game) {
     var pn = [];
     for(const [i, p] of game.players.entries()){
         pn.push(player.getPlayerData(p));
@@ -95,7 +146,7 @@ exports.setAns = function(game, pname, ans) {
     return false;
 }
 
-exports.computeBetOpts = function(game) {
+var computeBetOpts = exports.computeBetOpts = function(game) {
     var bo = [{min: consts.MIN_INF, others: 0, odds : 2, correct : false}]; //this is the "lower than any provided answers" option
 
     //Add player options
@@ -172,7 +223,7 @@ exports.setBet = function(game, pname, bet) {
     return false;
 }
 
-exports.calculateResults = function(game) {
+var calculateResults = exports.calculateResults = function(game) {
     const odds = game.betOpts[game.correct].odds;
     for(const [i, p] of game.players.entries()){
         p.won = 2;//always get two coins back!
