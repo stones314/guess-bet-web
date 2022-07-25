@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import {images, GameState, MIN_INF} from "./../helper/Consts";
+import {images, GameState, MIN_INF, WS_SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 import BetInput from "./BetInput";
 
@@ -20,7 +20,7 @@ function PlayGame(props) {
     //Web Socket Connect and handling of data from the server.
     //This is only run once at mount
     useEffect(() => {
-        ws.current = new WebSocket("ws://16.170.74.73:1337");
+        ws.current = new WebSocket(WS_SERVER);
 
         const apiCall = {
             type: "join-game",

@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import {images, GameState} from "../helper/Consts";
+import {images, GameState, WS_SERVER} from "../helper/Consts";
 import BetBoard from "./BetBoard";
 import PlayerInfo from "./PlayerInfo";
 
@@ -17,7 +17,7 @@ function HostGame(props) {
     useEffect(() => {
         console.log("Host game, creating host ws-connection:");
 
-        ws.current = new WebSocket("ws://16.170.74.73:1337");
+        ws.current = new WebSocket(WS_SERVER);
         const apiCall = {
             type: "host-game",
             file: props.quizFile,
