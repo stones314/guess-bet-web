@@ -24,10 +24,11 @@ function BetOption(props) {
         )
     }
     
+    //add this to div to enable click on bet to remove it:  onClick={() => props.onClickBet(props.opt, -props.bet)}
     function renderBet(){
         if(props.bet <= 0) return (<div className="f2"></div>);
         return (
-            <div className="txt-img-box f2" onClick={() => props.onClickBet(props.opt, -props.bet)}>
+            <div className="txt-img-box f2">
                 <img
                     className="txt-img-img"
                     src={images["coin"+props.color]}
@@ -38,11 +39,19 @@ function BetOption(props) {
         )
     }
 
-    function renderMin(){
-        var minVal = props.min;
-        if(props.min === MIN_INF) {
-            minVal = "";
+    function renderMinVal(minVal){
+        if(minVal === MIN_INF){
+            return(
+                <div className="txt-img-txt-3 col">
+                    <div>Alt</div>
+                    <div>Mindre</div>
+                </div>
+            );
         }
+        return(<div className="txt-img-txt-2">{minVal}</div>);
+    }
+
+    function renderMin(){
         return (
             <div className="txt-img-box f2">
                 <img
@@ -50,7 +59,7 @@ function BetOption(props) {
                     src={images["riclient"]}
                     alt={"riclient"}
                 />
-                <div className="txt-img-txt-2">{minVal}</div>
+                {renderMinVal(props.min)}
             </div>
         )
     }

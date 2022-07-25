@@ -44,7 +44,7 @@ function BetInput(props) {
             taken.push(val);
             if(i === props.betSizeId) selected = props.color
             sizeOpts.push(
-                <div className={"txt-img-box"} key={i} onClick={() => props.onClickBetSize(i)}>
+                <div className={"f1 txt-img-box"} key={i} onClick={() => props.onClickBetSize(i)}>
                     <img
                         className={"txt-img-img"}
                         src={images["coin"+selected]}
@@ -55,9 +55,9 @@ function BetInput(props) {
             )
         }
         return (
-            <div className="row items-left mid">
-                + : 
-                {sizeOpts}
+            <div className="row mid">
+                <div className="mr3">{"Verdi +/-"}</div>
+                <div className="row">{sizeOpts}</div>
             </div>
         )
     }
@@ -71,12 +71,14 @@ function BetInput(props) {
         </div>
         <div className="row">
             {renderBetSizes()}
-            <img
-                className={"q-btn-img" + fade}
-                src={images["play"]}
-                alt={"confirm"}
-                onClick={() => {if(fade === "") props.onBetConfirm()}}
-            />
+            <div className="items-right">
+                <img
+                    className={"q-btn-img" + fade}
+                    src={images["play"]}
+                    alt={"confirm"}
+                    onClick={() => {if(fade === "") props.onBetConfirm()}}
+                />
+            </div>
         </div>
     </div>
     )
