@@ -25,3 +25,5 @@
 *src/unused/
 *notater.txt
 *.png~
+/server/quizes
+
