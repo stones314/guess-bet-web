@@ -7,8 +7,8 @@ function BetOption(props) {
 
     function renderBetButton(btnVal, btnImg){
         var fade = "";
-        if(btnVal <= 0 && props.bet === 0) fade = " fade";
-        else if(btnVal > props.cash) fade = " fade";
+        if(btnImg === "minus" && props.bet === 0) fade = " fade";
+        else if(btnImg === "add" && props.cash === 0) fade = " fade";
         else if(props.bet <= 0 && props.numBet === 2) fade = " fade";
         return (
             <div className={"txt-img-box f1" + fade}>
