@@ -58,7 +58,7 @@ function BetInput(props) {
             )
         }
         return (
-            <div className="row mid">
+            <div className="row mid mlr3">
                 <div className="mr3">{"Verdi +/-"}</div>
                 <div className="row">{sizeOpts}</div>
             </div>

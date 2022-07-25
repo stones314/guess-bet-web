@@ -281,8 +281,8 @@ function PlayGame(props) {
                     <div className={"txt-img-box" + fade2}>
                         <img
                             className={"txt-img-img"}
-                            src={images["coin"]}
-                            alt={"coin"}
+                            src={images["coin"+color]}
+                            alt={"coin"+color}
                         />
                         <div className="txt-img-txt-small">{wonCoins}</div>
                     </div>
