@@ -40,7 +40,10 @@ function BetInput(props) {
             var selected = "";
             var val = 1;
             if(i>0)val = Math.ceil(founds * v);
-            if(taken.includes(val)) continue;
+            if(taken.includes(val)){
+                if(props.betSizeId === i) props.onClickBetSize(0);
+                continue;
+            }
             taken.push(val);
             if(i === props.betSizeId) selected = props.color
             sizeOpts.push(
