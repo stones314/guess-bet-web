@@ -217,17 +217,31 @@ function HostGame(props) {
         )
     }
 
+    function renderQuestion(){
+        var unit = "Svar i " + quiz.questions[qid].unit;
+        if(quiz.questions[qid].unit === ""){
+            unit = "Svar uten enhet";
+        }
+        return(
+            <div className="wide m6 brdr">
+                <div className="m3">
+                    {quiz.questions[qid].text}
+                </div>
+                <div className="m3">
+                    {unit}
+                </div>
+            </div>
+        )
+    }
+
     function renderWaitForAnswers() {
+        var unit = "Svar i " + quiz.questions[qid].unit;
+        if(quiz.questions[qid].unit === ""){
+            unit = "Svar uten enhet";
+        }
         return (
             <div>
-                <div className="wide m6 brdr">
-                    <div className="m3">
-                        {quiz.questions[qid].text}
-                    </div>
-                    <div className="m3">
-                        Svar i {quiz.questions[qid].unit}
-                    </div>
-                </div>
+                {renderQuestion()}
                 <div className="m6">
                     {renderPlayerInfo()}
                 </div>
@@ -238,13 +252,9 @@ function HostGame(props) {
     function renderWaitForBets() {
         return (
             <div>
-                <div className="wide m6 brdr">
-                    <div className="m3">
-                        {quiz.questions[qid].text}
-                    </div>
-                    <div className="m3">
-                        Sats på opp til to alternativer.
-                    </div>
+                {renderQuestion()}
+                <div className="m3">
+                    Sats på opp til to alternativer.
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -254,19 +264,10 @@ function HostGame(props) {
         )
     }
 
-    function renderShowBets(showCorrect = false) {
-        var ansTxt = "Svar i " + quiz.questions[qid].unit;
-        if(showCorrect) ansTxt = "Riktig svar er " + quiz.questions[qid].answer + " " + quiz.questions[qid].unit;
+    function renderShowBets() {
         return (
             <div>
-                <div className="wide m6 brdr">
-                    <div className="m3">
-                        {quiz.questions[qid].text}
-                    </div>
-                    <div className="m3">
-                        {ansTxt}
-                    </div>
-                </div>
+                {renderQuestion()}
                 <div className="m6">
                     {renderPlayerInfo()}
                 </div>
@@ -298,7 +299,7 @@ function HostGame(props) {
         }
         else if(gameState === GameState.SHOW_CORRECT)
         {
-            return ( renderShowBets(true) )
+            return ( renderShowBets() )
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
