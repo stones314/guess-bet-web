@@ -89,13 +89,12 @@ class CreateQuiz extends React.Component {
     onClickSave() {
         var qs = this.state.questions.slice();
         for(var i = qs.length -1; i >= 0; i--){
-            if(qs.text === "") {
+            if(qs[i].text === "") {
                 qs.splice(i,1);
                 continue;
             }
-            if (qs.answer === "") qs.answer = "0";
-            else if (Number.parseFloat(qs.answer) < MIN_INF)qs.answer = MIN_INF.toString();
-            if (qs.unit === "") qs.unit = "stk";
+            if (qs[i].answer === "") qs[i].answer = "0";
+            else if (Number.parseFloat(qs[i].answer) < MIN_INF) qs[i].answer = MIN_INF.toString();
         }
         var name = this.state.name;
         if (name === "") name = "Uten navn";
