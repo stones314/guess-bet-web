@@ -21,7 +21,10 @@ class CreateQuiz extends React.Component {
         if(this.props.quizFile !== ""){
             fetch(SERVER + "/load-quiz", {
                 method: 'POST',
-                body: JSON.stringify({ file : this.props.quizFile }),
+                body: JSON.stringify({
+                    user: this.props.user,
+                    file : this.props.quizFile
+                }),
                 headers: { 'Content-Type': 'application/json' }
             })
             .then((res) => res.json())
@@ -99,6 +102,7 @@ class CreateQuiz extends React.Component {
         fetch(SERVER + "/save-quiz", {
             method: 'POST',
             body: JSON.stringify({
+                user: this.props.user,
                 name : name,
                 file : this.props.quizFile,
                 pos : 0,

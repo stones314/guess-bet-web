@@ -42,13 +42,13 @@ function HostMenu(props) {
         fetch(SERVER + "/delete-quiz", {
             method: 'POST',
             body: JSON.stringify({
+                user : props.user,
                 file : file 
-                }),
+            }),
             headers: { 'Content-Type': 'application/json' }
         })
         .then((res) => res.json())
-        .then((data) => null);
-        loadQuizList();
+        .then((data) => loadQuizList());
     }
 
     function onQuizPlay(file) {
@@ -62,6 +62,7 @@ function HostMenu(props) {
         fetch(SERVER + "/load-quiz-list", {
             method: 'POST',
             body: JSON.stringify({
+                user : props.user,
                 load : true 
                 }),
             headers: { 'Content-Type': 'application/json' }
@@ -72,6 +73,7 @@ function HostMenu(props) {
                 qs.push(
                 <QuizListElement
                     key={i}
+                    user={props.user}
                     name={q.name}
                     length={q.length}
                     file={q.file}
@@ -138,6 +140,7 @@ function HostMenu(props) {
         return (
             <div className="wide">
                 <CreateQuiz
+                    user={props.user}
                     quizFile = {quizFile}
                     onQuizSaved = {() => onQuizSaved()}
                     onClickBack = {() => onClickBack()}
@@ -150,6 +153,7 @@ function HostMenu(props) {
         return (
             <div className="wide txt-left">
                 <HostGame
+                    user={props.user}
                     quizFile = {quizFile}
                     onClickExit = {() => props.onClickExit()}
                 />

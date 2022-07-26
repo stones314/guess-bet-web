@@ -34,8 +34,12 @@ export const images = {
 
 //Color of range indicator is #f9e7a2
 
-export const SERVER = "http://localhost:3001";//"http://16.170.74.73:3001";
-export const WS_SERVER = "ws://localhost:1337";//"ws://16.170.74.73:1337";
+//export const SERVER = "http://localhost:3001";
+export const SERVER = "http://16.170.74.73:3001";
+
+//export const WS_SERVER = "ws://localhost:1337";
+export const WS_SERVER = "ws://16.170.74.73:1337";
+
 export const MIN_INF = -123456789;
 
 export const BetSizes = [0.01, 0.1, 0.5];

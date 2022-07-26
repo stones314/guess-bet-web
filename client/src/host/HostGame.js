@@ -20,6 +20,7 @@ function HostGame(props) {
         ws.current = new WebSocket(WS_SERVER);
         const apiCall = {
             type: "host-game",
+            user: props.user,
             file: props.quizFile,
         };
         ws.current.onopen = (event) => {

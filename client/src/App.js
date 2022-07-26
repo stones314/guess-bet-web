@@ -1,5 +1,5 @@
 import React from "react";
-import HostMenu from "./host/HostMenu";
+import LogInMenu from "./host/LogInMenu";
 import {images} from "./helper/Consts";
 import { useState } from "react";
 import JoinMenu from "./player/JoinMenu";
@@ -67,7 +67,7 @@ function App() {
         return (
             <div className={"wide col center trans-mid"}>
                 <h2>QUIZ !</h2>
-                <HostMenu
+                <LogInMenu
                     onClickExit={() => onClickExit()}
                 />
             </div>
