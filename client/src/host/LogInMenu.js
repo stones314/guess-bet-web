@@ -31,7 +31,7 @@ function LogInMenu(props) {
             setPageState(HOST_MENU);
         }
         else if(ok === 0) {
-            setPerr("Invalid Pwd");
+            setPerr("Feil passord! Glemt passord? Kontakt Steinar!");
             setNerr("");
         }
         else {
@@ -79,7 +79,7 @@ function LogInMenu(props) {
                         onEnterDown={(e) => {e.preventDefault(); onClickPlay()}}
                     />
                     <StringInput
-                        type="text"
+                        type="password"
                         description={"Passord:"}
                         editVal={pwd.toString()}
                         errorMsg={pErr}

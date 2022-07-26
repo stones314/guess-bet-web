@@ -179,7 +179,7 @@ textarea {
     resize: none
 }
 
-input[type=text],input[type=number] {
+input[type=text],input[type=number],input[type=password] {
     position: relative;
     width : 50%;
     margin : 4px;
