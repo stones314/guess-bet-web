@@ -1,6 +1,6 @@
 import React from "react";
 import Question from "./Question";
-import {images, SERVER, GameState, MIN_INF} from "./../helper/Consts";
+import {images, SERVER, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 import StringInput from "../helper/StringInput";
 

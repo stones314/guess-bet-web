@@ -6,7 +6,6 @@ import './../styles/EditQuiz.css';
 
 const ENTER_CREDENTIALS = 0;
 const HOST_MENU = 1;
-const ABORTED_GAME = 2;
 
 function LogInMenu(props) {
     const [pageState, setPageState] = useState(ENTER_CREDENTIALS);

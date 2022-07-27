@@ -235,10 +235,6 @@ function HostGame(props) {
     }
 
     function renderWaitForAnswers() {
-        var unit = "Svar i " + quiz.questions[qid].unit;
-        if(quiz.questions[qid].unit === ""){
-            unit = "Svar uten enhet";
-        }
         return (
             <div>
                 {renderQuestion()}

@@ -1,5 +1,4 @@
 import React from "react";
-import {images} from "./../helper/Consts";
 import BetBoardElement from "./BetBoardElement";
 import './../styles/EditQuiz.css';
 
