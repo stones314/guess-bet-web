@@ -3,15 +3,17 @@ import {images, SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 import PlayGame from "./PlayGame";
 import './../styles/EditQuiz.css';
+import Cookies from "universal-cookie";
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
 const ABORTED_GAME = 2;
 
 function JoinMenu(props) {
+    const cookies = new Cookies();
     const [pageState, setPageState] = useState(ENTER_CREDENTIALS);
-    const [name, setName] = useState("");
-    const [gid, setGid] = useState("");
+    const [name, setName] = useState(cookies.get("lastName") ? cookies.get("lastName") : "");
+    const [gid, setGid] = useState(cookies.get("lastGid") ? cookies.get("lastGid") : "");
     const [nErr, setNerr] = useState("");
     const [gErr, setGerr] = useState("");
 
@@ -56,6 +58,8 @@ function JoinMenu(props) {
             setGerr("Enter game id");
             return;
         }
+        cookies.set("lastName", name, {path: "/"});
+        cookies.set("lastGid", gid, {path: "/"});
         fetch(SERVER + "/can-join-quiz", {
             method: 'POST',
             body: JSON.stringify({
@@ -69,6 +73,7 @@ function JoinMenu(props) {
     }
 
     function onGameAbort() {
+        cookies.set("lastGid", "", {path: "/"});
         setPageState(ABORTED_GAME);
     }
 
@@ -99,7 +104,10 @@ function JoinMenu(props) {
                         className="q-btn-img"
                         src={images["back"]}
                         alt={"exit"}
-                        onClick={() => props.onClickExit()}
+                        onClick={() => {
+                            cookies.set("lastGid", "", {path: "/"});
+                            props.onClickExit()}
+                        }
                     />
                     </div>
                     <div className="f1">
@@ -131,7 +139,9 @@ function JoinMenu(props) {
                     gid={gid}
                     name={name}
                     onGameAbort={onGameAbort}
-                    onClickExit={() => props.onClickExit()}
+                    onClickExit={() => {
+                        props.onClickExit()
+                    }}
                 />
             </div>
         )
