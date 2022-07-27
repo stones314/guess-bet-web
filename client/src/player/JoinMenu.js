@@ -4,6 +4,7 @@ import StringInput from "../helper/StringInput";
 import PlayGame from "./PlayGame";
 import './../styles/EditQuiz.css';
 import Cookies from "universal-cookie";
+import CookieConsent from "react-cookie-consent";
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
@@ -118,6 +119,14 @@ function JoinMenu(props) {
                         onClick={onClickPlay}
                     />
                     </div>
+                </div>
+                <div className="fs12 m6">
+                <CookieConsent
+                        buttonText="Ok"
+                        location="none"
+                >
+                    Siste navn og ID lagres som cookie for å enklere logge på etter evt disconnect.
+                </CookieConsent>
                 </div>
             </div>
         )
