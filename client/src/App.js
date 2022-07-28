@@ -15,7 +15,7 @@ const JOIN_MENU = 3;
 function App() {
 
     const [pageState, setPageState] = useState(HOST_VS_JOIN);
-    const [lang, setLang] = useState("norsk");
+    const [lang, setLang] = useState("engelsk");
     const [showLangOpts, setShowLangOpts] = useState(false);
     
     function onClickShowOpts(){
