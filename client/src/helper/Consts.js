@@ -30,6 +30,8 @@ export const images = {
     "coin50bde3" : "https://rygg-gaard.no/quiz/img/Coin_50bde3.png",
     "coin4363d8" : "https://rygg-gaard.no/quiz/img/Coin_4363d8.png",
     "coin3cb44b" : "https://rygg-gaard.no/quiz/img/Coin_3cb44b.png",
+    "norsk" : "https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg",
+    "engelsk" : "https://upload.wikimedia.org/wikipedia/commons/3/30/Flag_of_the_United_Kingdom_%283-2_aspect_ratio%29.svg",
 };
 
 //Color of range indicator is #f9e7a2

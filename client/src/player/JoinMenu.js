@@ -5,6 +5,7 @@ import PlayGame from "./PlayGame";
 import './../styles/EditQuiz.css';
 import Cookies from "universal-cookie";
 import CookieConsent from "react-cookie-consent";
+import {T} from "../helper/Translate";
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
@@ -35,12 +36,12 @@ function JoinMenu(props) {
             setPageState(PLAY_GAME);
         }
         else if(canJoin === 2) {
-            setGerr("Invalid Game Id");
+            setGerr(T("Invalid Quiz ID",props.lang));
             setNerr("");
         }
         else if(canJoin === 3) {
             setGerr("");
-            setNerr("User Name already in use");
+            setNerr(T("Name already in use",props.lang));
         }
         else {
             setGerr("Unknown error");
@@ -50,13 +51,13 @@ function JoinMenu(props) {
 
     function onClickPlay() {
         if (name === ""){
-            setNerr("Enter a name");
+            setNerr(T("Enter a name",props.lang));
             setGerr("");
             return;
         }
         if(!gid){
             setNerr("");
-            setGerr("Enter game id");
+            setGerr(T("Enter Quiz ID",props.lang));
             return;
         }
         cookies.set("lastName", name, {path: "/"});
@@ -83,7 +84,7 @@ function JoinMenu(props) {
             <div className="narrow center">
                 <div className={"narrow"}>
                     <StringInput
-                        description={"Navn:"}
+                        description={T("Name:",props.lang)}
                         type="text"
                         editVal={name}
                         errorMsg={nErr}
@@ -125,7 +126,7 @@ function JoinMenu(props) {
                         buttonText="Ok"
                         location="none"
                 >
-                    Siste navn og ID lagres som cookie for å enklere logge på etter evt disconnect.
+                    {T("This page uses cookies to improve user experience.",props.lang)}
                 </CookieConsent>
                 </div>
             </div>
@@ -145,6 +146,7 @@ function JoinMenu(props) {
         return (
             <div className={"HostMenu"}>
                 <PlayGame
+                    lang={props.lang}
                     gid={gid}
                     name={name}
                     onGameAbort={onGameAbort}
@@ -159,7 +161,7 @@ function JoinMenu(props) {
     {
         return (
             <div className={"HostMenu"}>
-                Whoops! Den som haldt quizen mista kontakten med serveren...
+                {T("Oh No! The host got disconnected :(",props.lang)}
                 {renderMenu()}
             </div>
         )

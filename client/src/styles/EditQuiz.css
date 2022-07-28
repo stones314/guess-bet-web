@@ -1,5 +1,17 @@
 :root {
-    --btn-h: 46px;
+    --btn-h: 40px;
+}
+
+.flag-box {
+    position: absolute;
+    top : 1px;
+    right : 1px;
+}
+
+.flag-btn-img {
+    width : 20px;
+    height : 15px;
+    margin-bottom: 2px;
 }
 
 .trans-mid {

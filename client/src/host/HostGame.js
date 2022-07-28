@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from "react";
 import {images, GameState, WS_SERVER} from "../helper/Consts";
 import BetBoard from "./BetBoard";
 import PlayerInfo from "./PlayerInfo";
+import {T} from "../helper/Translate";
 
 function HostGame(props) {
     const [gameState, setGameState] = useState(GameState.LOADING);
@@ -164,9 +165,9 @@ function HostGame(props) {
 
     function renderGameInfo() {
         if(gameState === GameState.LOADING) return null;
-        var qNoInfo = "Spørsmål " + (qid + 1) + " av " + quiz.questions.length
-        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + " spørsmål";
-        if(gameState === GameState.GAME_OVER) qNoInfo = "Ferdig!";
+        var qNoInfo = T("Question ",props.lang) + (qid + 1) + T(" of ",props.lang) + quiz.questions.length
+        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + T(" questions",props.lang);
+        if(gameState === GameState.GAME_OVER) qNoInfo = T("Finished!",props.lang);
         var gid_split = gid.toString();
         if(gid_split.length === 6){
             gid_split = [gid_split.slice(0,3)," ",gid_split.slice(3)].join("");
@@ -195,6 +196,7 @@ function HostGame(props) {
         return (
             <div className="wide">
                 <BetBoard
+                    lang={props.lang}
                     pData={players}
                     opts={betOpts}
                     gameState={gameState}
@@ -208,7 +210,7 @@ function HostGame(props) {
         return (
             <div>
                 <div className="m6">
-                    Bli med på: <b>rygg-gaard.no/quiz</b>
+                    {T("Join at: ",props.lang)} <b>rygg-gaard.no/quiz</b>
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -218,9 +220,9 @@ function HostGame(props) {
     }
 
     function renderQuestion(){
-        var unit = "Svar i " + quiz.questions[qid].unit;
+        var unit = T("Answer in ",props.lang) + quiz.questions[qid].unit;
         if(quiz.questions[qid].unit === ""){
-            unit = "Svar uten enhet";
+            unit = "";
         }
         return(
             <div className="wide m6 brdr">
@@ -250,7 +252,7 @@ function HostGame(props) {
             <div>
                 {renderQuestion()}
                 <div className="m3">
-                    Sats på opp til to alternativer.
+                    {T("Bet at up to two ranges.",props.lang)}
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -275,7 +277,7 @@ function HostGame(props) {
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
-            return ("LOADING")
+            return (T("Loading...",props.lang))
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
@@ -299,8 +301,8 @@ function HostGame(props) {
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
-            var header = "Ledertavle:";
-            if(qid + 1 === quiz.questions.length) header = "Resultatliste:";
+            var header = T("Leaderboard:",props.lang);
+            if(qid + 1 === quiz.questions.length) header = T("Final score:",props.lang);
             return (
                 <div className="m6">
                     {header}
@@ -311,8 +313,8 @@ function HostGame(props) {
         {
             return (
                 <div className="m6">
-                    <h3>Spelet er slutt. Takk for at du deltok!</h3>
-                    Resultatliste:
+                    <h3>{T("Game Over. Thanks for playing!",props.lang)}</h3>
+                    {T("Final score:",props.lang)}
                     {renderPlayerInfo()}
                 </div>)
         }

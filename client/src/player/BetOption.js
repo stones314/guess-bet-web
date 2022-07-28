@@ -1,6 +1,7 @@
 import React from "react";
 import {images, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
+import {T} from "../helper/Translate";
 
 
 function BetOption(props) {
@@ -43,8 +44,8 @@ function BetOption(props) {
         if(minVal === MIN_INF){
             return(
                 <div className="txt-img-txt-3 col">
-                    <div>Alt</div>
-                    <div>Mindre</div>
+                    <div>{T("All",props.lang)}</div>
+                    <div>{T("lower",props.lang)}</div>
                 </div>
             );
         }

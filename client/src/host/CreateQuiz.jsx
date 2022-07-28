@@ -3,7 +3,7 @@ import Question from "./Question";
 import {images, SERVER, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
 import StringInput from "../helper/StringInput";
-
+import { T } from "../helper/Translate";
 
 class CreateQuiz extends React.Component {
     
@@ -121,6 +121,7 @@ class CreateQuiz extends React.Component {
             q_rows.push(
                 <Question
                     key={i}
+                    lang={this.props.lang}
                     id={i}
                     question={q}
                     edit={this.state.editIndex === i}
@@ -137,14 +138,14 @@ class CreateQuiz extends React.Component {
                 <div className={"m6"}>
                     <StringInput
                         type="text"
-                        description={"Navn:"}
+                        description={T("Name:",this.props.lang)}
                         editVal={this.state.name}
                         errorMsg={""}
                         onChange={(newValue) => this.onNameChange(newValue)}
                     />
                 </div>
                 <div className={""}>
-                    Spørsmål:
+                    {T("Questions:",this.props.lang)}
                 </div>
                 <div className={"q-list"}>
                     {q_rows}

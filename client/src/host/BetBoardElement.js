@@ -1,6 +1,7 @@
 import React from "react";
 import {images, GameState, MIN_INF} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
+import {T} from "../helper/Translate";
 
 
 function BetBoardElement(props) {
@@ -10,7 +11,7 @@ function BetBoardElement(props) {
         if(props.gameState < GameState.SHOW_CORRECT) return null;
         return (
             <div className="mlr3">
-                {"Fasit: " + props.question.answer + " " + props.question.unit}
+                {T("Correct: ",props.lang) + props.question.answer + " " + props.question.unit}
             </div>
         )
     }
@@ -60,11 +61,19 @@ function BetBoardElement(props) {
         )
     }
 
-    function renderMin(){
-        var minVal = props.min;
-        if(props.min === MIN_INF) {
-            minVal = "";
+    function renderMinVal(minVal){
+        if(minVal === MIN_INF){
+            return(
+                <div className="txt-img-txt-3 col">
+                    <div>{T("All",props.lang)}</div>
+                    <div>{T("lower",props.lang)}</div>
+                </div>
+            );
         }
+        return(<div className="txt-img-txt-2">{minVal}</div>);
+    }
+
+    function renderMin(){
         return (
             <div className="txt-img-box-2">
                 <img
@@ -72,7 +81,7 @@ function BetBoardElement(props) {
                     src={images["riclient"]}
                     alt={"riclient"}
                 />
-                <div className="txt-img-txt-2">{minVal}</div>
+                {renderMinVal(props.min)}
             </div>
         )
     }

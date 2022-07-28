@@ -5,6 +5,7 @@ import { useState } from "react";
 import JoinMenu from "./player/JoinMenu";
 import './styles/EditQuiz.css';
 import './App.css';
+import { T, FlagSelect } from "./helper/Translate";
 
 const LOADING = 0;
 const HOST_VS_JOIN = 1;
@@ -14,17 +15,45 @@ const JOIN_MENU = 3;
 function App() {
 
     const [pageState, setPageState] = useState(HOST_VS_JOIN);
+    const [lang, setLang] = useState("norsk");
+    const [showLangOpts, setShowLangOpts] = useState(false);
+    
+    function onClickShowOpts(){
+        setShowLangOpts(true);
+    }
+
+    function onClickLang(newLang){
+        setShowLangOpts(false);
+        setLang(newLang);
+    }
 
     function onClickHost() {
+        setShowLangOpts(false);
         setPageState(HOST_MENU);
     }
 
     function onClickJoin() {
+        setShowLangOpts(false);
         setPageState(JOIN_MENU);
     }
 
     function onClickExit() {
+        setShowLangOpts(false);
         setPageState(HOST_VS_JOIN);
+    }
+
+    function renderHeader() {
+        return(
+            <div>
+                <h2>QUIZ !</h2>
+                <FlagSelect
+                    lang={lang}
+                    showLangs={showLangOpts}
+                    onClickLang={(newLang) => onClickLang(newLang)}
+                    onClickShowOpts={onClickShowOpts}
+                />
+            </div>
+        );
     }
 
     if(pageState === LOADING)
@@ -39,8 +68,7 @@ function App() {
     {
         return (
             <div className={"wide col center trans-mid"}>
-                <h2>QUIZ !</h2>
-                
+                {renderHeader()}
                 <div className={"col m6"}>
                     <img
                         className="join-btn-img"
@@ -48,7 +76,7 @@ function App() {
                         alt={"join"}
                         onClick={() => onClickJoin()}
                     />
-                    Bli med
+                    {T("Join",lang)}
                 </div>
                 <div className={"col m6"}>
                     <img
@@ -57,7 +85,7 @@ function App() {
                         alt={"host"}
                         onClick={() => onClickHost()}
                     />
-                    Arranger
+                    {T("Host",lang)}
                 </div>
             </div>
         )
@@ -66,8 +94,9 @@ function App() {
     {
         return (
             <div className={"wide col center trans-mid"}>
-                <h2>QUIZ !</h2>
+                {renderHeader()}
                 <LogInMenu
+                    lang={lang}
                     onClickExit={() => onClickExit()}
                 />
             </div>
@@ -77,8 +106,9 @@ function App() {
     {
         return (
             <div className={"wide col center trans-mid"}>
-                <h2>QUIZ !</h2>
+                {renderHeader()}
                 <JoinMenu
+                    lang={lang}
                     onClickExit={() => onClickExit()}
                 />
             </div>

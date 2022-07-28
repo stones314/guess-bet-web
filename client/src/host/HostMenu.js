@@ -5,6 +5,7 @@ import {images, SERVER} from "./../helper/Consts";
 import HostGame from "./HostGame";
 import { useState } from "react";
 import { useEffect } from "react";
+import {T} from "../helper/Translate";
 
 const LOADING = -1;
 const SHOW_MENU = 0;
@@ -123,7 +124,7 @@ function HostMenu(props) {
     {
         return (
             <div className="wide">
-                Laster...
+                {T("Loading...",props.lang)}
             </div>
         )
     }
@@ -140,6 +141,7 @@ function HostMenu(props) {
         return (
             <div className="wide">
                 <CreateQuiz
+                    lang={props.lang}
                     user={props.user}
                     quizFile = {quizFile}
                     onQuizSaved = {() => onQuizSaved()}
@@ -153,6 +155,7 @@ function HostMenu(props) {
         return (
             <div className="wide txt-left">
                 <HostGame
+                    lang={props.lang}
                     user={props.user}
                     quizFile = {quizFile}
                     onClickExit = {() => props.onClickExit()}

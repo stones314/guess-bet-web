@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {images, BetSizes} from "./../helper/Consts";
 import BetOption from "./BetOption";
 import './../styles/EditQuiz.css';
+import {T} from "../helper/Translate";
 
 function BetInput(props) {
 
@@ -17,6 +18,7 @@ function BetInput(props) {
         opts.push(
             <BetOption
                 key={i}
+                lang={props.lang}
                 min={opt.min}
                 odds={opt.odds}
                 bet={betHere}
@@ -59,7 +61,7 @@ function BetInput(props) {
         }
         return (
             <div className="row mid mlr3">
-                <div className="mr3">{"Verdi +/-"}</div>
+                <div className="mr3">{T("Value +/-", props.lang)}</div>
                 <div className="row">{sizeOpts}</div>
             </div>
         )

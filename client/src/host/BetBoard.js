@@ -20,6 +20,7 @@ function BetBoard(props) {
         elements.push(
             <BetBoardElement
                 key={i}
+                lang={props.lang}
                 min={opt.min}
                 bets={bets}
                 betData={props.opts[i]}

@@ -1,6 +1,7 @@
 import React from "react";
 import {images} from "./../helper/Consts";
 import './../styles/EditQuiz.css';
+import { T } from "../helper/Translate";
 
 class QuestionInput extends React.Component {
     constructor(props) {
@@ -37,15 +38,15 @@ class QuestionInput extends React.Component {
                     {this.props.errorMsg}
                 </div>
                 <form onSubmit={this.handleSubmit} className="q-inn-f">
-                    Spørsmål:
+                    {T("Question:",this.props.lang)}
                     <div className={"q-question"}>
                         <textarea value={this.props.Q.text} onChange={this.handleChangeQ} className=""/>
                     </div>
-                    Svar:
+                    {T("Answer:",this.props.lang)}
                     <div className={"txt-left"}>
                         <input type="number" value={this.props.Q.answer} onChange={this.handleChangeA}  className=""/>
                     </div>
-                    Enhet:
+                    {T("Unit:",this.props.lang)}
                     <div className={"txt-left"}>
                         <input type="text" value={this.props.Q.unit} onChange={this.handleChangeU}  className=""/>
                     </div>
@@ -63,6 +64,7 @@ function Question(props) {
             <div>
                 <QuestionInput
                     id={props.id}
+                    lang={props.lang}
                     onSubmit={(event, index) => props.onQSubmit(event, index)}
                     onStringChange={(value, index, field) => props.onQChange(value, index, field)}
                     Q={props.question}
