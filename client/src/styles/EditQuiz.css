@@ -211,6 +211,10 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none; 
 }
 
+.flag-img {
+    width : calc(var(--btn-h) * 0.6);
+}
+
 .q-btn-img {
     position: relative;
     top: 0;

@@ -59,7 +59,7 @@ exports.sendHostDied = function(player, state) {
     )
 }
 
-exports.sendGameState = function(player, question, betOpts, state, type = "state-update"){
+exports.sendGameState = function(player, question, betOpts, state, lang = "norsk", type = "state-update"){
     if(!player.online) return;
     const p = {
         name : player.name,
@@ -77,7 +77,8 @@ exports.sendGameState = function(player, question, betOpts, state, type = "state
           state : state,
           player : p,
           question : question,
-          betOpts : betOpts
+          betOpts : betOpts,
+          lang : lang,
         })
     )
 }

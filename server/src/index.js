@@ -122,7 +122,8 @@ app.post("/load-quiz-list", (req, res) => {
     infoList.push({
       name : quiz.name,
       length : quiz.questions.length,
-      file : quiz.file
+      file : quiz.file,
+      lang : quiz.lang
     });
   }
   console.log("Load quiz-list for " + data.user + ", length : " + infoList.length);
@@ -351,12 +352,13 @@ wsServer.on('request', function(request) {
         );
         const p = game.getPlayer(games[gid], name);
         const q = games[gid].quiz.questions[games[gid].quiz.pos];
+        const lang = games[gid].quiz.lang;
         if(ok === 1){
-          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, "connect");
+          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, lang, "connect");
           console.log("["+gid+"] "+ name +" Joined Game :)");
         }
         else if(ok === 2) {
-          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, "connect");
+          player.sendGameState(p, q, games[gid].betOpts, games[gid].state, lang, "connect");
           console.log("["+gid+"] "+ name +" Reconnected :) ");
         }
         else{
