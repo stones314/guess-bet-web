@@ -277,7 +277,7 @@ function HostGame(props) {
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
-            return (T("Loading...",quiz.lang))
+            return (T("Loading...",props.lang))
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
