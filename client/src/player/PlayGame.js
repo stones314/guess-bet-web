@@ -207,12 +207,14 @@ function PlayGame(props) {
 
     function renderWaitForAnswer(){
         if(dataSent) return (renderWaitForProgress(T("Waiting for others to answer...",lang)));
+        var unit = T("Answer in ",lang) + question.unit + ":";
+        if(question.unit === "") unit = T("Answer:",lang);
         return (
             <div className="narrow">
                 <div className="m3">{question.text}</div>
                 <StringInput
                     type="number"
-                    description={T("Answer in ",props.lang) + question.unit + ":"}
+                    description={unit}
                     editVal={ans.toString()}
                     errorMsg={""}
                     onChange={(newValue) => onAnsChange(newValue)}
