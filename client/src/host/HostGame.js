@@ -206,6 +206,28 @@ function HostGame(props) {
         )
     }
 
+    function renderRules(){
+        return (
+            <div>
+                <h3>
+                    {T("Rules",quiz.lang)}
+                </h3>
+                <div className="m3">
+                    <div>1</div>
+                    <div>{T("Suggest a numerical answer for a question.",quiz.lang)}</div>
+                </div>
+                <div className="m3">
+                    <div>2</div>
+                    <div>{T("Suggestions are sorted from lowest to highest.",quiz.lang)}</div>
+                </div>
+                <div className="m3">
+                    <div>3</div>
+                    <div>{T("Bet between which suggestions you think the correct solution resides.",quiz.lang)}</div>
+                </div>
+            </div>
+        )
+    }
+
     function renderWaitForPlayers() {
         return (
             <div>
