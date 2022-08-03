@@ -78,6 +78,7 @@ function HostMenu(props) {
                     name={q.name}
                     length={q.length}
                     file={q.file}
+                    lang={q.lang}
                     onClickEdit={() => onQuizEdit(q.file)}
                     onClickDelete={() => onQuizDelete(q.file)}
                     onClickPlay={() => onQuizPlay(q.file)}
@@ -92,8 +93,8 @@ function HostMenu(props) {
     function renderMenu() {
         return (
             <div className="">
-                <div className={""}>
-                    
+                <div className={"fs20 m3"}>
+                    {T("Your quizes:",props.lang)}
                 </div>
                 <div className={"col"}>
                     {quizList}

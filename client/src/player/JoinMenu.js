@@ -121,14 +121,6 @@ function JoinMenu(props) {
                     />
                     </div>
                 </div>
-                <div className="fs12 m6">
-                <CookieConsent
-                        buttonText="Ok"
-                        location="none"
-                >
-                    {T("This page uses cookies to improve user experience.",props.lang)}
-                </CookieConsent>
-                </div>
             </div>
         )
     }

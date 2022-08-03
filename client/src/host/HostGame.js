@@ -165,9 +165,9 @@ function HostGame(props) {
 
     function renderGameInfo() {
         if(gameState === GameState.LOADING) return null;
-        var qNoInfo = T("Question ",props.lang) + (qid + 1) + T(" of ",props.lang) + quiz.questions.length
-        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + T(" questions",props.lang);
-        if(gameState === GameState.GAME_OVER) qNoInfo = T("Finished!",props.lang);
+        var qNoInfo = T("Question ",quiz.lang) + (qid + 1) + T(" of ",quiz.lang) + quiz.questions.length
+        if(gameState === GameState.WAIT_FOR_PLAYERS) qNoInfo = quiz.questions.length + T(" questions",quiz.lang);
+        if(gameState === GameState.GAME_OVER) qNoInfo = T("Finished!",quiz.lang);
         var gid_split = gid.toString();
         if(gid_split.length === 6){
             gid_split = [gid_split.slice(0,3)," ",gid_split.slice(3)].join("");
@@ -196,7 +196,7 @@ function HostGame(props) {
         return (
             <div className="wide">
                 <BetBoard
-                    lang={props.lang}
+                    lang={quiz.lang}
                     pData={players}
                     opts={betOpts}
                     gameState={gameState}
@@ -210,7 +210,7 @@ function HostGame(props) {
         return (
             <div>
                 <div className="m6">
-                    {T("Join at: ",props.lang)} <b>rygg-gaard.no/quiz</b>
+                    {T("Join at: ",quiz.lang)} <b>rygg-gaard.no/quiz</b>
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -220,7 +220,7 @@ function HostGame(props) {
     }
 
     function renderQuestion(){
-        var unit = T("Answer in ",props.lang) + quiz.questions[qid].unit;
+        var unit = T("Answer in ",quiz.lang) + quiz.questions[qid].unit;
         if(quiz.questions[qid].unit === ""){
             unit = "";
         }
@@ -252,7 +252,7 @@ function HostGame(props) {
             <div>
                 {renderQuestion()}
                 <div className="m3">
-                    {T("Bet at up to two ranges.",props.lang)}
+                    {T("Bet at up to two ranges.",quiz.lang)}
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
@@ -277,7 +277,7 @@ function HostGame(props) {
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
-            return (T("Loading...",props.lang))
+            return (T("Loading...",quiz.lang))
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
@@ -301,8 +301,8 @@ function HostGame(props) {
         }
         else if(gameState === GameState.SHOW_STANDINGS)
         {
-            var header = T("Leaderboard:",props.lang);
-            if(qid + 1 === quiz.questions.length) header = T("Final score:",props.lang);
+            var header = T("Leaderboard:",quiz.lang);
+            if(qid + 1 === quiz.questions.length) header = T("Final score:",quiz.lang);
             return (
                 <div className="m6">
                     {header}
@@ -313,8 +313,8 @@ function HostGame(props) {
         {
             return (
                 <div className="m6">
-                    <h3>{T("Game Over. Thanks for playing!",props.lang)}</h3>
-                    {T("Final score:",props.lang)}
+                    <h3>{T("Game Over. Thanks for playing!",quiz.lang)}</h3>
+                    {T("Final score:",quiz.lang)}
                     {renderPlayerInfo()}
                 </div>)
         }

@@ -93,11 +93,12 @@ const Nor = {
     "Wrong password. Forgot it? Ask Steinar :)" : "Feil passord! Glemt det? Kontakt Steinar :)",
     "Log On / Sign Up" : "Logg på / Lag bruker",
     "Create new account by logging in with a new user name and password." : "Lag ny konto ved å logge på med nytt brukernavn og passord.",
-    "Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!" : "Merk: Passord sendes ukryptert og lagres i klartekst på server. Ikkje bruk et passord som du bruker andre steder!",
+    "Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!" : "Merk: Passord sendes ukryptert og lagres i klartekst på server. Ikkje bruk et passord du er redd for at andre kan få tak i.",
     "Password:" : "Passord:",
     "Questions:" : "Spørsmål:",
     "Question:" : "Spørsmål:",
     "Question " : "Spørsmål ",
+    " q" : " spm",
     " questions" : " spørsmål",
     "Answer:" : "Svar",
     "Unit:" : "Enhet",
@@ -108,5 +109,6 @@ const Nor = {
     "Leaderboard:" : "Ledertavle:",
     "Final score:" : "Resultatliste:",
     "Game Over. Thanks for playing!" : "Spelet er slutt. Takk for at du deltok!",
-    "Correct: " : "Fasit : "
+    "Correct: " : "Fasit : ",
+    "Your quizes:" : "Dine quizer:",
 }

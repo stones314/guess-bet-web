@@ -16,6 +16,7 @@ function PlayGame(props) {
     const [color, setColor] = useState("white");
     const [question, setQuestion] = useState({});
     const [rank, setRank] = useState(0);
+    const [lang, setLang] = useState("engelsk");
     const ws = useRef(null);
 
     //Web Socket Connect and handling of data from the server.
@@ -111,6 +112,7 @@ function PlayGame(props) {
         function onConnect(data){
             setColor(data.player.color);
             setCash(data.player.cash);
+            setLang(data.lang);
             onStateUpdate(data);
         }
 
@@ -204,7 +206,7 @@ function PlayGame(props) {
     }
 
     function renderWaitForAnswer(){
-        if(dataSent) return (renderWaitForProgress(T("Waiting for others to answer...",props.lang)));
+        if(dataSent) return (renderWaitForProgress(T("Waiting for others to answer...",lang)));
         return (
             <div className="narrow">
                 <div className="m3">{question.text}</div>
@@ -227,11 +229,11 @@ function PlayGame(props) {
     }
 
     function renderWaitForBets(){
-        if(dataSent) return (renderWaitForProgress(T("Waiting for others to bet...",props.lang)));
+        if(dataSent) return (renderWaitForProgress(T("Waiting for others to bet...",lang)));
         return (
             <div className="narrow">
                 <BetInput
-                    lang={props.lang}
+                    lang={lang}
                     opts={betOptions}
                     bet={bet}
                     cash={cash}
@@ -265,7 +267,7 @@ function PlayGame(props) {
             <div className={"f1 row"}>
                 <div className="f1 col center">
                     <div className="">
-                        {T("Reuse:", props.lang)}
+                        {T("Reuse:", lang)}
                     </div>
                     <div className={"txt-img-box" + fade}>
                         <img
@@ -278,7 +280,7 @@ function PlayGame(props) {
                 </div>
                 <div className="f1 col center">
                     <div className="">
-                        {T("Won:",props.lang)}
+                        {T("Won:",lang)}
                     </div>
                     <div className={"txt-img-box" + fade2}>
                         <img
@@ -296,11 +298,11 @@ function PlayGame(props) {
     function renderGameState(){
         if(gameState === GameState.LOADING)
         {
-            return (renderWaitForProgress(T("Loading...", props.lang)))
+            return (renderWaitForProgress(T("Loading...", lang)))
         }
         else if(gameState === GameState.WAIT_FOR_PLAYERS)
         {
-            return (renderWaitForProgress(T("Waiting for quiz to start...",props.lang)))
+            return (renderWaitForProgress(T("Waiting for quiz to start...",lang)))
         }
         else if(gameState === GameState.WAIT_FOR_ANSWERS)
         {
@@ -312,12 +314,12 @@ function PlayGame(props) {
         }
         else if(gameState === GameState.SHOW_BETS)
         {
-            return (renderWaitForProgress(T("Waiting for the result...",props.lang)))
+            return (renderWaitForProgress(T("Waiting for the result...",lang)))
         }
         else if(gameState === GameState.SHOW_CORRECT)
         {
-            var txt = T("Wohoo, you won ",props.lang) + (won-2) + "!";
-            if(won <= 2) txt = T("Ahh, none correct :( ",props.lang);
+            var txt = T("Wohoo, you won ",lang) + (won-2) + "!";
+            if(won <= 2) txt = T("Ahh, none correct :( ",lang);
             return (
                 <div className="narrow col">
                     <div className="m3">
@@ -331,7 +333,7 @@ function PlayGame(props) {
             return (
                 <div className={""}>
                     <div className={"m6"}>
-                        {T("You are at ",props.lang) + rank + T(". place!",props.lang)}
+                        {T("You are at ",lang) + rank + T(". place!",lang)}
                     </div>
                 </div>
             )
@@ -341,10 +343,10 @@ function PlayGame(props) {
             return (
                 <div className={""}>
                     <div className={"m3"}>
-                        {T("The Quiz is over",props.lang)}
+                        {T("The Quiz is over",lang)}
                     </div>
                     <div className={"m6"}>
-                        {T("You got ",props.lang) + rank + T(". place!",props.lang)}
+                        {T("You got ",lang) + rank + T(". place!",lang)}
                     </div>
                     <img
                         className={"q-btn-img"}

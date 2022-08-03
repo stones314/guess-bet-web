@@ -105,6 +105,7 @@ class CreateQuiz extends React.Component {
                 name : name,
                 file : this.props.quizFile,
                 pos : 0,
+                lang : this.props.lang,
                 questions : qs 
                 }),
             headers: { 'Content-Type': 'application/json' }
