@@ -100,22 +100,22 @@ function HostMenu(props) {
                     {quizList}
                 </div>
                 <div className={"row"}>
-                <div className={"items-left"}>
-                    <img
-                        className="q-btn-img"
-                        src={images["back"]}
-                        alt={"exit"}
-                        onClick={() => props.onClickExit()}
-                    />
-                </div>
-                <div className={"items-right"}>
-                    <img
-                        className="q-btn-img"
-                        src={images["add"]}
-                        alt={"add"}
-                        onClick={() => onClickNewQuiz()}
-                    />
-                </div>
+                    <div className={"items-left"}>
+                        <img
+                            className="q-btn-img"
+                            src={images["back"]}
+                            alt={"exit"}
+                            onClick={() => props.onClickExit()}
+                        />
+                    </div>
+                    <div className={"items-right"}>
+                        <img
+                            className="q-btn-img"
+                            src={images["add"]}
+                            alt={"add"}
+                            onClick={() => onClickNewQuiz()}
+                        />
+                    </div>
                 </div>
             </div>
         )

@@ -199,6 +199,7 @@ app.post("/save-quiz", (req, res) => {
     }
   })
 
+  console.log("Quiz "+ quizlist[data.file].name +" saved for " +data.user);
   res.json({ message: "Quiz Saved!" });
 });
 

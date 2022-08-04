@@ -111,8 +111,7 @@ class CreateQuiz extends React.Component {
             headers: { 'Content-Type': 'application/json' }
         })
         .then((res) => res.json())
-        .then((data) => null);
-        this.props.onQuizSaved();
+        .then((data) => this.props.onQuizSaved());
     }
 
     render() {
