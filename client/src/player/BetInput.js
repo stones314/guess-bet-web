@@ -59,6 +59,7 @@ function BetInput(props) {
                 </div>
             )
         }
+        if(sizeOpts.length < 2) return null;
         return (
             <div className="row mid mlr3">
                 <div className="mr3">{T("Value +/-", props.lang)}</div>
