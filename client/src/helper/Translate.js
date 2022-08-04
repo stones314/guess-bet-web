@@ -92,7 +92,7 @@ const Nor = {
     "lower" : "lavere",
     "Wrong password. Forgot it? Ask Steinar :)" : "Feil passord! Glemt det? Kontakt Steinar :)",
     "Log On / Sign Up" : "Logg på / Lag bruker",
-    "Create new account by logging in with a new user name and password." : "Lag ny konto ved å logge på med nytt brukernavn og passord.",
+    "Create new account by logging in with a new user name." : "Lag ny konto ved å logge på med nytt brukernavn.",
     "Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!" : "Merk: Passord sendes ukryptert og lagres i klartekst på server. Ikkje bruk et passord du er redd for at andre kan få tak i.",
     "Password:" : "Passord:",
     "Questions:" : "Spørsmål:",
@@ -111,6 +111,7 @@ const Nor = {
     "Game Over. Thanks for playing!" : "Spelet er slutt. Takk for at du deltok!",
     "Correct: " : "Fasit : ",
     "Your quizes:" : "Dine quizer:",
+    "Rules" : "Regler",
     "Suggest a numerical answer for a question." : "Kom med forslag til svar på et spørsmål (et tall).",
     "Suggestions are sorted from lowest to highest." : "Forslagene sorteres fra lavest til høyest",
     "Bet between which suggestions you think the correct solution resides." : "Sats penger på intervallet der du tror det faktiske svaret ligger."

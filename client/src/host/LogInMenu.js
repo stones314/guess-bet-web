@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {images, SERVER} from "./../helper/Consts";
 import StringInput from "../helper/StringInput";
 import HostMenu from "./HostMenu";
+import Cookies from "universal-cookie";
 import './../styles/EditQuiz.css';
 import {T} from "../helper/Translate";
 
@@ -9,8 +10,9 @@ const ENTER_CREDENTIALS = 0;
 const HOST_MENU = 1;
 
 function LogInMenu(props) {
+    const cookies = new Cookies();
     const [pageState, setPageState] = useState(ENTER_CREDENTIALS);
-    const [name, setName] = useState("");
+    const [name, setName] = useState(cookies.get("lastLogin") ? cookies.get("lastLogin") : "");
     const [pwd, setPwd] = useState("");
     const [nErr, setNerr] = useState("");
     const [pErr, setPerr] = useState("");
@@ -46,6 +48,7 @@ function LogInMenu(props) {
             setPerr("");
             return;
         }
+        cookies.set("lastLogin", name, {path: "/"});
         fetch(SERVER + "/log-in", {
             method: 'POST',
             body: JSON.stringify({
@@ -68,7 +71,7 @@ function LogInMenu(props) {
             <div className="narrow center">
                 <h3>{T("Log On / Sign Up", props.lang)}</h3>
                 <div className={"narrow"}>
-                    <div className="m6">{T("Create new account by logging in with a new user name and password.",props.lang)}</div>
+                    <div className="m6">{T("Create new account by logging in with a new user name.",props.lang)}</div>
                     <div className="m6 red">{T("Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!",props.lang)}</div>
                     <StringInput
                         description={T("Name:",props.lang)}
