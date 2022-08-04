@@ -203,7 +203,7 @@ var computeBetOpts = exports.computeBetOpts = function(game) {
     const ans = Number.parseFloat(game.quiz.questions[game.quiz.pos].answer);
     game.correct = -1;
     for (const [i, o] of bo.entries()) {
-        o.odds = consts.OddsDist[bo.length - 3][i];
+        o.odds = consts.OddsDist[bo.length - 1][i];
         if(o.min <= ans)game.correct++;
     }
     bo[game.correct].correct = true;
