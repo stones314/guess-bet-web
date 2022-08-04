@@ -114,5 +114,5 @@ const Nor = {
     "Rules" : "Regler",
     "Suggest a numerical answer for a question." : "Kom med forslag til svar på et spørsmål (et tall).",
     "Suggestions are sorted from lowest to highest." : "Forslagene sorteres fra lavest til høyest",
-    "Bet between which suggestions you think the correct solution resides." : "Sats penger på intervallet der du tror det faktiske svaret ligger."
+    "Bet between which suggestions you think the correct solution lies." : "Sats penger på intervallet der du tror det faktiske svaret ligger."
 }

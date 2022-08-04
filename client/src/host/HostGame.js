@@ -209,21 +209,13 @@ function HostGame(props) {
     function renderRules(){
         return (
             <div>
-                <h3>
-                    {T("Rules",quiz.lang)}
-                </h3>
-                <div className="m3">
-                    <div>1</div>
-                    <div>{T("Suggest a numerical answer for a question.",quiz.lang)}</div>
+                <div className="row m3">
+                    <b>{T("Rules",quiz.lang)}</b>
                 </div>
-                <div className="m3">
-                    <div>2</div>
-                    <div>{T("Suggestions are sorted from lowest to highest.",quiz.lang)}</div>
-                </div>
-                <div className="m3">
-                    <div>3</div>
-                    <div>{T("Bet between which suggestions you think the correct solution resides.",quiz.lang)}</div>
-                </div>
+
+                <div className="row"><li>{T("Suggest a numerical answer for a question.",quiz.lang)}</li></div>
+                <div className="row"><li>{T("Suggestions are sorted from lowest to highest.",quiz.lang)}</li></div>
+                <div className="row"><li>{T("Bet between which suggestions you think the correct solution lies.",quiz.lang)}</li></div>
             </div>
         )
     }
@@ -236,6 +228,9 @@ function HostGame(props) {
                 </div>
                 <div className="m6">
                     {renderPlayerInfo()}
+                </div>
+                <div className="m6">
+                    {renderRules()}
                 </div>
             </div>
         )
