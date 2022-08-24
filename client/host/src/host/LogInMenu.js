@@ -4,7 +4,7 @@ import StringInput from "../helper/StringInput";
 import HostMenu from "./HostMenu";
 import Cookies from "universal-cookie";
 import './../styles/EditQuiz.css';
-import {T} from "../helper/Translate";
+import {T, FlagSelect} from "../helper/Translate";
 
 const ENTER_CREDENTIALS = 0;
 const HOST_MENU = 1;
@@ -16,6 +16,17 @@ function LogInMenu(props) {
     const [pwd, setPwd] = useState("");
     const [nErr, setNerr] = useState("");
     const [pErr, setPerr] = useState("");
+    const [lang, setLang] = useState("engelsk");
+    const [showLangOpts, setShowLangOpts] = useState(false);
+    
+    function onClickShowOpts(){
+        setShowLangOpts(true);
+    }
+
+    function onClickLang(newLang){
+        setShowLangOpts(false);
+        setLang(newLang);
+    }
 
     function onNameChange(newValue) {
         if (newValue.length > 10) return;
@@ -33,7 +44,7 @@ function LogInMenu(props) {
             setPageState(HOST_MENU);
         }
         else if(ok === 0) {
-            setPerr(T("Wrong password. Forgot it? Ask Steinar :)",props.lang));
+            setPerr(T("Wrong password. Forgot it? Ask Steinar :)",lang));
             setNerr("");
         }
         else {
@@ -44,7 +55,7 @@ function LogInMenu(props) {
 
     function onClickPlay() {
         if (name === ""){
-            setNerr(T("Enter a name",props.lang));
+            setNerr(T("Enter a name",lang));
             setPerr("");
             return;
         }
@@ -69,12 +80,12 @@ function LogInMenu(props) {
     function renderMenu() {
         return (
             <div className="narrow center">
-                <h3>{T("Log On / Sign Up", props.lang)}</h3>
+                <h3>{T("Log On / Sign Up", lang)}</h3>
                 <div className={"narrow"}>
-                    <div className="m6">{T("Create new account by logging in with a new user name.",props.lang)}</div>
-                    <div className="m6 red">{T("Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!",props.lang)}</div>
+                    <div className="m6">{T("Create new account by logging in with a new user name.",lang)}</div>
+                    <div className="m6 red">{T("Note: Password is sent and stored in readable text on the server. Do not use a password that should be secret!",lang)}</div>
                     <StringInput
-                        description={T("Name:",props.lang)}
+                        description={T("Name:",lang)}
                         type="text"
                         editVal={name}
                         errorMsg={nErr}
@@ -83,7 +94,7 @@ function LogInMenu(props) {
                     />
                     <StringInput
                         type="password"
-                        description={T("Password:",props.lang)}
+                        description={T("Password:",lang)}
                         editVal={pwd.toString()}
                         errorMsg={pErr}
                         onChange={(newValue) => onPwdChange(newValue)}
@@ -91,14 +102,6 @@ function LogInMenu(props) {
                     />
                 </div>
                 <div className="row m6">
-                    <div className="f1">
-                    <img
-                        className="q-btn-img"
-                        src={images["back"]}
-                        alt={"exit"}
-                        onClick={() => props.onClickExit()}
-                    />
-                    </div>
                     <div className="f1">
                     <img
                         className="q-btn-img"
@@ -115,7 +118,14 @@ function LogInMenu(props) {
     if(pageState === ENTER_CREDENTIALS)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
+                <FlagSelect
+                    lang={lang}
+                    showLangs={showLangOpts}
+                    onClickLang={(newLang) => onClickLang(newLang)}
+                    onClickShowOpts={onClickShowOpts}
+                />
                 {renderMenu()}
             </div>
         )
@@ -123,9 +133,10 @@ function LogInMenu(props) {
     else if(pageState === HOST_MENU)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
                 <HostMenu
-                    lang={props.lang}
+                    lang={lang}
                     user={name}
                     onClickExit={() => onClickExit()}
                 />

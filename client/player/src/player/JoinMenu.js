@@ -4,8 +4,7 @@ import StringInput from "../helper/StringInput";
 import PlayGame from "./PlayGame";
 import './../styles/EditQuiz.css';
 import Cookies from "universal-cookie";
-import CookieConsent from "react-cookie-consent";
-import {T} from "../helper/Translate";
+import { T, FlagSelect } from "../helper/Translate";
 
 const ENTER_CREDENTIALS = 0;
 const PLAY_GAME = 1;
@@ -18,6 +17,17 @@ function JoinMenu(props) {
     const [gid, setGid] = useState(cookies.get("lastGid") ? cookies.get("lastGid") : "");
     const [nErr, setNerr] = useState("");
     const [gErr, setGerr] = useState("");
+    const [lang, setLang] = useState("engelsk");
+    const [showLangOpts, setShowLangOpts] = useState(false);
+    
+    function onClickShowOpts(){
+        setShowLangOpts(true);
+    }
+
+    function onClickLang(newLang){
+        setShowLangOpts(false);
+        setLang(newLang);
+    }
 
     function onNameChange(newValue) {
         if (newValue.length > 10) return;
@@ -36,12 +46,12 @@ function JoinMenu(props) {
             setPageState(PLAY_GAME);
         }
         else if(canJoin === 2) {
-            setGerr(T("Invalid Quiz ID",props.lang));
+            setGerr(T("Invalid Quiz ID",lang));
             setNerr("");
         }
         else if(canJoin === 3) {
             setGerr("");
-            setNerr(T("Name already in use",props.lang));
+            setNerr(T("Name already in use",lang));
         }
         else {
             setGerr("Unknown error");
@@ -51,13 +61,13 @@ function JoinMenu(props) {
 
     function onClickPlay() {
         if (name === ""){
-            setNerr(T("Enter a name",props.lang));
+            setNerr(T("Enter a name",lang));
             setGerr("");
             return;
         }
         if(!gid){
             setNerr("");
-            setGerr(T("Enter Quiz ID",props.lang));
+            setGerr(T("Enter Quiz ID",lang));
             return;
         }
         cookies.set("lastName", name, {path: "/"});
@@ -84,7 +94,7 @@ function JoinMenu(props) {
             <div className="narrow center">
                 <div className={"narrow"}>
                     <StringInput
-                        description={T("Name:",props.lang)}
+                        description={T("Name:",lang)}
                         type="text"
                         editVal={name}
                         errorMsg={nErr}
@@ -102,23 +112,12 @@ function JoinMenu(props) {
                 </div>
                 <div className="row m6">
                     <div className="f1">
-                    <img
-                        className="q-btn-img"
-                        src={images["back"]}
-                        alt={"exit"}
-                        onClick={() => {
-                            cookies.set("lastGid", "", {path: "/"});
-                            props.onClickExit()}
-                        }
-                    />
-                    </div>
-                    <div className="f1">
-                    <img
-                        className="q-btn-img"
-                        src={images["play"]}
-                        alt={"play"}
-                        onClick={onClickPlay}
-                    />
+                        <img
+                            className="q-btn-img"
+                            src={images["play"]}
+                            alt={"play"}
+                            onClick={onClickPlay}
+                        />
                     </div>
                 </div>
             </div>
@@ -128,7 +127,14 @@ function JoinMenu(props) {
     if(pageState === ENTER_CREDENTIALS)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className={"wide col center trans-mid"}>
+                <FlagSelect
+                    lang={lang}
+                    showLangs={showLangOpts}
+                    onClickLang={(newLang) => onClickLang(newLang)}
+                    onClickShowOpts={onClickShowOpts}
+                />
+                <h2>QUIZ !</h2>
                 {renderMenu()}
             </div>
         )
@@ -136,14 +142,15 @@ function JoinMenu(props) {
     else if(pageState === PLAY_GAME)
     {
         return (
-            <div className={"HostMenu"}>
+            <div className={"wide col center trans-mid"}>
+                <h2>QUIZ !</h2>
                 <PlayGame
-                    lang={props.lang}
+                    lang={lang}
                     gid={gid}
                     name={name}
                     onGameAbort={onGameAbort}
                     onClickExit={() => {
-                        props.onClickExit()
+                        setPageState(ENTER_CREDENTIALS)
                     }}
                 />
             </div>
@@ -152,8 +159,15 @@ function JoinMenu(props) {
     else if(pageState === ABORTED_GAME)
     {
         return (
-            <div className={"HostMenu"}>
-                {T("Oh No! The host got disconnected :(",props.lang)}
+            <div className={"wide col center trans-mid"}>
+                <FlagSelect
+                    lang={lang}
+                    showLangs={showLangOpts}
+                    onClickLang={(newLang) => onClickLang(newLang)}
+                    onClickShowOpts={onClickShowOpts}
+                />
+                <h2>QUIZ !</h2>
+                {T("Oh No! The host got disconnected :(",lang)}
                 {renderMenu()}
             </div>
         )
