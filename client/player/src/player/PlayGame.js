@@ -128,12 +128,13 @@ function PlayGame(props) {
 
     function onAnsConfirm(){
         if(!ws.current) return;
+        if(ans === "") return;
         
-            ws.current.send(JSON.stringify({
-                type : "send-ans",
-                ans : Number.parseFloat(ans)
-            }));
-            setDataSent(true);
+        ws.current.send(JSON.stringify({
+            type : "send-ans",
+            ans : Number.parseFloat(ans)
+        }));
+        setDataSent(true);
     }
 
     function onClickBetSize(index){
@@ -209,6 +210,8 @@ function PlayGame(props) {
         if(dataSent) return (renderWaitForProgress(T("Waiting for others to answer...",lang)));
         var unit = T("Answer in ",lang) + question.unit + ":";
         if(question.unit === "") unit = T("Answer:",lang);
+        var fade = "";
+        if(ans === "") fade = " fade";
         return (
             <div className="narrow">
                 <div className="m3">{question.text}</div>
@@ -221,7 +224,7 @@ function PlayGame(props) {
                     onEnterDown={(e) => {e.preventDefault(); onAnsConfirm()}}
                 />
                 <img
-                    className="q-btn-img"
+                    className={"q-btn-img" + fade}
                     src={images["play"]}
                     alt={"confirm"}
                     onClick={onAnsConfirm}
