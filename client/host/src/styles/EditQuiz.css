@@ -12,6 +12,7 @@
     width : 20px;
     height : 15px;
     margin-bottom: 2px;
+    cursor: pointer;
 }
 
 .trans-mid {
@@ -223,6 +224,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: var(--btn-h);
     margin: 1px;
     z-index: 50;
+    cursor: pointer;
 }
 
 .rihost-img {
