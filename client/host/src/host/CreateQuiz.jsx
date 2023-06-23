@@ -145,7 +145,25 @@ class CreateQuiz extends React.Component {
                     />
                 </div>
                 <div className={""}>
-                    {T("Questions:",this.props.lang)}
+                    {T("Add questions here.",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("The questions must have numeric answers.",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("In most cases you should also provide the unit the answer should be given in.",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("Example:",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("Q: What is the radius of the Earth at the equator?",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("A: 6378.137",this.props.lang)}
+                </div>
+                <div className={""}>
+                    {T("Unit: km",this.props.lang)}
                 </div>
                 <div className={"q-list"}>
                     {q_rows}

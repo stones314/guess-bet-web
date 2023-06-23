@@ -63,7 +63,24 @@ export function T(text, language) {
     return text;
 }
 
+/* 
+{T("Add questions here.",this.props.lang)}
+</div>
+<div className={""}>
+{T("",this.props.lang)}
+</div>
+<div className={""}>
+{T("In most cases you should also provide the unit the answer should be given in.",this.props.lang)}
+</div>
+ */
 const Nor = {
+    "Add questions here." : "Legg til spørsmål her.",
+    "The questions must have numeric answers." : "Spørsmål må ha numeriske svar.",
+    "In most cases you should also provide the unit the answer should be given in." : "I de fleste tilfeller bør du også oppgi hvilken enhet svaret skal ha.",
+    "Example:" : "Eksempel:",
+    "Q: What is the radius of the Earth at the equator?" : "Spm: Hva er Jorden sin radius ved ekvator?",
+    "A: 6378.137" : "Svar: 6378.137",
+    "Unit: km" : "Enhet: km",
     "Join" : "Bli med",
     "Host" : "Arranger",
     "Invalid Quiz ID" : "Ugyldig Quiz Id",
